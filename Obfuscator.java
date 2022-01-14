@@ -28,14 +28,13 @@ public class Obfuscator{
         for(int i = 1; i < studentData.size();i++){
             String firstName = names.get(random.nextInt(names.size()));
             String lastName = names.get(random.nextInt(names.size()));
-            keyFile.println(studentData.get(i)[1].substring(0,studentData.get(i)[1].length() -1 ) +  " " + studentData.get(i)[0].substring(1) + "," + firstName + " " + lastName);
+            keyFile.print(studentData.get(i)[1].substring(0,studentData.get(i)[1].length() -1 ) +  " " + studentData.get(i)[0].substring(1) + "," + firstName + " " + lastName);
             studentData.get(i)[0] =  "\"" + lastName;
             studentData.get(i)[1] = firstName + "\"";
             int studentNumber  =  Integer.parseInt(studentData.get(i)[3]);
-            studentNumber = (studentNumber - 231299368)*3; // all student numbers in 300 million range
-            studentNumber = studentNumber*2 - 378271723;
-            studentNumber = (studentNumber - 160283747)*2;
-            
+            keyFile.print("," + studentNumber);
+            studentNumber = random.nextInt(99999999) + 100000000;
+            keyFile.print("," + studentNumber);
             studentData.get(i)[3] = Integer.toString(studentNumber);
             studentData.get(i)[4] = studentNumber + "@gapps.yrdsb.ca";
             

@@ -8,10 +8,10 @@ public class Course {
     private String type;
     private double credit; // for 0.5 credits?
     private int classSize;
-    private ArrayList<String> corequisites = new ArrayList<String>();
+    private String corequisites;
     // add periods? for conflicts
 
-    public Course(String code, String title, int grade, String type, double credit, int classSize, ArrayList<String> corequisites){
+    public Course(String code, String title, int grade, String type, int credit, String corequisites,int classSize){
         this.code = code;
         this.title = title;
         this.grade = grade;
@@ -40,8 +40,8 @@ public class Course {
     public int getClassSize(){
         return this.classSize;
     }
-    public String getCorequisite(int index){
-        return this.corequisites.get(index);
-    }
+    // public String getCorequisite(int index){
+    //     return this.corequisites.get(index);
+    // }
 // -----------------------------------------------------------------------------------------
 }

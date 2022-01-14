@@ -1,0 +1,215 @@
+Course Code,Course Title,Grade,Type,Credits,Prequisites,Corequisites,Special,Caps (Per Class)
+ADA1O1,Dramatic Arts,9,Open,1,[],[],[],28
+ADA2O1,Dramatic Arts,10,Open,1,[],[],[],34
+ADA3M1,Dramatic Arts,11,University/College,1,"[ADA1O1, ADA2O1]",[],[],28
+ADD3M1,Dramatic Arts - PRODUCTION,11,University/College,1,"[ADA1O1, ADA2O1]",[],[],35
+ADA4M1,Dramatic Arts,12,University/College,1,"[ADA3M1, ADD3M1] ",[],[],28
+ADG4M1,Dramatic Arts - ACTING,12,University/College,1,"[ADD3M1, ADA3M1]",[],[],35
+AMI1O1,Beginning Instrumental,9,Open,1,[],[],[],28
+AMI1O2,Advanced Instrumental Music Performance,9,Open,1,[],[],[],35
+AMR1O1,Music Repertoire,9,Open,1,[],[],[],50
+AMV1O1,Vocal,9,Open,1,[],[],[],35
+AMG2O1,Beginning Guitar,9,Open,1,[],[],[],34
+AMI2O1,Instrumental,10,Open,1,"[AMI1O1, AMI1O2, AMR1O1]",[],[],34
+AMR2O1,Music Repertoire,10,Open,1,"[AMI1O1, AMV1O1, AMI1O2, AMR1O1] ",[],[],50
+AMV2O1,Vocal,10,Open,1,[],[],[],35
+AMI3M1,Instrumental Music - Band,10,Open,1," [AMI1O1, AMI2O1,  AMI1O2]",[],[],34
+AMR3M1,Music Repertoire,11,University/College,1,"[AMI1O1,  AMI2O1, AMR2O1, AMI1O2, AMV2O1]",[],[],35
+AMV3M1,Music - Vocal/Choral,11,University/College,1,"[AMV2O1, AMI1O1, AMI1O2, AMI2O1]",[],[],35
+AMI4M1,Instrumental Music Band,12,University/College,1,[AMI3M1],[],[],34
+AMR4M1,Music Repertoire,12,University/College,1,"[AMR3M1, AMI3M1, AMV3M1]",[],[],35
+AMV4M1,Music - Vocal/Choral,12,University/College,1,[AMV3M1],[],[],35
+AVI1O1,Visual Arts - An Introduction to Art,9,Open,1,[],[],[],28
+ASM2O1,Media Arts - Conceptual Art,10,Open,1,[],[],[],28
+AVI2O1,Visual Arts - Traditional Fine Art,10,Open,1,[],[],[],28
+AVI3M1,Visual Arts - Traditional Fine Art,11,University/College,1,[],[],[],35
+AVI3O1,Art for the Non-Artist,11,Open,1,"[AVI1O1, AVI2O1]",[],[],35
+AWQ3O1,Digital Photography,11,Open,1,"[AVI1O1, AVI2O1, ASM2O1]",[],[],35
+AWT3O1,Conceptual Art,11,Open,1,"[AVI1O1, AVI2O1, ASM2O1]",[],[],28
+AVI4M1,Visual Arts,12,University/College,1,[AVI3M1],[],[],35
+AWM4M1,Portfolio Development,12,University/College,1,"[AVI4M1, AVI3M1]",[],[],35
+AWT4M1,Installation Art - Conceptual Art,12,University/College,1,"[AVI4M1, AVI3M1]",[],[],35
+BTT1O1,Information and Communication Technology in Business,9,Open,1,[],[],[],28
+BBI2O1,Introduction to Business,10,Open,1,[],[],[],28
+BAI3E1,Accounting Essentials,11,Workplace,1,[],[],[],30
+BDI3C1,Entrepreneurship: The Venture,11,College,1,[],[],[],35
+BMI3C1,Introduction to Marketing,11,College,1,[],[],[],35
+BAF3M1,Fundamental Accounting Practices,11,University/College,1,[],[],[],30
+CLU3M1,Understanding Canadian Law,11,University/College,1,"[CHC2D1, CHC2P1]",[],[],35
+BTA3O1,Introduction to Tech Applications in Business,11,Open,1,[],[],[],35
+BAN4E1,Accounting for a Small Business,12,Workplace,1,[BAI3E1],[],[],35
+BOG4E1,Managing a Small Business,12,Workplace,1,[],[],[],35
+BAT4M1,Financial Accounting Principles,12,University/College,1,[BAF3M1],[],[],35
+BBB4M1,International Business Fundamentals,12,University/College,1,[],[],[],30
+BOH4M1,Organizational Behaviour and Human Resources,12,University/College,1,"[ENG3C1], [ENG3C2, ENG3U1], [ENG3U2, ENG3U1]",[],[],35
+CIA4U1,Analysing Current Economic Issues,12,University,1,"[CGF3M1, CGR4M1, CGW4U1, SES4U1, ENG3C1, ENG3U1, ENG4C1, ETS4U1, EWC4U1, HRT3M1, HHG4M1, HZT4U1, CHA3U1, CHW3M1, CHI4U1, CHY4U1, NBV3C1, ENG3C2, ENG3U2]",[],"Any U or U/M course in Canadian and World Studies, English, or Social Sciences and Humanities.",35
+CLN4U1,Canadian & International Law,12,University,1,"[CGF3M1, CGR4M1, CGW4U1, SES4U1, ENG3C1, ENG3U1, ENG4C1, ETS4U1, EWC4U1, HRT3M1, HHG4M1, HZT4U1, CHA3U1, CHW3M1, CHI4U1, CHY4U1, NBV3C1, ENG3C2, ENG3U2]",[],"Any U or U/M course in Canadian and World Studies, English, or Social Sciences and Humanities.",35
+CGC1P1,Geography of Canada,9,Applied,1,[],[],[],29
+CGC1PV,Issues in Canadian Geography,9,Applied,1,"[]"," [ENG1PV], [MFM1PV], [SNC1PV]",,22
+CGC1D1,Geography of Canada,9,Academic,1,[],[],[],29
+CGU211,Exploring Eurasia,10,Locally Developed,1,"[CGC1D1, CGC1P1]",[],[],35
+CGW4U1,Canadian and World Issues: A Geographic Analysis,12,University,1,[],[],[],30
+CGF3M1,"Physical Geography: Patterns, Processes & Interaction",11,University/College,1,"[CGC1D1, CGC1P1]",[],[],30
+CGG3O1,Regional Geography: Travel & Tourism,11,Open,1,"[CGC1D1, CGC1P1]",[],[],35
+CGR4E1,The Environment and Resource Management,12,Workplace,1,"[CGC1D1, CGC1P1]",[],[],30
+CGR4M1,The Environment and Resource Management,12,University/College,1,"[CGF3M1, CGR4M1, CGW4U1, SES4U1, ENG3C1, ENG3U1, ENG4C1, ETS4U1, EWC4U1, HRT3M1, HHG4M1, HZT4U1, CHA3U1, CHW3M1, CHI4U1, CHY4U1, NBV3C1, ENG3C2, ENG3U2]",[],"Any college, university or university/college preparation course in Canadian and World Studies, English, or Social Sciences and Humanities.",28
+CGW4U,Canadian and World Issues: A Geographic Analysis,12,University,1,"[CGF3M1, CGR4M1, CGW4U1, SES4U1, ENG3C1, ENG3U1, ENG4C1, ETS4U1, EWC4U1, HRT3M1, HHG4M1, HZT4U1, CHA3U1, CHW3M1, CHI4U1, CHY4U1, NBV3C1, ENG3C2, ENG3U2]",[],"Any university or university/college preparation course in Canadian and World Studies, English, or Social Sciences and Humanities",35
+IDC4O1,Natural Hazards & Disasters,12,Open,1,"[CGF3M1, CGR4M1, CGW4U1, SES4U1, ENG3C1, ENG3U1, ENG4C1, ETS4U1, EWC4U1, HRT3M1, HHG4M1, HZT4U1, CHA3U1, CHW3M1, CHI4U1, CHY4U1, NBV3C1, ENG3C2, ENG3U2]",[],[],35
+CHC2P1,Canadian History Since World War One,10,Applied,1,[],[],[],22
+CHC2PV,Canadian History Since World War I,10,Applied,1,[],"[ENG2PV], [MFM2PV], [SNC2PV]",,35
+CHC2D1,Canadian History Since World War One,10,Academic,1,[],[],[],35
+CHC2L1,Canadian History Since World War 1,10,Locally Developed,1,[],[],[],30
+CIVCAR,Civics and Careers,10,Open,1,[],[],[],35
+HSP3C1,"Introduction to Anthropology, Psychology, & Sociology",11,College,1,"[ENG2D1, ENG2P1, ENG2PV]",[],[],35
+NBV3C1,"Aboriginal Beliefs, Values, and Aspirations in Contemporary Society",11,College,1,"[CHC2D1, CHC2P1]",[],[],28
+CHW3M1,World History to the End of the 15th Century,11,University/College,1,"[CHC2D1, CHC2P1]",[],[],35
+HRT3M1,"World Religion: Beliefs, Issues and Religious Traditions",11,University/College,1,"[HC2D1, CHC2P1]",[],[],35
+CHA3U1,American History,11,University,,[CHC2D1],[],[],35
+HSP3U1,"Introduction to Anthropology, Psychology & Sociology",11,University,1,[ENG2D1],[],[],60
+IDC3O1,Twentieth Century History Through Film,11,Open,1," [CHC2D1, CHC2P1]",[],[],35
+CHM4E1,Adventures in World History,12,Workplace,,"[CHC2P1, CHC2D1]",[],[],35
+CHY4C1,World History since the Fifteenth Century,12,University,1,"[CHW3M1, HRT3M1, CHA3U1, HSP3U1, ENG3U2, NBE3U1, HHG4M1, HFA4U1, HHS4U1]",[],"Any university or university/college preparation course in Canadian and World Studies, English, or Social Sciences and Humanities. ",35
+CHI4U1,"Canada:  History, Identity, and Culture",12,University,1,"[CHW3M1, HRT3M1, CHA3U1, HSP3U1, ENG3U2, NBE3U1, HHG4M1, HFA4U1, HHS4U1] ",[]," Any U or U/C course in Canadian & World Studies, English or Social Science & Humanities. ",35
+CHY4U1,World History Since the 15th Century,12,University,1,"[CHW3M1, HRT3M1, CHA3U1, HSP3U1, ENG3U2, NBE3U1, HHG4M1, HFA4U1, HHS4U1]",[],"Any university or university/college preparation course in Canadian and World Studies, English, or Social Sciences and Humanities. ",28
+HSB4U1,Challenge and Change in Society,12,University,1,"[CHW3M1, HRT3M1, CHA3U1, HSP3U1, ENG3U2, NBE3U1, HHG4M1, HFA4U1, HHS4U1]",[],"Any university or university/college preparation course in Social Sciences and Humanities, English, or Canadian and World Studies.",30
+HZT4U1,Philosophy:  Questions and Theories,12,University,1,"[CHW3M1, HRT3M1, CHA3U1, HSP3U1, ENG3U2, NBE3U1, HHG4M1, HFA4U1, HHS4U1]",[]," Any U or U/C course in Canadian & World Studies, English or Social Science & Humanities. ",30
+COP4X4,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X5],[],27
+COP4X5,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X4],[],27
+COP3X4,Grade 11 Co-op - Full day (semester two),11,Co-Op,2,[],[COP3X5],[],27
+COP3X5,Grade 11 Co-op - Full day (semester two),11,Co-Op,2,[],[COP3X4],[],27
+COP4X4,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X5],[],27
+COP4X5,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X4],[],27
+COP3X0,Grade 11 Co-op - Half day,11,Open,2,[],,[],27
+COP3X1,Grade 11 Co-op - Full day (semester one),11,Open,2,[],[COP3X2],[],27
+COP3X2,Grade 11 Co-op - Full day (Semester one),11,Co-Op,2,[],[COP3X1],[],27
+COP3X4,Grade 11 Co-op - Full day (semester two),11,Co-Op,2,[],[COP3X5],[],27
+COP3X5,Grade 11 Co-op - Full day (semester two),11,Co-Op,2,[],[COP3X4],[],27
+COP4X0,Grade 12 Co-op - Half day,12,Open,2,[],,[],27
+COP4X1,Grade 12 Co-op - Full day (semester one),12,Co-Op,2,[],[COP4X2],[],27
+COP4X2,Grade 12 Co-op - Full day (semester one),12,Co-Op,2,[],[COP4X1],[],27
+COP4X4,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X5],[],27
+COP4X5,Grade 12 Co-op - Full day (semester two),12,Co-Op,2,[],[COP4X4],[],27
+ICS2O1,Introduction to Computer Studies,10,Open,1,[],[],[],28
+ICS3C1,Introduction to Computer Science,11,College,1,[],[],[],28
+ICS3U1,Introduction to Computer Science,11,University,1,[ICS3C1],[],[],28
+ICS4U1,Computer Science,12,University,1,[ICS3U1],[],[],28
+ENG1L1,English - Locally Developed,9,Locally-Developed,1,[],,[],16
+ENG1P1,English,9,Applied,1,[],,[],22
+ENG1PV,Language Intensive English,9,Applied,1,[],"[MFM1PV], [SNC1PV], [CGC1PV]",[],8
+ENG1D1,English,9,Academic,1,[],[],[],29
+ESLAO1,English,9,Open,1,[],[],[],20
+ENG2L1,English - Locally Developed,10,Locally-Developed,1,[],[],[],29
+ENG2P1,English,10,Applied,1," [ENG1D1, ENG1P1, ENG1PV,  ESLDO1, ESLEO1]",[],[],22
+ENG2PV,Language Intensive English,10,Applied,1,[ENG1PV],"[SNC2PV], [CHC2PV]",[],10
+ENG2D1,English,10,Acedemic,1," [ENG1D1, ENG1P1, ESLDO1, ESLEO1]",[],[],27
+ESLBO1,"English as a Second Language, Level 2",10,Open,1,[ESLAO1],[],[],20
+ENG3E1,English,11,"Workplace",1,"[ENG2D1, ENG2P1, ENG2L1, ENG2PV, ESLDO1]",[],[],28
+ENG3C,English,11,College,1,"[ENG2D1, ENG2P1, ENG2PV, ESLEO1]",[],[],28
+ENG3U1,English,11,University,1,"[ENG2D1, ESLEO1]",[],[],30
+ENG3U2,Outdoor Adventure Leadership Program - UNIVERSITY LEVEL ENGLISH,11,University,1," [ENG2D1, ESLEO1]","[GPP3O2], [PAD3O2], [PPL3O2], [COP3X6]",[],28
+NBE3U1,English: Contemporary Aboriginal Voices,11,University,1,"[ENG2D1, ENG2P1, ENG2PV]",[],[],28
+ESLCO1,"English as a Second Language, Level 3",11,Open,1,[],[],[],20
+ENG4E1,English,12,Workplace,1,"[ENG3U1, ENG3C1, ENG3E1, ESLDO1]",[],[],28
+ENG4C1,English,12,College,1,"[ENG3C1, ENG3U1, ENG3C2, ENG3U2, ESLEO1]",[],[],28
+ENG4U1,English,12,University,1,"[ENG3U1, ENG3U2, ESLEO1]",[],[],28
+ENG4UE,English - Advanced Placement,12,University,1," [ENG3U1, ENG3U2]",[],[],20
+ETS4U1,Studies in Literature - Children's,12,University,1," [ENG3U1, ENG3U2]",[],[],28
+EWC4U1,The Writer's Craft,12,University,1,"[ENG3U1, ENG3U2]",[],[],28
+ESLDO1,"English as a Second Language, Level 4",12,Open,1,[ESLCO1],[],[],20
+ESLEO1,"English as a Secondary Language, Level 5,",12,Open,1,[ESLDO1],[],[],20
+OLC4O1,Ontario Secondary School Literacy Course,12,Open,1,[],[],"Eligibility requirement: Students who have been eligible to write the OSSLT at least twice and who have been unsuccessful at least once are eligible to take the course. (Students who have already met the literacyrequirement for graduation may be eligible to take the course under special circumstances, at the discretion of the principal.)",20
+FSF1P1,Core French,9,Applied,1,[],[],"Minimum of 600 hours of elementary Core French instruction, or equivalent ",22
+FSF1D1,Core French,9,Academic,1,[],[],"Minimum of 600 hours of elementary Core French instruction, or equivalent ",29
+FSF2D1,Core French,10,Academic,1,[FSF1D1],[],[],29
+LWSBD1,International Languages - Beginning Spanish (offered alternate years) 2013-14,10,Academic,1,[],[],[],29
+FSF3U1,Core French,11,University,1,[FSF2D1],[],[],30
+FSF4U1,Core French,12,University,1,[FSF3U1],[],[],30
+LWSDU1,International Languages - Third Year Spanish,12,University,1,[],[],[],29
+ZSM1..,No Second Semester Courses,12,Open,0,[],[],[],[]
+PPL1O8,Healthy Active Living Education - Female,9,Open,1,[],[],[],29
+PPL1O9,Healthy Active Living Education - Male,9,Open,1,[],[],[],29
+PPL2O8,Healthy Active Living Education - Female,10,Open,1,[],[],[],29
+PPL2O9,Healthy Active Living Education - Male,10,Open,1,[],[],[],29
+PAF3O1,Personal and Fitness Activities,11,Open,1,[],[],[],29
+PPL3O1,Healthy Active Living Education,11,Open,1,[],[],[],29
+PSE4U1,Exercise Science,12,University,1,"[PAF3O1, PPL3O1, PAF4O1, PPL4O1, SVN3M1, SBI3U1, SCH3U1, SPH3U1]",[],"[]",29
+PAF4O1,Personal and Fitness Activities,12,Open,1,"[PPL1O8, PPL1O9, PPL2O8, PPL2O9, PAD3O2, PAF3O1, PPL3O1, PPL3O2]",[],[],29
+PPL4O1,Healthy Active Living Education,12,Open,1,[],[],[],29
+MAT1L1,Math - Locally Developed,9,Locally-Developed,1,[],[],[],16
+MFM1P1,Foundation of Mathematics,9,Applied,1,[],[],[],22
+MFM1PV,Language Intensive Math,9,Applied,1,[],"[ENG1PV], [SNC1PV], [CGC1PV]",[],8
+MPM1D1,Principles of Mathematic,9,Academic,1,[],[],[],29
+MAT2L1,Math - Locally Developed,10,Locally-Developed,1,[],[],[],16
+MFM2P1,Foundation of Mathematics,10,Applied,1,"[MFM1P1, MPM1D1]",[],[],22
+MFM2PV,Language Intensive Math,10,Applied,1,[MFM1PV],"[ENG2PV], [SNC2PV], [CHC2PV]",[],8
+MPM2D1,Principles of Mathematics,10,Academic,1,[MPM1D1],[],[],29
+MEL3E1,Mathematics for Work and Everyday Life,11,Workplace,1,"[MPM2D1, MFM2P1, MAT2L1]",[],[],20
+MBF3C1,Foundations for College Mathematics,11,College,1," [MPM2D1, MFM2P1, MFM2PV]",[],[],28
+MCF3M1,Functions and Applications,11,University/College,1,"[MPM2D1, MFM2P1, MFM2PV]",[],[],29
+MCR3U1,Functions University Preparation,11,University,1,[MPM2D1],[],[],29
+MEL4E1,Mathematics for Work and Everyday Life,12,Workplace,1,[MEL3E1],[],[],20
+MAP4C1,Foundations for College Mathematics,12,College,1,"[MBF3C1, MCF3M1, MCR3U1]",[],[],28
+MCT4C1,Mathematics for College Technology,12,College,1,"[MCF3M1, MCR3U1]",[],[],28
+MCV4U1,Calculus & Vectors,12,University,1,"[MHF4U1]",[],[],30
+MDM4U1,Mathematics of Data Management,12,University,1,"[MCR3U1, MCF3M1]",[],[],30
+MHF4U1,Advanced Functions,12,University,1,"[MCT4C1, MCR3U1]",[],[],30
+SNC1L1,Science - Locally Developed,9,Locally-Developed,1,[],[],[],22
+SNC1P1,Science,9,Applied,1,[],[],[],22
+SNC1PV,Language Intensive Science,9,Applied,1,[],"[ENG1PV], [MFM1PV], [CGC1PV]",[],8
+SNC1D1,Science,9,Academic,1,[],[],[],29
+SNC2L1,Science - Locally Developed,10,Locally-Developed,1,[],[],[],22
+SNC2P1,Science,10,Applied,1,"[SNC1D1, SNC1P1]",[],[],22
+SNC2PV,Language Intensive Science,10,Applied,1,[SNC1PV],"[ENG2PV], [MFM2PV], [CHC2PV]",[],8
+SNC2D1,Science,10,Academic,1,"[SNC1D1, SNC1P1]",[],[],29
+SBI3C1,Biology,11,College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],29
+SVN3M1,Environmental Science,11,University/College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],29
+SBI3U1,Biology,11,University,1,[SNC2D1],[],[],29
+SCH3U1,Chemistry,11,University,1,[SNC2D1],[],[],29
+SPH3U1,Physics,11,University,1,[SNC2D1],[],[],29
+SCH4C1,Chemistry,12,College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],29
+SPH4C1,Physics,12,College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],29
+SBI4U1,Biology,12,University,1,[SBI3U1],[],[],29
+SCH4U1,Chemistry,12,University,1,[SCH3U1],[],[],28
+SES4U1,Earth and Space Science,12,University,1,[SNC2D1],[],[],28
+SPH4U1,Physics,12,University,1,[SPH3U1],[],[],29
+HFN1O1,Food & Nutrition,9,Open,1,[],[],[],28
+HNL2O1,Clothing,10,Open,1,[],[],[],28
+HLS3O1,Housing and Home Design,11,Open,1,[],[],[],28
+HPC3O1,Raising Healthy Children,11,Open,1,[],[],[],28
+HHS4C1,Families in Canada,12,College,1,"[ENG3U2, NBE3U1, ENG4C1, ENG4U1, ENG4U, EETS4U1, EWC4U1, CHW3M1, HRT3M1, CHA3U1, HSP3U1, CHA3U1, HSP3U1, CHY4C1, CHI4U1, CHY4U1, HSB4U1, HZT4U1]",[],"Any university, college, or university/college preparation course in Social Sciences and Humanities, English, or Canadian and World Studies. ",30
+HHG4M1,Issues in Human Growth and Development,12,University/College,1,"[ENG3U2, NBE3U1, ENG4C1, ENG4U1, ENG4U, EETS4U1, EWC4U1, CHW3M1, HRT3M1, CHA3U1, HSP3U1, CHA3U1, HSP3U1, CHY4C1, CHI4U1, CHY4U1, HSB4U1, HZT4U1]",[],"Any college, university or university/college preparation course in Canadian and World Studies, English, or Social Sciences and Humanities. ",30
+HFA4U1,Nutrition and Health,12,University,1,"[ENG3U2, NBE3U1, ENG4C1, ENG4U1, ENG4U, EETS4U1, EWC4U1, CHW3M1, HRT3M1, CHA3U1, HSP3U1, CHA3U1, HSP3U1, CHY4C1, CHI4U1, CHY4U1, HSB4U1, HZT4U1]",[],"Any university or university/college preparation course in Social Sciences and Humanities, English, or Canadian and World Studies. ",28
+HHS4U1,Families in Canada,12,University,1,"[ENG3U2, NBE3U1, ENG4C1, ENG4U1, ENG4U, EETS4U1, EWC4U1, CHW3M1, HRT3M1, CHA3U1, HSP3U1, CHA3U1, HSP3U1, CHY4C1, CHI4U1, CHY4U1, HSB4U1, HZT4U1]",[],"Any university or university/college preparation course in Social Sciences and Humanities, English, or Canadian and World Studies. ",30
+HIP4O1,Personal Life Management,12,Open,1,[],[],[],28
+KCWANZ,Life Skills,9,Locally-Developed,0,[],"[GLE1OZ], [ELS2OZ]",[],16
+ELS2OZ,Literacy Skills,9,Open,1,[],"[GLE1OZ], [KCWANZ]",[],29
+GLE1OZ,Learning Strategies 1: Skills for Success in Secondary School,9,Open,1,[],"[ELS2OZ], [KCWANZ]",[],16
+KCWBNZ,Social Skills,10,Locally-Developed,0,[],"[EPS3OZ], [GLE2OZ]",[],16
+EPS3OZ,Presentation and Speaking Skills,10,Open,1,[],"[GLE2OZ], [KCWBNZ]",[],16
+GLE2OZ,Learning Strategies 1: Skills for Success in Secondary School,10,Open,1,[],"[EPS3OZ], [KCWBNZ]",[],16
+GLE1O1,Learning Strategies,9,Open,1,[],[],[],16
+GLE2O1,Learning Strategies,10,Open,1,[],[],[],16
+GLE3O1,Advanced Learning Strategies,11,Open,1,[],[],[],16
+GLE4O1,Advanced Learning Strategies,12,Open,1,[],[],[],16
+TGJ1O1,Exploring Communications Technology,9,Open,1,[],[],[],28
+TGJ2O1,Communications Technology,10,Open,1,[],[],[],28
+TGJ3M1,Communications Technology,11,University/College,1,[TGJ2O1],[],[],28
+TGJ4M1,Communication Technology,12,University/College,1,[],[],[],28
+TEJ2O1,Computer Technology,10,Open,1,[],[],[],22
+TEJ3M1,Computer Engineering Technology,11,University/College,1,[],[],Recommended TIK2O1 (ICS2O1) and strongly recommended MFM2P or MPM2D.,22
+TEJ4M1,Computer Engineering Technology,12,University/College,1,[TEJ3M1],[],[],22
+TCJ2O1,Construction Technology,10,Open,1,[],[],[],22
+TCJ3E1,Construction - Home Repair and Improvements,11,Workplace,1,[],[],[],22
+TCJ3E2,Sheet Metal & Construction,11,Workplace,1,[],[],Recommended one TCJ or TMJ course.,22
+TCJ4E1,Construction Technology,12,Workplace,1,"[TCJ3E1, TCJ3E2]",[],[],22
+TCJ2O2,Construction Technology - Custom Woodworking Focus,10,Open,1,[],[],[],22
+TWJ3E1,Custom Woodworking,11,Workplace,1,[],[],[],20
+TWJ4E1,Custom Woodworking,12,Workplace,1,[TWJ3E1],[],[],22
+TGJ1O1,Exploring Communications Technology,9,Open,1,[],[],[],22
+TIJ1O,Exploring Technologies,9,Open,1,[],[],[],22
+TFJ2O1,Hospitality and Tourism - Cooking Focus,10,Open,1,[],[],[],22
+TFJ3C1,Hospitality and Tourism - Event Planning,11,College,1,[],[],[],22
+TFJ4C,Hospitality and Tourism,12,College,1,[TFJ3C1],[],[],22
+TDJ2O1,Technological Design,10,Open,1,[],[],[],22
+TDJ3M1,Technological Design,11,University/College,1,[],[],[],22
+TDJ4M1,Technological Design,12,University/College,1,[TDJ3M1],[],[],22
