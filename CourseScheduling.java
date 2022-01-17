@@ -59,9 +59,9 @@ class MasterTimetable {
         int class1Index = random.nextInt(timetable.size());
         int class2Index = random.nextInt(timetable.size());  
 
-        Integer swaping = timetable.get(class1Index).getTimeslot();
+        int swap = timetable.get(class1Index).getTimeslot();
         timetable.get(class1Index).setRoom(timetable.get(class2Index).getTimeslot());
-        timetable.get(class2Index).setRoom(swaping);
+        timetable.get(class2Index).setRoom(swap);
     }
 
     private void swapRoom(){
@@ -70,9 +70,9 @@ class MasterTimetable {
         int class1Index = random.nextInt(timetable.size());
         int class2Index = random.nextInt(timetable.size());
 
-        Integer swaping = timetable.get(class1Index).getRoom();
+        int swap = timetable.get(class1Index).getRoom();
         timetable.get(class1Index).setRoom(timetable.get(class2Index).getRoom());
-        timetable.get(class2Index).setRoom(swaping);
+        timetable.get(class2Index).setRoom(swap);
     }
 
     private void moveRoom(){
@@ -85,9 +85,9 @@ class MasterTimetable {
         int class1Index = random.nextInt(timetable.size());
         int class2Index = random.nextInt(timetable.size());
 
-        Integer swaping = timetable.get(class1Index).getTeacher();
+        int swap = timetable.get(class1Index).getTeacher();
         timetable.get(class1Index).setRoom(timetable.get(class2Index).getTeacher());
-        timetable.get(class2Index).setRoom(swaping);
+        timetable.get(class2Index).setRoom(swap);
     }
 
     private void changeTeacher(){
