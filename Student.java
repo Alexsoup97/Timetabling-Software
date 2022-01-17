@@ -5,22 +5,52 @@ public class Student {
     private char gender;
     private int studentNumber;
     private int grade;
-    private String email;
     private String courseChoices []= new String [11]; // last 3 are alternatives
     private String alternateChoices []= new String [3]; 
-    private String timetable []=new String[9]; // final timetable
+    private String[] timetable =new String[9]; // final timetable
     
 
-    public Student(String name, char gender, int studentNumber, String email,int grade, String courseChoices[],String alternateChoices[]){
+    public Student(String name, char gender, int studentNumber,int grade, String courseChoices[],String alternateChoices[]){
         this.name = name;
         this.gender = gender;
         this.studentNumber = studentNumber;
-        this.email = email;
         this.courseChoices = courseChoices;
         this.alternateChoices=alternateChoices;
     }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public char getGender() {
+        return this.gender;
+    }
+
+    public int getStudentNumber() {
+        return this.studentNumber;
+    }
+
+    public int getGrade() {
+        return this.grade;
+    }
+
+    public String[] getCourseChoices() {
+        return this.courseChoices;
+    }
+
+    public String[] getAlternateChoices() {
+        return this.alternateChoices;
+    }
+
+    public String[] getTimetable() {
+        return this.timetable;
+    }
+
+    public void setTimetable(String timetable[]) {
+        this.timetable = timetable;
+    }
 // -----------------------------------------------------------------------------------------
-    // getters
+    
     
     
 }
