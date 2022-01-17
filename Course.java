@@ -9,7 +9,12 @@ public class Course {
     private double credit; // for 0.5 credits?
     private int classSize;
     private String corequisites;
+    static private ArrayList<Course> courseList = new ArrayList<Course>();
     // add periods? for conflicts
+
+    public Course(){
+
+    }
 
     public Course(String code, String title, int grade, String type, int credit, String corequisites,int classSize){
         this.code = code;
@@ -19,6 +24,19 @@ public class Course {
         this.credit = credit;
         this.classSize = classSize;
         this.corequisites = corequisites;
+        courseList.add(this);
+    }
+
+
+    
+
+    public Course getCourse(String courseCode){
+        for(Course c: courseList){
+            if(c.getCode().equals(courseCode)){
+                return c;
+            }
+        }
+        return courseList.get(0);
     }
 // -----------------------------------------------------------------------------------------
     // getters

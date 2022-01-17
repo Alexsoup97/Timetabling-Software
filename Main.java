@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Main{
         private static HashMap<String, Integer> course = new HashMap<String, Integer>();
         private static HashMap<String, Integer> alternateCourses = new HashMap<String, Integer>();
+        private static Course courseData = new Course();
 
 
     public static void main(String[] args) throws Exception{
@@ -15,25 +16,26 @@ public class Main{
         ArrayList<Student> students = new ArrayList<Student>();
 
         courseData.nextLine();
-        // while(courseData.hasNext()){
-        //     String[] currentLine = removeCommas(courseData.nextLine()).split("/");    
-        //     String courseCode = currentLine[0];
-        //     String courseTitle = currentLine[1];
-        //     int grade = Integer.parseInt(currentLine[2]);
-        //     String type = currentLine[3];
-        //     //int credit  = Integer.parseInt(currentLine[4]);
-        //     int credit = 1;
-        //     String coreq = currentLine[6];
-        //     int maxSize = Integer.parseInt(currentLine[8]);
+        while(courseData.hasNext()){
+            String[] currentLine = removeCommas(courseData.nextLine()).split("`");    
+            String courseCode = currentLine[0];
+            String courseTitle = currentLine[1];
+            int grade = Integer.parseInt(currentLine[2]);
+            String type = currentLine[3];
+            //int credit  = Integer.parseInt(currentLine[4]);
+            int credit = 1;
+            String coreq = currentLine[6];
+           
+            int maxSize = Integer.parseInt(currentLine[8]);
 
-        //     courses.add(new Course(courseCode, courseTitle,grade,type,credit,coreq, maxSize));
-        //     // System.out.println(courseCode);
-        //     // course.put(courseCode, 0);
-        // }
+            new Course(courseCode, courseTitle,grade,type,credit,coreq, maxSize);
+            // System.out.println(courseCode);
+            // course.put(courseCode, 0);
+        }
         
         studentData.nextLine();
         while(studentData.hasNext()){
-            String [] currentLine = removeCommas(studentData.nextLine()).split("/");
+            String [] currentLine = removeCommas(studentData.nextLine()).split("`");
             String name = currentLine[0];
             char gender = currentLine[1].charAt(0); 
             int studentNumber= Integer.valueOf(currentLine[2]);
@@ -41,12 +43,11 @@ public class Main{
             int grade = Integer.valueOf(currentLine[6]);
             String courseChoices []= courseInputs(currentLine);
            //String alternateChoices []= alternateInputs(currentLine);
-           String alternateChoices[] = new String[0];
+            String alternateChoices[] = new String[0];
             students.add(new Student(name, gender, studentNumber, email, grade, courseChoices,alternateChoices));
-            System.out.println("test");
+            
         }
-        System.out.println(course);
-       // System.out.println(alternateCourses);
+        coursesRunning();
     }
 
 
@@ -54,6 +55,13 @@ public class Main{
         String courseChoices []= new String [11]; 
         for (int i =0; i <11; i++){
                 courseChoices[i]= currentLine[(3*i)+7];
+                if(courseChoices[i].equals("0")){
+                    for(int j = 0; j < currentLine.length;j++){
+                        System.out.println(currentLine[j] + " ");
+
+                    }
+                    System.out.println();
+                }
                 if (course.containsKey(courseChoices[i])){
                     course.put(courseChoices[i], course.get(courseChoices[i]) +1);
                 }else{
@@ -63,13 +71,24 @@ public class Main{
         return courseChoices;
     }
 
-    public void coursesRunning(){
+    public static void coursesRunning(){
+        double threshold = 0.50;
+       
         for(String c: course.keySet()){
+            double maxClassSize = courseData.getCourse(c).getClassSize();
+            int numberCourses = (int) Math.floor(course.get(c)/maxClassSize);
+  
+            double additionalCourse = (course.get(c)/maxClassSize) - numberCourses  / 100;
+             if(c.equals("SBI4UE")){
+                 System.out.println(additionalCourse);
+             }
             
-            if(course.get)
-           Math.round(course.get(c) / classSize){
+            if(additionalCourse > threshold){
+                numberCourses++;
+           
+            }
 
-           }
+            System.out.println(c + ":" + numberCourses);
         }
 
     }
@@ -96,7 +115,7 @@ public class Main{
                     remove = true;
                 }
                 if(line.charAt(i) == ',' && !remove){
-                    line = line.substring(0, i) + "/" + line.substring(i+1);
+                    line = line.substring(0, i) + "`" + line.substring(i+1);
                 }
             }
         return line;
