@@ -1,12 +1,22 @@
 import java.util.ArrayList;
 
-class ClassInformation {
+class ClassInfo {
     private int teacher; // I think we should have this as a String maybe like "1FRENCH/CS" meaning teacher 1 who can teach CS and FRENCH? 
     private int room; // room #
     private int timeslot; // integer from 1-8, 1-4 being sem 1 and 5-8 being sem 2
-    private Course course; 
+    private String course; 
     private boolean fixed; // for courses that cannot be mutated (set period, etc.) 
     private ArrayList<Integer> students;
+
+    public ClassInfo(int teacher, int room, int timeslot, String course, boolean fixed, ArrayList<Integer> students){
+        this.teacher=teacher;
+        this.room= room;
+        this.timeslot=timeslot;
+        this.course=course;
+        this.fixed=fixed;
+        this.students=students;
+
+    }
 
     public int getTeacher() {
         return this.teacher;
@@ -32,11 +42,11 @@ class ClassInformation {
         this.timeslot = timeslot;
     }
 
-    public Course getCourse() {
+    public String getCourse() {
         return this.course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 

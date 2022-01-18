@@ -3,7 +3,7 @@ public class Student {
     
     private String name;
     private char gender;
-    private int studentNumber;
+    private int id;
     private int grade;
     private String courseChoices []= new String [11]; // last 3 are alternatives
     private String alternateChoices []= new String [3]; 
@@ -13,7 +13,7 @@ public class Student {
     public Student(String name, char gender, int studentNumber,int grade, String courseChoices[],String alternateChoices[]){
         this.name = name;
         this.gender = gender;
-        this.studentNumber = studentNumber;
+        this.id = studentNumber;
         this.courseChoices = courseChoices;
         this.alternateChoices=alternateChoices;
     }
@@ -27,7 +27,7 @@ public class Student {
     }
 
     public int getStudentNumber() {
-        return this.studentNumber;
+        return this.id;
     }
 
     public int getGrade() {

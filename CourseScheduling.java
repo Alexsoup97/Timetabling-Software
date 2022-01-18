@@ -4,24 +4,57 @@ import java.util.Random;
 
 public class CourseScheduling {
 
-    ArrayList<ClassInformation> timetable;
-    static Random random = new Random();
+    private ArrayList<ClassInfo> timetable;
+    private static Random random = new Random();
+    static HashMap<String, Integer> studentCount = new HashMap<String, Integer>(); // Number of students in each course
+    static HashMap<String, Integer> courseCount = new HashMap<String, Integer>(); // Number of courses running
     HashMap<Integer, int[]> roomTime = new HashMap<Integer, int[]>();
-    HashMap<Integer, int[]> teacherTime = new HashMap<Integer, int[]>();
+    HashMap<Integer, int[]> teacherTime = new HashMap<Integer, int[]>(); // what are these for?
 
-    // ArrayList<Teacher> teacher = new ArrayList<Teacher>();
-    // ArrayList<Room> room = new ArrayList<Room>();
-
-
-    public CourseScheduling() {
-        //ArrayList<> timetable = new ArrayList<ClassInformation>();
-        System.out.println(count());
-
+    public CourseScheduling(SpecialCourseScheduler s) {
+//            - Determines # of each course required using Student map
+//            - Calls method in SpecialCourseScheduler to schedule special courses
+//              ArrayList<ClassInfo> timetable = new ArrayList<ClassInfo>();
+        studentCount = countStudents();
+        courseCount = coursesRunning();
+        System.out.println(courseCount);
     }
 
-    public HashMap<String, Integer> count(){
+    //        - Fills in all non-special needed courses randomly
+    //        - Then performs the main algorithm which calls fitness function & mutation 
+    //        - Fitness function & mutation in private methods
+    public ArrayList<ClassInfo> getNewTimetable(){
+        createInitialTimetable();
+        while(timetableFitness() != 0){
+            mutateTimetable();
+        }
+        return timetable;
+    }
+    private static void createInitialTimetable(){
+        
+    }
+    
+    private HashMap<String, Integer> coursesRunning(){
+        double threshold = 0.50;
+        HashMap<String, Integer> courseCount = new HashMap<String,Integer>();
+        for(String c: courseCount.keySet()){
+            double maxClassSize = Data.courseMap.get(c).getClassSize();
+            int numberCourses = (int) Math.floor(studentCount.get(c)/maxClassSize);
+  
+            double additionalCourse = (studentCount.get(c)/maxClassSize) - numberCourses  / 100;
+            if(additionalCourse > threshold){
+                numberCourses++;
+            }
+            courseCount.put(c, numberCourses);
+            
+        }
+        return courseCount;
+    }
+
+
+    private HashMap<String, Integer> countStudents(){
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
-        for(Student s: Main.StudentMap.values()){
+        for(Student s: Data.studentMap.values()){
             String[] temp = s.getCourseChoices();
             
             for(int i = 0; i < temp.length;i++){
@@ -36,15 +69,14 @@ public class CourseScheduling {
             }
         }
         return courseCount;
-
     }
 
     public int timetableFitness(){
         int score=0;
         //dupliace time slots
-        for (ClassInformation x: timetable){
+        for (ClassInfo x: timetable){
             int add1=roomDuplicates(x);
-            score = score+add1;
+            score +=add1;
             if (add1==0){
                 int time[]= new int [roomTime.get(x.getRoom()).length+1];
                 time [roomTime.get(x.getRoom()).length] = x.getTimeslot();
@@ -52,23 +84,37 @@ public class CourseScheduling {
             }
 
             int add2=teacherDuplicates(x);
-            score = score+add2;
+            score+=add2;
             if (add2==0){
                 int time[]= new int [teacherTime.get(x.getTeacher()).length+1];
                 time [teacherTime.get(x.getTeacher()).length] = x.getTimeslot();
                 teacherTime.put(x.getTeacher(), time);
             }
+
+            score+=teacherTimeSlots();
         }
-        //teachers less or more than 6
-        for (int[] x :teacherTime.values()){
-            if (x.length < 6 || x.length >6){
-                score+=10;
-            }
-        }
+
+        
         return score;
      }
 
-     public int roomDuplicates(ClassInformation x){
+    public int teacherTimeSlots(){
+        //teachers less or more than 6
+        //TODO just check the number inside the array 3 on each semester
+        for (int[] x :teacherTime.values()){
+            if (x.length < 6 || x.length >6){
+                return 10;
+            }
+            
+            for (int j: x){
+            }  
+        }
+
+        return 0;
+    }
+
+
+     public int roomDuplicates(ClassInfo x){
         if (roomTime.containsKey(x.getRoom())){
             int time[]= new int [roomTime.get(x.getRoom()).length+1];
                 for (int i=0; i< roomTime.get(x.getRoom()).length;i++){
@@ -85,7 +131,7 @@ public class CourseScheduling {
         return 0;
     }
 
-    public int teacherDuplicates(ClassInformation x){
+    public int teacherDuplicates(ClassInfo x){
         if (teacherTime.containsKey(x.getTeacher())){
             int time[]= new int [teacherTime.get(x.getTeacher()).length+1];
                 for (int i=0; i< teacherTime.get(x.getTeacher()).length;i++){

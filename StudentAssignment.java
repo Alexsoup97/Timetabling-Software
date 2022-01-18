@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 
 public class StudentAssignment(){
-    private ArrayList<ClassInformation> timetable;
+    private ArrayList<ClassInfo> timetable;
+    private ArrayList<Student> 
     
-    public StudentAssignment(ArrayList<ClassInformation> timetable){
+    public StudentAssignment(ArrayList<ClassInfo> timetable){
         this.timetable = timetable;
     }
 

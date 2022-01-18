@@ -7,10 +7,8 @@ public class Course {
     private int grade;
     private String type;
     private int classSize;
-    // add periods? for conflicts
 
     public Course(){
-
     }
 
     public Course(String code, String title, int grade, String type,int classSize){
