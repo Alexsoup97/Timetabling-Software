@@ -4,7 +4,7 @@ public class Main {
     public static void main(String args[]){
    
         SpecialCourseScheduler s = new SpecialCourseScheduler();
-        CourseScheduling courseScheduler = new CourseScheduling(s);
+        CourseScheduler courseScheduler = new CourseScheduler(s);
         
 
     }

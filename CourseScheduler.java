@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class CourseScheduling {
+public class CourseScheduler {
 
     private ArrayList<ClassInfo> timetable;
     private static Random random = new Random();
@@ -11,7 +11,7 @@ public class CourseScheduling {
     HashMap<Integer, int[]> roomTime = new HashMap<Integer, int[]>();
     HashMap<Integer, int[]> teacherTime = new HashMap<Integer, int[]>(); // what are these for?
 
-    public CourseScheduling(SpecialCourseScheduler s) {
+    public CourseScheduler(SpecialCourseScheduler s) {
 //            - Determines # of each course required using Student map
 //            - Calls method in SpecialCourseScheduler to schedule special courses
 //              ArrayList<ClassInfo> timetable = new ArrayList<ClassInfo>();
@@ -30,9 +30,11 @@ public class CourseScheduling {
         }
         return timetable;
     }
+
     private static void createInitialTimetable(){
         
     }
+
     
     private HashMap<String, Integer> coursesRunning(){
         double threshold = 0.50;
