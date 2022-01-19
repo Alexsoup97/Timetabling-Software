@@ -6,6 +6,10 @@ public class Data{
     public static HashMap<String, Course> courseMap; // course code, course object
     public static HashMap<Integer, Student> studentMap; // student number, Student object
     public static HashMap<Integer, Teacher> teacherMap; // teacher id, Teacher object
+    
+    public Data(){
+        loadData();
+    }
 
     public static void loadData(){
         DataReader dataReader = new DataReader();

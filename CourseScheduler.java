@@ -10,8 +10,8 @@ public class CourseScheduler {
 
     private int numFixedClasses;
     private ArrayList<ClassInfo> initialTimetable;
-    private HashMap<String, Integer> studentCount = new HashMap<String, Integer>(); // Number of students in each course
-    private HashMap<String, Integer> courseCount = new HashMap<String, Integer>(); // Number of sections of each course running
+    private HashMap<String, Integer> studentCount; // Number of students in each course
+    private HashMap<String, Integer> courseCount; // Number of sections of each course running
 
     public CourseScheduler(SpecialCourseScheduler s) {
         // - Determines # of each course required using Student map
@@ -25,7 +25,7 @@ public class CourseScheduler {
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
-        initialTimetable = createInitialTimetable(); // first fill all remaining needed classes into the timetable, without worrying about conflicts
+        initialTimetable = createInitialTimetable(initialTimetable); // first fill all remaining needed classes into the timetable, without worrying about conflicts
 
         final int SURVIVORS_PER_GENERATION = 5;
         final int NUM_CHILDREN = 4;
@@ -59,11 +59,49 @@ public class CourseScheduler {
         return timetableCandidates.firstEntry().getValue();
     }
 
-    private static ArrayList<ClassInfo> createInitialTimetable() {
+    private ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable) {
+        // not assigning qualified teacher for now
+
         // puts all courses in a time slot
         // assign qualified teacher & suitable room
         // try to minimize conflicts, but does not need to be conflict-free
-        return null;
+
+        // assign variables
+        ArrayList<Integer> students= null;
+        boolean fixed=false;
+        String course;
+        int timeslot=0;
+        int room=0;
+        int teacher=0;
+
+        // 1. all course objects are created in DataReader, so check if those courses are special
+        ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>(); // fix nested loop later
+        
+        for (Course c : Data.courseMap.values()) {
+
+            for (ClassInfo i : specialCourseTimetable) {
+                if(!c.getCode().equals(i.getCourse())){
+                    course = c.getCode();
+                    timeslot = random.nextInt(8) + 1;
+                    
+
+                    if(c.getCode().contains("S")){
+                        // assign special teacher
+                        
+                    }
+                    else if(c.getCode().contains("P")){
+                        // teacher = random.nextInt(what limit);
+                    }
+                    else{
+                        // teacher = random.nextInt();
+
+                    }
+                    initialTimetable.add(new ClassInfo(teacher,  room,  timeslot,  course, fixed, students));
+                }
+
+            }
+        }   
+        return initialTimetable;
     }
 
     private HashMap<String, Integer> countStudents() {
@@ -81,13 +119,14 @@ public class CourseScheduler {
                 }
             }
         }
+       
         return courseCount;
     }
 
     private HashMap<String, Integer> getCoursesRunning() {
         double threshold = 0.50;
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
-        for (String c : courseCount.keySet()) {
+        for (String c : studentCount.keySet()) {
             double maxClassSize = Data.courseMap.get(c).getClassSize();
             int numberCourses = (int) Math.floor(studentCount.get(c) / maxClassSize);
             double additionalCourse = (studentCount.get(c) / maxClassSize) - numberCourses / 100;
@@ -115,7 +154,8 @@ public class CourseScheduler {
             }
 
             int add2 = findTeacherConflicts(x, teacherTime);
-            score += add2;
+            //score += add2; dont worry about teachers 
+            
             if (add2 == 0) {
                 int time[] = new int[teacherTime.get(x.getTeacher()).length + 1];
                 time[teacherTime.get(x.getTeacher()).length] = x.getTimeslot();
@@ -169,7 +209,15 @@ public class CourseScheduler {
             if (x.length < 6 || x.length > 6) {
                 return 10;
             }
-            for (int j : x) {
+            //you dont neeed to check semester 2, if there is 2 in 1 then that means 4 in 2
+            boolean semster1= true;
+            for (int j: x){
+                if (j==1 || j==2|| j==3|| j==4){
+                    semster1=!semster1;
+                }
+            }  
+            if (semster1==true){
+                return 10;
             }
         }
         return 0;
