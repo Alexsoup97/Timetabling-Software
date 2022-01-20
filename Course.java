@@ -7,19 +7,19 @@ public class Course {
     private int grade;
     private String type;
     private int classSize;
-    private String classType;
+    private String roomType;
     
-
-    public Course(){
-    }
-
     public Course(String code, String title, int grade, String type,int classSize){
         this.code = code;
         this.title = title;
         this.grade = grade;
         this.type = type;
         this.classSize = classSize;
+        this.roomType = findRoomType();
+    }
 
+    private String findRoomType(){
+        
     }
 
 // -----------------------------------------------------------------------------------------
@@ -38,6 +38,9 @@ public class Course {
     }
     public int getClassSize(){
         return this.classSize;
+    }
+    public String getRoomType(){
+        return this.roomType;
     }
 // -----------------------------------------------------------------------------------------
 }

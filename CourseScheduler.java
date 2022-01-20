@@ -12,16 +12,16 @@ public class CourseScheduler {
     private int numFixedClasses;
     private ArrayList<ClassInfo> initialTimetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
-    private HashMap<String, Integer> courseCount; // Number of sections of each course running
+    private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
 
     public CourseScheduler(SpecialCourseScheduler s) {
         // - Determines # of each course required using Student map
         // - Calls method in SpecialCourseScheduler to schedule special courses
         // ArrayList<ClassInfo> timetable = new ArrayList<ClassInfo>();
         studentCount = countStudents();
-        courseCount = getCoursesRunning();
-        System.out.println(courseCount);
-        initialTimetable = s.getSpecialCourseTimetable(courseCount);
+        coursesRunning = getCoursesRunning();
+        System.out.println(coursesRunning);
+        initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
         numFixedClasses = initialTimetable.size();
     }
 
@@ -68,7 +68,7 @@ public class CourseScheduler {
         ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
         ArrayList<Integer> students = null;
         boolean fixed = false;
-        String course;
+        String code;
         int timeslot = 0;
         Room room = null;
         Teacher teacher = null;
@@ -79,14 +79,19 @@ public class CourseScheduler {
             specialCourse.add(i.getCourse());
             initialTimetable.add(i);
         }
-        
-        for (Course c : Data.courseMap.values()) {
-            if(!specialCourse.contains(c.getCode())){ // not preassigned (not special)
+        for (Map.Entry<String, Integer> course : coursesRunning.entrySet()) {
+            code = course.getKey();
+            
+
+            for(int i=0; i<course.getValue() ; i++){
+                Course c = Data.courseMap.get(course); 
+                if(!specialCourse.contains(c.getCode())){ // not preassigned (not special)
+                    
                     course = c.getCode();
                     timeslot = random.nextInt(8) + 1; // should be equally distributed throughout 8 periods
 
-                    if(c.getCode().contains("S")){ // science room
-                        for (Room r : Data.roomMap.values()) {
+                    if(c.getCode().startsWith("S")){ // science room
+                        for (Room r : Data.roomMap.values()) { 
                             if(r.getRoomType().startsWith("Science") && r.getNumberOfClasses()<6){
                                 room = r;
                                 r.setNumberOfClasses(r.getNumberOfClasses() + 1);
@@ -101,8 +106,8 @@ public class CourseScheduler {
                             }
                         }
                     }
-                    else if(c.getCode().contains("P")){ // physical education 
-                        for (Room r : Data.roomMap.values()) {
+                    else if(c.getCode().startsWith("P")){ // physical education 
+                        for (Room r : Data.roomMap.values()) { 
                             if(r.getRoomType().startsWith("large") && r.getNumberOfClasses()<6){
                                 room = r;
                                 r.setNumberOfClasses(r.getNumberOfClasses() + 1);
@@ -112,27 +117,11 @@ public class CourseScheduler {
                         for (Teacher t : Data.teacherMap.values()) {
                             if(t.getQualifications().contains("Physical Education") && t.getNumberOfCourse() < 6){
                                 teacher = t;
-                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
+                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1); 
                                 break;
                             }
                         }
                     }
-                    // else if(c.getCode().contains("P")){
-                    //     for (Room r : Data.roomMap.values()) {
-                    //         if(r.getRoomType().startsWith("") && r.getNumberOfClasses()<6){
-                    //             room = r;
-                    //             r.setNumberOfClasses(r.getNumberOfClasses() + 1);
-                    //             break;
-                    //         }
-                    //     }
-                    //     for (Teacher t : Data.teacherMap.values()) {
-                    //         if(t.getQualifications().contains("") && t.getNumberOfCourse() < 6){
-                    //             teacher = t;
-                    //             t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
-                    //             break;
-                    //         }
-                    //     }
-                    // }
                     else{ // any other generic courses
                         for (Teacher t : Data.teacherMap.values()) {
                             if(t.getNumberOfCourse() < 6){
@@ -150,7 +139,11 @@ public class CourseScheduler {
                         }
                     }
                     initialTimetable.add(new ClassInfo(teacher,  room,  timeslot,  course, fixed, students));
+                    coursesRunning.put(course, coursesRunning.get(course)-1);
                 }
+                
+            }
+       
         }   
 
 // check room numbers
@@ -214,16 +207,16 @@ public class CourseScheduler {
                 roomTime.put(x.getRoom(), time);
             }
 
-            int add2 = findTeacherConflicts(x, teacherTime);
-            //score += add2; dont worry about teachers 
+            // int add2 = findTeacherConflicts(x, teacherTime);
+            // //score += add2; dont worry about teachers 
             
-            if (add2 == 0) {
-                int time[] = new int[teacherTime.get(x.getTeacher()).length + 1];
-                time[teacherTime.get(x.getTeacher()).length] = x.getTimeslot();
-                teacherTime.put(x.getTeacher(), time);
-            }
+            // if (add2 == 0) {
+            //     int time[] = new int[teacherTime.get(x.getTeacher()).length + 1];
+            //     time[teacherTime.get(x.getTeacher()).length] = x.getTimeslot();
+            //     teacherTime.put(x.getTeacher(), time);
+            // }
 
-            score += checkTeacherTimeslots(teacherTime);
+            // score += checkTeacherTimeslots(teacherTime);
         }
 
         return score;
@@ -246,43 +239,43 @@ public class CourseScheduler {
         return 0;
     }
 
-    public int findTeacherConflicts(ClassInfo x, HashMap<Integer, int[]> teacherTime) {
-        if (teacherTime.containsKey(x.getTeacher())) {
-            int time[] = new int[teacherTime.get(x.getTeacher()).length + 1];
-            for (int i = 0; i < teacherTime.get(x.getTeacher()).length; i++) {
-                time[i] = teacherTime.get(x.getTeacher())[i];
+    // public int findTeacherConflicts(ClassInfo x, HashMap<Integer, int[]> teacherTime) {
+    //     if (teacherTime.containsKey(x.getTeacher())) {
+    //         int time[] = new int[teacherTime.get(x.getTeacher()).length + 1];
+    //         for (int i = 0; i < teacherTime.get(x.getTeacher()).length; i++) {
+    //             time[i] = teacherTime.get(x.getTeacher())[i];
 
-                if (teacherTime.get(x.getTeacher())[i] == x.getTimeslot()) {
-                    return 10;
-                }
-            }
-        } else {
-            int time[] = { x.getTimeslot() };
-            teacherTime.put(x.getTeacher(), time);
-        }
-        return 0;
-    }
+    //             if (teacherTime.get(x.getTeacher())[i] == x.getTimeslot()) {
+    //                 return 10;
+    //             }
+    //         }
+    //     } else {
+    //         int time[] = { x.getTimeslot() };
+    //         teacherTime.put(x.getTeacher(), time);
+    //     }
+    //     return 0;
+    // }
 
-    public int checkTeacherTimeslots(HashMap<Integer, int[]> teacherTime) {
-        // teachers less or more than 6
-        // TODO just check the number inside the array 3 on each semester
-        for (int[] x : teacherTime.values()) {
-            if (x.length < 6 || x.length > 6) {
-                return 10;
-            }
-            //you dont neeed to check semester 2, if there is 2 in 1 then that means 4 in 2
-            boolean semster1= true;
-            for (int j: x){
-                if (j==1 || j==2|| j==3|| j==4){
-                    semster1=!semster1;
-                }
-            }  
-            if (semster1==true){
-                return 10;
-            }
-        }
-        return 0;
-    }
+    // public int checkTeacherTimeslots(HashMap<Integer, int[]> teacherTime) {
+    //     // teachers less or more than 6
+    //     // TODO just check the number inside the array 3 on each semester
+    //     for (int[] x : teacherTime.values()) {
+    //         if (x.length < 6 || x.length > 6) {
+    //             return 10;
+    //         }
+    //         //you dont neeed to check semester 2, if there is 2 in 1 then that means 4 in 2
+    //         boolean semster1= true;
+    //         for (int j: x){
+    //             if (j==1 || j==2|| j==3|| j==4){
+    //                 semster1=!semster1;
+    //             }
+    //         }  
+    //         if (semster1==true){
+    //             return 10;
+    //         }
+    //     }
+    //     return 0;
+    // }
 
     public ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
         ArrayList<ClassInfo> mutated = new ArrayList<ClassInfo>(timetable);

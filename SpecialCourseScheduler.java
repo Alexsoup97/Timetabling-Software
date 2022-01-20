@@ -26,17 +26,17 @@ public class SpecialCourseScheduler {
                 //functions
                 if (s.contains("MHF4U1") || s.contains("MHF4UE")){
                 functionsTime++;
-               // Data.get(mathrooms.(functionsTime/4)); like get the 4 one, so you cycel through each classs 4 times
+                room=Data.roomMap.get("classroom")[functionsTime/4];
                 timeslot=functionsTime%4;
                 //calculas
                 }else if (s.contains("MCV4U1") || s.contains("MCV4UE")){
                 calculasTime++;
-                // Data.get(mathrooms.(functionsTime/4)); like get the 4 one, so you cycel through each classs 4 times
+                room=Data.roomMap.get("classroom")[functionsTime/4];
                 timeslot= calculasTime%4 +5;
                 //Ap Sciences
                 }else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")){
                 scienceTime++;
-                // Data.get(mathrooms.(functionsTime/4)); like get the 4 one, so you cycel through each classs 4 times
+                room=Data.roomMap.get("classroom")[functionsTime/4];
                 timeslot=scienceTime%4;
                 //art protfolio semseter 2
                 }else if (s.contains ("AEA4O")){
