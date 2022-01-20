@@ -71,85 +71,45 @@ public class CourseScheduler {
         String code;
         int timeslot = 0;
         Room room = null;
-        Teacher teacher = null;
+        // Teacher teacher = null;
 
         // quick assess to determine a special course
         HashSet<String> specialCourse = new HashSet<String>();
         for (ClassInfo i : specialCourseTimetable) {
             specialCourse.add(i.getCourse());
-            initialTimetable.add(i);
+            initialTimetable.add(i); // special schedule added to initialTimetable
         }
         for (Map.Entry<String, Integer> course : coursesRunning.entrySet()) {
             code = course.getKey();
-            
-
+            Course c = Data.courseMap.get(course);
             for(int i=0; i<course.getValue() ; i++){
-                Course c = Data.courseMap.get(course); 
+                
                 if(!specialCourse.contains(c.getCode())){ // not preassigned (not special)
-                    
-                    course = c.getCode();
-                    timeslot = random.nextInt(8) + 1; // should be equally distributed throughout 8 periods
-
-                    if(c.getCode().startsWith("S")){ // science room
-                        for (Room r : Data.roomMap.values()) { 
-                            if(r.getRoomType().startsWith("Science") && r.getNumberOfClasses()<6){
-                                room = r;
-                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
-                                break;
-                            }
-                        }
-                        for (Teacher t : Data.teacherMap.values()) {
-                            if(t.getQualifications().contains("Science") && t.getNumberOfCourse() < 6){
-                                teacher = t;
-                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
-                                break;
-                            }
-                        }
-                    }
-                    else if(c.getCode().startsWith("P")){ // physical education 
-                        for (Room r : Data.roomMap.values()) { 
-                            if(r.getRoomType().startsWith("large") && r.getNumberOfClasses()<6){
-                                room = r;
-                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
-                                break;
-                            }
-                        }
-                        for (Teacher t : Data.teacherMap.values()) {
-                            if(t.getQualifications().contains("Physical Education") && t.getNumberOfCourse() < 6){
-                                teacher = t;
-                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1); 
-                                break;
-                            }
-                        }
-                    }
-                    else{ // any other generic courses
-                        for (Teacher t : Data.teacherMap.values()) {
-                            if(t.getNumberOfCourse() < 6){
-                                teacher = t;
-                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
-                                break;
-                            }
+                    boolean valid;
+                    do{
+                        valid = true;
+                        timeslot = random.nextInt(8) + 1;
+                
+    
+                        if(!room.checkPeriod(timeslot)){
+                            valid = false;
                         } 
-                        for (Room r : Data.roomMap.values()) {
-                            if(r.getRoomType().startsWith("classroom") && r.getNumberOfClasses()<6){
-                                room = r;
-                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
-                                break;
-                            }
-                        }
-                    }
-                    initialTimetable.add(new ClassInfo(teacher,  room,  timeslot,  course, fixed, students));
-                    coursesRunning.put(course, coursesRunning.get(course)-1);
+                        room.setClass(timeslot, true) ;
+                        
+
+                    }while(valid);
+                  
+                 
+                    initialTimetable.add(new ClassInfo(room.getRoomNum(),  timeslot,  code, fixed, students));
                 }
                 
             }
        
         }   
-
-// check room numbers
-// check how many courses does each teacher teach
-
         return initialTimetable;
+    }
+    private boolean roomChecker(){
+        return false;
     }
 
     private HashMap<String, Integer> countStudents() {
@@ -167,7 +127,6 @@ public class CourseScheduler {
                 }
             }
         }
-       
         return courseCount;
     }
 
@@ -191,6 +150,23 @@ public class CourseScheduler {
 
         }
         return courseCount;
+    }
+
+    private HashMap<String, ArrayList<String>> getCommonlyTakenTogetherCourses(){
+        HashMap<String, ArrayList<String>> output = new HashMap<String, ArrayList<String>>();
+        HashMap<String, Integer> commonCoursePopularity = new HashMap<String, Integer>();
+        for(String course:coursesRunning.keySet()){
+            output.put(course, new ArrayList<String>());
+            
+        }
+        
+        
+        for(Student student:Data.studentMap.values()){
+            for(String course: student.getCourseChoices()){
+                
+            }
+        }
+        return output;
     }
 
     public int getTimetableFitness(ArrayList<ClassInfo> timetable) {

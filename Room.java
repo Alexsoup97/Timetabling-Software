@@ -2,7 +2,7 @@ public class Room {
 
     private int roomNum;
     private String roomType;
-    private int numberOfClasses = 0;
+    private boolean[] classes = new boolean[8]; // 
 
     public Room(){
 
@@ -38,15 +38,15 @@ public class Room {
     /**
      * @return int return the numberOfClasses
      */
-    public int getNumberOfClasses() {
-        return numberOfClasses;
+    public boolean checkPeriod(int period) { // if this room is used in this period
+        return classes[period];
     }
 
     /**
      * @param numberOfClasses the numberOfClasses to set
      */
-    public void setNumberOfClasses(int numberOfClasses) {
-        this.numberOfClasses = numberOfClasses;
+    public void setNumberOfClasses(int period, boolean occupied) {
+        this.classes[period] = occupied;
     }
 
 }

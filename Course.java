@@ -18,9 +18,19 @@ public class Course {
         this.roomType = findRoomType();
     }
 
-    private String findRoomType(){
-        
-    }
+
+    // private String findRoomType(){
+    //     //String type;
+    //     if(code.startsWith("S")){
+    //         return "Science";
+    //     }else if (code.startsWith("P")){
+    //         return "Gym";
+    //     }else if (code.){
+
+    //     }else{
+    //         return "classroom";
+    //     }
+    // }
 
 // -----------------------------------------------------------------------------------------
     // getters

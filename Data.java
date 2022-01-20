@@ -7,7 +7,7 @@ public class Data{
     public static HashMap<Integer, Student> studentMap; // student number, Student object
     public static HashMap<Integer, Teacher> teacherMap; // teacher id, Teacher object
     public static HashMap<String, int[]> roomMap; // room type, array of room #s
-    
+    // TODO room type
     public Data(){
         loadData();
         
