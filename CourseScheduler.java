@@ -127,7 +127,13 @@ public class CourseScheduler {
         double threshold = 0.50;
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
-            double maxClassSize = Data.courseMap.get(c).getClassSize();
+            double maxClassSize;
+            if(Data.courseMap.containsKey(c)){
+               maxClassSize = Data.courseMap.get(c).getClassSize();
+            }else{
+                maxClassSize = 30;
+            }
+           
             int numberCourses = (int) Math.floor(studentCount.get(c) / maxClassSize);
             double additionalCourse = (studentCount.get(c) / maxClassSize) - numberCourses / 100;
             if (additionalCourse > threshold) {

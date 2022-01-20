@@ -7,6 +7,8 @@ public class Course {
     private int grade;
     private String type;
     private int classSize;
+    private String classType;
+    
 
     public Course(){
     }

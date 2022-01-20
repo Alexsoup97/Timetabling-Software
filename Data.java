@@ -9,6 +9,7 @@ public class Data{
     
     public Data(){
         loadData();
+        
     }
 
     public static void loadData(){
