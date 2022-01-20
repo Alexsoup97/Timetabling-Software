@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.Map;
@@ -59,48 +60,102 @@ public class CourseScheduler {
         return timetableCandidates.firstEntry().getValue();
     }
 
+    // puts all courses in a time slot
+    // assign qualified teacher & suitable room
+    // TRY to minimize conflicts
     private ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable) {
-        // not assigning qualified teacher for now
-
-        // puts all courses in a time slot
-        // assign qualified teacher & suitable room
-        // try to minimize conflicts, but does not need to be conflict-free
-
-        // assign variables
-        ArrayList<Integer> students= null;
-        boolean fixed=false;
+        
+        ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
+        ArrayList<Integer> students = null;
+        boolean fixed = false;
         String course;
-        int timeslot=0;
-        int room=0;
-        int teacher=0;
+        int timeslot = 0;
+        Room room = null;
+        Teacher teacher = null;
 
-        // 1. all course objects are created in DataReader, so check if those courses are special
-        ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>(); // fix nested loop later
+        // quick assess to determine a special course
+        HashSet<String> specialCourse = new HashSet<String>();
+        for (ClassInfo i : specialCourseTimetable) {
+            specialCourse.add(i.getCourse());
+            initialTimetable.add(i);
+        }
         
         for (Course c : Data.courseMap.values()) {
-
-            for (ClassInfo i : specialCourseTimetable) {
-                if(!c.getCode().equals(i.getCourse())){
+            if(!specialCourse.contains(c.getCode())){ // not preassigned (not special)
                     course = c.getCode();
-                    timeslot = random.nextInt(8) + 1;
-                    
+                    timeslot = random.nextInt(8) + 1; // should be equally distributed throughout 8 periods
 
-                    if(c.getCode().contains("S")){
-                        // assign special teacher
-                        
+                    if(c.getCode().contains("S")){ // science room
+                        for (Room r : Data.roomMap.values()) {
+                            if(r.getRoomType().startsWith("Science") && r.getNumberOfClasses()<6){
+                                room = r;
+                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
+                                break;
+                            }
+                        }
+                        for (Teacher t : Data.teacherMap.values()) {
+                            if(t.getQualifications().contains("Science") && t.getNumberOfCourse() < 6){
+                                teacher = t;
+                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
+                                break;
+                            }
+                        }
                     }
-                    else if(c.getCode().contains("P")){
-                        // teacher = random.nextInt(what limit);
+                    else if(c.getCode().contains("P")){ // physical education 
+                        for (Room r : Data.roomMap.values()) {
+                            if(r.getRoomType().startsWith("large") && r.getNumberOfClasses()<6){
+                                room = r;
+                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
+                                break;
+                            }
+                        }
+                        for (Teacher t : Data.teacherMap.values()) {
+                            if(t.getQualifications().contains("Physical Education") && t.getNumberOfCourse() < 6){
+                                teacher = t;
+                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
+                                break;
+                            }
+                        }
                     }
-                    else{
-                        // teacher = random.nextInt();
-
+                    // else if(c.getCode().contains("P")){
+                    //     for (Room r : Data.roomMap.values()) {
+                    //         if(r.getRoomType().startsWith("") && r.getNumberOfClasses()<6){
+                    //             room = r;
+                    //             r.setNumberOfClasses(r.getNumberOfClasses() + 1);
+                    //             break;
+                    //         }
+                    //     }
+                    //     for (Teacher t : Data.teacherMap.values()) {
+                    //         if(t.getQualifications().contains("") && t.getNumberOfCourse() < 6){
+                    //             teacher = t;
+                    //             t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
+                    //             break;
+                    //         }
+                    //     }
+                    // }
+                    else{ // any other generic courses
+                        for (Teacher t : Data.teacherMap.values()) {
+                            if(t.getNumberOfCourse() < 6){
+                                teacher = t;
+                                t.setNumberOfCourse(t.getCoursesPerSemester() + 1);
+                                break;
+                            }
+                        } 
+                        for (Room r : Data.roomMap.values()) {
+                            if(r.getRoomType().startsWith("classroom") && r.getNumberOfClasses()<6){
+                                room = r;
+                                r.setNumberOfClasses(r.getNumberOfClasses() + 1);
+                                break;
+                            }
+                        }
                     }
                     initialTimetable.add(new ClassInfo(teacher,  room,  timeslot,  course, fixed, students));
                 }
-
-            }
         }   
+
+// check room numbers
+// check how many courses does each teacher teach
+
         return initialTimetable;
     }
 
