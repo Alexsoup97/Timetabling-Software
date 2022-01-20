@@ -5,6 +5,7 @@ public class Teacher{
     private String name;
     private ArrayList<String> qualifications;
     private int coursesPerSemester;
+    private int numberOfCourses; // how many courses are is already assigned
 
     Teacher(int id, String name, ArrayList<String> qualifications){
         this(id,name,qualifications,6);
@@ -16,7 +17,12 @@ public class Teacher{
         this.qualifications = qualifications;
         this.coursesPerSemester = coursesPerSemester;
     }
-
+    public int getNumberOfCourse(){
+        return this.numberOfCourses;
+    }
+    public void setNumberOfCourse(int i){
+        this.numberOfCourses = i;
+    }
     public int getId() {
         return this.id;
     }
