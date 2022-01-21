@@ -1,24 +1,19 @@
 public class Room {
 
-    private int roomNum;
+    private String roomNum;
     private String roomType;
-    private boolean[] classes = new boolean[8]; // 
+    private boolean[] availability = new boolean[8];
 
-    public Room(){
-
+    public Room(String roomNum, String roomType) {
+        this.roomNum = roomNum;
+        this.roomType = roomType;
     }
+
     /**
      * @return int return the roomNum
      */
-    public int getRoomNum() {
+    public String getRoomNum() {
         return roomNum;
-    }
-
-    /**
-     * @param roomNum the roomNum to set
-     */
-    public void setRoomNum(int roomNum) {
-        this.roomNum = roomNum;
     }
 
     /**
@@ -28,25 +23,13 @@ public class Room {
         return roomType;
     }
 
-    /**
-     * @param roomType the roomType to set
-     */
-    public void setRoomType(String roomType) {
-        this.roomType = roomType;
+    public boolean getAvailability(int time){
+        return availability[time];
+
     }
 
-    /**
-     * @return int return the numberOfClasses
-     */
-    public boolean checkPeriod(int period) { // if this room is used in this period
-        return classes[period];
-    }
-
-    /**
-     * @param numberOfClasses the numberOfClasses to set
-     */
-    public void setClass(int period, boolean occupied) {
-        this.classes[period] = occupied;
+    public void setAvailability(int time){
+        availability[time] = true;
     }
 
 }

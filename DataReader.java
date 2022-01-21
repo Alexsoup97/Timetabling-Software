@@ -28,40 +28,71 @@ public class DataReader{
     //     return rooms;
     // }
 
-     public HashMap<String, int[]> getRooms() throws Exception{
+    //  public HashMap<String, Room> getRooms() throws Exception{
+                
+    //     Scanner roomData = new Scanner (new File("RoomData.csv"));
+    //     HashMap<String, int[]> rooms = new HashMap<String, int[]>();         
+    //     roomData.nextLine();
+    //     while(roomData.hasNext()){
+    //         String [] currentLine = (roomData.nextLine().split(","));
+            
+    //         if (currentLine[0].contains("A")){
+    //             currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("A")) + 1;
+    //         }else if (currentLine[0].contains("B")){
+    //             currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("B")) + 2;
+    //         }else if (currentLine[0].contains("D")){
+    //             currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("D")) + 4;
+    //         }else if (currentLine[0].contains("PB")){
+    //             //TODO do we need plus one(check)
+    //             currentLine[0]= currentLine[0].substring(currentLine[0].indexOf("PB")+1,currentLine[0].length());
+    //         }
+
+    //         if (rooms.containsKey(currentLine[1])){
+    //             int roomNumber[]= new int [rooms.get(currentLine[1]).length+1];
+    //             for (int i = 0; i < rooms.get(currentLine[1]).length; i++) {
+    //                 roomNumber[i] = rooms.get(currentLine[1])[i];                
+    //             }
+    //             roomNumber[currentLine[1].length()]=Integer.valueOf(currentLine[0]);
+
+    //             rooms.put(currentLine[1],roomNumber);
+    //         }else{
+    //             int roomNumber[] = { Integer.valueOf(currentLine[0]) };
+    //             rooms.put(currentLine[1], roomNumber);
+    //         }
+    //     }
+    //     return rooms;
+    // }
+
+    public HashMap<String, Room> getRooms() throws Exception{
                 
         Scanner roomData = new Scanner (new File("RoomData.csv"));
-        HashMap<String, int[]> rooms = new HashMap<String, int[]>();         
+        HashMap<String, Room> rooms = new HashMap<String, Room>();         
         roomData.nextLine();
         while(roomData.hasNext()){
             String [] currentLine = (roomData.nextLine().split(","));
-            
-            if (currentLine[0].contains("A")){
-                currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("A")) + 1;
-            }else if (currentLine[0].contains("B")){
-                currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("B")) + 2;
-            }else if (currentLine[0].contains("D")){
-                currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("D")) + 4;
-            }else if (currentLine[0].contains("PB")){
-                //TODO do we need plus one(check)
-                currentLine[0]= currentLine[0].substring(currentLine[0].indexOf("PB")+1,currentLine[0].length());
-            }
-
-            if (rooms.containsKey(currentLine[1])){
-                int roomNumber[]= new int [rooms.get(currentLine[1]).length+1];
-                for (int i = 0; i < rooms.get(currentLine[1]).length; i++) {
-                    roomNumber[i] = rooms.get(currentLine[1])[i];                
-                }
-                roomNumber[currentLine[1].length()]=Integer.valueOf(currentLine[0]);
-
-                rooms.put(currentLine[1],roomNumber);
-            }else{
-                int roomNumber[] = { Integer.valueOf(currentLine[0]) };
-                rooms.put(currentLine[1], roomNumber);
-            }
+            rooms.put(currentLine[0],new Room(currentLine[0],currentLine[1]));
         }
         return rooms;
     }
+    
+    public HashMap<String, String[]> getRoomType() throws Exception{
+        Scanner roomData = new Scanner (new File("RoomType.csv"));
+        HashMap<String, String[]> roomTypes = new HashMap<String, String[]>();         
+        roomData.nextLine();
+        while(roomData.hasNext()){
+            String [] currentLine = (roomData.nextLine().split(","));
+            String room = currentLine[0];
+            String [] courses = new String[currentLine.length-1];
+
+            for(int i = 1; i < currentLine.length;i++){
+                courses[i-1] = currentLine[i]; 
+            }
+            roomTypes.put(room,courses);
+        }
+        return roomTypes;
+    }
+    
+
     public HashMap<String, Course> getCourses() throws Exception{
         Scanner courseData = new Scanner(new File("CourseData.csv"));
         HashMap<String,Course> courses = new HashMap<String,Course>();
