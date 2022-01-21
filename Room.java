@@ -7,6 +7,9 @@ public class Room {
     public Room(String roomNum, String roomType) {
         this.roomNum = roomNum;
         this.roomType = roomType;
+        for(int i=0; i<availability.length; i++) {
+            availability[i] = true;
+        }
     }
 
     /**
@@ -23,13 +26,13 @@ public class Room {
         return roomType;
     }
 
-    public boolean getAvailability(int time){
+    public boolean isAvailable(int time){
         return availability[time];
 
     }
 
-    public void setAvailability(int time){
-        availability[time] = true;
+    public void setAvailability(int time, boolean status){
+        availability[time] = status;
     }
 
 }

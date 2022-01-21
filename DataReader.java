@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class DataReader{
     
@@ -18,7 +19,6 @@ public class DataReader{
     //         }else if (currentLine[0].contains("D")){
     //             currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("D")) + 4;
     //         }else if (currentLine[0].contains("PB")){
-    //             //TODO do we need plus one(check)
     //             currentLine[0]= currentLine[0].substring(currentLine[0].indexOf("PB")+1,currentLine[0].length());
     //         }
     //         int roomNumber = Integer.valueOf(currentLine[0]);
@@ -43,7 +43,6 @@ public class DataReader{
     //         }else if (currentLine[0].contains("D")){
     //             currentLine[0]= currentLine[0].substring(0,currentLine[0].indexOf("D")) + 4;
     //         }else if (currentLine[0].contains("PB")){
-    //             //TODO do we need plus one(check)
     //             currentLine[0]= currentLine[0].substring(currentLine[0].indexOf("PB")+1,currentLine[0].length());
     //         }
 
@@ -64,7 +63,6 @@ public class DataReader{
     // }
 
     public HashMap<String, Room> getRooms() throws Exception{
-                
         Scanner roomData = new Scanner (new File("RoomData.csv"));
         HashMap<String, Room> rooms = new HashMap<String, Room>();         
         roomData.nextLine();
@@ -90,8 +88,22 @@ public class DataReader{
         }
         return roomTypes;
     }
-    
 
+    public HashMap<String, ArrayList<String>> getRoomTypes(){
+        HashMap<String, ArrayList<String>> coursesToRooms = new HashMap<String,  ArrayList<String>>();
+
+        for(String type: Data.roomTypeMap.keySet()){
+            ArrayList<String> rooms = new ArrayList<String>();
+            for(Room r: Data.roomMap.values()){
+                if(r.getRoomType().equals(type)){
+                    rooms.add(r.getRoomNum());
+                }
+            }
+            coursesToRooms.put(type, rooms);
+        }
+        return coursesToRooms;
+    }
+    
     public HashMap<String, Course> getCourses() throws Exception{
         Scanner courseData = new Scanner(new File("CourseData.csv"));
         HashMap<String,Course> courses = new HashMap<String,Course>();

@@ -18,6 +18,15 @@ public class Student {
         this.alternateChoices=alternateChoices;
     }
 
+    public boolean setTimetable(String course, int timeslot){
+        if(timetable[timeslot] == null){
+            timetable[timeslot] = course;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public String getName() {
         return this.name;
     }
@@ -37,6 +46,27 @@ public class Student {
     public String[] getCourseChoices() {
         return this.courseChoices;
     }
+
+    public boolean hasCourse(String course){
+        for(int i = 0; i < courseChoices.length;i++){
+            if(courseChoices[i].equals(course)){
+                courseChoices[i] = courseChoices[i] + "COMPLETE";
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int correctCourses(){
+        int counter = 0;
+        for(int i = 0; i < courseChoices.length;i++){
+            if(courseChoices[i].endsWith("COMPLETE") || courseeChoices[i].equals("")){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
 
     public String[] getAlternateChoices() {
         return this.alternateChoices;

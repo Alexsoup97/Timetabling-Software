@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-
+import java.util.Map;
 public class Course {
 
     private String code;
@@ -15,7 +14,19 @@ public class Course {
         this.grade = grade;
         this.level = level;
         this.classSize = classSize;
-        // this.roomType TODO load this from the file
+        this.roomType = findRoomType();
+
+    }
+
+    private String findRoomType(){
+        for(Map.Entry<String, String[]> map: Data.roomTypeCourses.entrySet()){
+            for(int i = 0; i < map.getValue().length; i++){
+                if(map.getValue()[i].equals(this.code)){
+                    return map.getKey();
+                }
+            }
+        }
+        return "classroom";
     }
 
 // -----------------------------------------------------------------------------------------

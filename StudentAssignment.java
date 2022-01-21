@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.HashMap;
+import java.io.PrintWriter;
 
 
 public class StudentAssignment{
@@ -10,15 +11,26 @@ public class StudentAssignment{
     
     public StudentAssignment(ArrayList<ClassInfo> timetable){
         this.timetable = timetable;
+        fillTimetable();
+
 
     }
 
 
 
-    public void getStudentTimetables(){
-        
-
+    public void fillTimetable(){
+        for(ClassInfo c: timetable){
+            for(Student s: Data.studentMap.values()){
+                if(c.isFull()){
+                    break;
+                }
+                if(s.hasCourse(c.getCourse()) && s.setTimetable(c.getCourse(), c.getTimeslot())){
+                    c.addStudents(s.getStudentNumber());
+                }
+            }
+        }
     }
+
 
     private int getStudentTimetableFitness(ArrayList<Student> studentListCandidate){
         String[] studentTimetable;

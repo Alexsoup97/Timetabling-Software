@@ -37,6 +37,18 @@ class ClassInfo {
     // this.teacher = teacher;
     // }
 
+    public boolean isFull(){
+        if(students.size() >= Data.courseMap.get(course).getClassSize()){
+            return true;
+        }
+
+        return false;
+    }
+
+    public void addStudents(Integer student){
+        students.add(student);
+    }
+
     public String getRoom() {
         return this.room;
     }

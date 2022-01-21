@@ -1,15 +1,20 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Arrays;
 
-public class SpecialCourseScheduler { //TODO this needs to update the room availability
+public class SpecialCourseScheduler { // TODO this needs to update the room availability
 
     SpecialCourseScheduler() {
     }
 
     public ArrayList<ClassInfo> getSpecialCourseTimetable(HashMap<String, Integer> numberOfClasses) {
         ArrayList<ClassInfo> specialCourses = new ArrayList<ClassInfo>();
+        // String[] specialCoursesNameArray = { "MHF4U1", "MHF4UE", "MCV4U1", "MCV4UE", "SBI4UE", "SCH4UE", "SPH4UE",
+        //         "AEA4O", "COP" };
+        // HashSet<String> specialCourseNames = new HashSet<String>(Arrays.asList(specialCoursesNameArray));
         boolean fixed = true;
-        String course;
+        // String course;
         int timeslot = 0;
         String room = "";
 
@@ -19,25 +24,40 @@ public class SpecialCourseScheduler { //TODO this needs to update the room avail
         int artTime = 0;
 
         for (String s : numberOfClasses.keySet()) {
-            for (int i = 0; i < numberOfClasses.get(s); i++) {
-                course = s;
-                // functions
-                if (s.contains("MHF4U1") || s.contains("MHF4UE")) {
+            // if(specialCourseNames.contains(s)){
+            // functions
+            if (s.equals("MHF4U1") || s.equals("MHF4UE")) {
+                // course = s;
+                for (int i = 0; i < numberOfClasses.get(s); i++) {
                     functionsTime++;
-                    room = Data.roomTypeMap.get("classroom")[functionsTime / 4];
+                    room = Data.roomTypeMap.get("classroom").get(functionsTime / 4);
                     timeslot = functionsTime % 4;
-                    // calculas
-                } else if (s.contains("MCV4U1") || s.contains("MCV4UE")) {
+                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
+                }
+                // calculas
+            } else if (s.contains("MCV4U1") || s.contains("MCV4UE")) {
+                // course = s;
+                for (int i = 0; i < numberOfClasses.get(s); i++) {
                     calculusTime++;
-                    room = Data.roomTypeMap.get("classroom")[functionsTime / 4]; // TODO is this supposed to be functionsTime or calculusTime
+                    room = Data.roomTypeMap.get("classroom").get(calculusTime / 4);
                     timeslot = calculusTime % 4 + 5;
-                    // Ap Sciences
-                } else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")) {
+                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
+                }
+                // Ap Sciences
+            } else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")) {
+                for (int i = 0; i < numberOfClasses.get(s); i++) {
                     scienceTime++;
-                    room = Data.roomTypeMap.get("Science")[functionsTime / 4];
+                    room = Data.roomTypeMap.get("Science").get(scienceTime / 4);
                     timeslot = scienceTime % 4;
-                    // art protfolio semseter 2
-                } else if (s.contains("AEA4O")) {
+                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
+                }
+                // art protfolio semseter 2
+            } else if (s.contains("AEA4O")) {
+                for (int i = 0; i < numberOfClasses.get(s); i++) {
+
                     artTime++;
                     timeslot = artTime % 4;
                     if (artTime > 4) {
@@ -45,8 +65,13 @@ public class SpecialCourseScheduler { //TODO this needs to update the room avail
                     } else {
                         room = "2004";
                     }
-                    // co op
-                } else if (s.contains("COP")) {
+                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
+                }
+                // co op
+            } else if (s.contains("COP")) {
+                for (int i = 0; i < numberOfClasses.get(s); i++) {
+
                     room = "2001";
                     // semester1 period 1,2 - period 3,4
                     if (s.contains("1")) {
@@ -62,10 +87,12 @@ public class SpecialCourseScheduler { //TODO this needs to update the room avail
                         // just incase its some weird co-op course
                         timeslot = 1;
                     }
+                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
-                // dont worry about teachers
-                specialCourses.add(new ClassInfo(room, timeslot, course, fixed)); // TODO wait does this add non special courses too just empty?
             }
+
+            // }
         }
         return specialCourses;
     }
