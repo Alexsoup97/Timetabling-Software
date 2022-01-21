@@ -1,36 +1,47 @@
 import java.util.ArrayList;
 
 class ClassInfo {
-    //private int teacher; // I think we should have this as a String maybe like "1FRENCH/CS" meaning teacher 1 who can teach CS and FRENCH? 
-    private int room; // room #
+    // private int teacher; // I think we should have this as a String maybe like
+    // "1FRENCH/CS" meaning teacher 1 who can teach CS and FRENCH?
+    private String room; // room #
     private int timeslot; // integer from 1-8, 1-4 being sem 1 and 5-8 being sem 2
-    private String course; 
-    private boolean fixed; // for courses that cannot be mutated (set period, etc.) 
+    private String course;
+    private boolean fixed; // for courses that cannot be mutated (set period, etc.)
     private ArrayList<Integer> students;
 
-    public ClassInfo( int room, int timeslot, String course, boolean fixed, ArrayList<Integer> students){
-       // this.teacher=teacher;
-        this.room= room;
-        this.timeslot=timeslot;
-        this.course=course;
-        this.fixed=fixed;
-        this.students=students;
+    public ClassInfo(String room, int timeslot, String course, boolean fixed) {
+        // this.teacher=teacher;
+        this.room = room;
+        this.timeslot = timeslot;
+        this.course = course;
+        this.fixed = fixed;
+        this.students = null;
+
+    }
+
+    public ClassInfo(String room, int timeslot, String course, boolean fixed, ArrayList<Integer> students) {
+        // this.teacher=teacher;
+        this.room = room;
+        this.timeslot = timeslot;
+        this.course = course;
+        this.fixed = fixed;
+        this.students = students;
 
     }
 
     // public int getTeacher() {
-    //     return this.teacher;
+    // return this.teacher;
     // }
 
     // public void setTeacher(int teacher) {
-    //     this.teacher = teacher;
+    // this.teacher = teacher;
     // }
 
-    public int getRoom() {
+    public String getRoom() {
         return this.room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 
@@ -55,6 +66,6 @@ class ClassInfo {
     }
 
     public void setFixed(boolean fixed) {
-        this.fixed= fixed;
+        this.fixed = fixed;
     }
 }

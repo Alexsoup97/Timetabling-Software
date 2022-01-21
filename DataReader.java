@@ -75,7 +75,7 @@ public class DataReader{
         return rooms;
     }
     
-    public HashMap<String, String[]> getRoomType() throws Exception{
+    public HashMap<String, String[]> getRoomTypeCourses() throws Exception{ // TODO t
         Scanner roomData = new Scanner (new File("RoomType.csv"));
         HashMap<String, String[]> roomTypes = new HashMap<String, String[]>();         
         roomData.nextLine();
@@ -83,7 +83,6 @@ public class DataReader{
             String [] currentLine = (roomData.nextLine().split(","));
             String room = currentLine[0];
             String [] courses = new String[currentLine.length-1];
-
             for(int i = 1; i < currentLine.length;i++){
                 courses[i-1] = currentLine[i]; 
             }

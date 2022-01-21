@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.*;
 
 public class CourseScheduler {
 
@@ -66,53 +69,60 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable) {
         
         ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
-        ArrayList<String> specialClasses = new ArrayList<String>();
-        ArrayList<Integer> students = null;
-
-        HashMap<String, Integer> typeCounter = new HashMap<String, Integer>();
-        for(String s : coursesRunning.keySet()){
-            typeCounter.put(s, 0);
-        }
-        int[] fillOrder = {1,7,2,6,3,5,0,4};
-
+        HashSet<String> specialClasses = new HashSet<String>();
+        
         for(ClassInfo i: specialCourseTimetable){
             initialTimetable.add(i);
             specialClasses.add(i.getCourse());
-            
         }
 
-        for(Map.Entry<String, Integer> map: coursesRunning.entrySet()){
-            if(!specialClasses.contains(map.getKey())){
-                String roomType = Data.courseMap.get(map.getKey()).getType();
-                String[] rooms = Data.typesOfRooms.get(roomType);
-                int counter = typeCounter.get(map.getKey());
+        HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
+        int roomTypeIdCounter = 0;
+        for(Map.Entry<String, String[]> entry : Data.roomTypeMap.entrySet()){
+            roomTypes.put(entry.getKey(), new RoomType(entry.getValue(), roomTypeIdCounter));
+            roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
+        }    
+        
+        int[] fillOrder = {1,7,2,6,3,5,0,4}; // TODO generate this so it's different each time. Must still be alternating sem1/sem2 periods
 
-                for(int i = 0; i < map.getValue();i ++){
-                    boolean valid = false;
-                    do{
-                        String currentRoom = rooms[(int)Math.floor(counter/8)];
-                        int timeslot = counter % 8;
+        TreeMap<String, Integer> sections = new TreeMap<String, Integer>(coursesRunning, new CourseFrequencyComparator());
 
-                        if(Data.roomMap.get(map.getKey()).get){
-
-                        }
-                       
-
-                    }while(!valid);
-
-                }
-
+        ArrayList<String> sectionsToRun = new ArrayList<String>();
+        for(Map.Entry<String, Integer> entry: coursesRunning.entrySet()){
+            for(int i=0; i<entry.getValue(); i++){
+                sectionsToRun.add(entry.getKey());
             }
         }
-    // list of rooms of each room type
-    // counter for each room type
-    // each room type given a id number
+        Collections.sort(sectionsToRun, new CourseFrequencyComparator());
+
+        RoomType roomType = null;
+        String lastCourse = null;
+        String chosenRoom = null;
+        int chosenTimeslot = -1;
+        for (String course : sectionsToRun) {
+            if (!specialClasses.contains(course)) {
+                if (course != lastCourse) {
+                    roomType = roomTypes.get(Data.courseMap.get(course).getRoomType());
+                }
+                lastCourse = course;
+                do {
+                    roomType.counter++;
+                    chosenRoom = roomType.rooms.get(roomType.counter / 8);
+                    chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
+                } while (Data.roomMap.get(chosenRoom).getAvailability(chosenTimeslot) == false && roomType.counter < roomType.rooms.size());
+
+                if()
+            }
+        }
+
+    // list of rooms of each room type -> in Data
+    // counter for each room type -> roomType class
+    // each room type given a id number -> roomType class
 
     // array with alternating sem1 and sem2 periods, eg. 1,7,2,6,3,5,0,4
 
     // sort coursesrunning from fewest sections to most sections
-    // group C courses together at beginning
-    // potentially add more stuff like this
+    // group C courses together at beginning, potentially add more stuff like this
     // go through all courses running
         // if it isnt special course
             // need to add to the timetable
@@ -124,8 +134,31 @@ public class CourseScheduler {
         return initialTimetable;
 
     }
-    private boolean roomChecker(){
-        return false;
+
+    private class RoomType{
+        ArrayList<String> rooms = new ArrayList<String>();;
+        int id;
+        int counter;
+        RoomType(String[] rooms, int id){
+            this.rooms.addAll(Arrays.asList(rooms)); 
+            this.id = id;
+            this.counter = 0;
+        }
+    }
+
+    private class CourseFrequencyComparator implements Comparator<String>{
+        @Override
+        public int compare(String s1, String s2) {
+            int s1Freq = coursesRunning.get(s1);
+            int s2Freq = coursesRunning.get(s2);
+            if (s1Freq < s2Freq) {
+                return -1;
+            } else if (s1Freq > s2Freq) {
+                return 1;
+            }
+            return 0;
+        }
+        
     }
 
     private HashMap<String, Integer> countStudents() {

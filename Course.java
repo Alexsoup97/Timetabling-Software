@@ -5,32 +5,18 @@ public class Course {
     private String code;
     private String title;
     private int grade;
-    private String type;
+    private String level;
     private int classSize;
     private String roomType;
     
-    public Course(String code, String title, int grade, String type,int classSize){
+    public Course(String code, String title, int grade, String level,int classSize){
         this.code = code;
         this.title = title;
         this.grade = grade;
-        this.type = type;
+        this.level = level;
         this.classSize = classSize;
-        this.roomType = findRoomType();
+        // this.roomType TODO load this from the file
     }
-
-
-    // private String findRoomType(){
-    //     //String type;
-    //     if(code.startsWith("S")){
-    //         return "Science";
-    //     }else if (code.startsWith("P")){
-    //         return "Gym";
-    //     }else if (code.){
-
-    //     }else{
-    //         return "classroom";
-    //     }
-    // }
 
 // -----------------------------------------------------------------------------------------
     // getters
@@ -44,7 +30,7 @@ public class Course {
         return this.grade;
     }
     public String getType(){
-        return this.type;
+        return this.level;
     }
     public int getClassSize(){
         return this.classSize;
