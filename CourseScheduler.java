@@ -22,10 +22,9 @@ public class CourseScheduler {
         // - Calls method in SpecialCourseScheduler to schedule special courses
         // ArrayList<ClassInfo> timetable = new ArrayList<ClassInfo>();
         studentCount = countStudents();
-        coursesRunning = getCoursesRunning();
-        System.out.println(coursesRunning);
+        coursesRunning = calculateCoursesRunning();
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
-        numFixedClasses = initialTimetable.size();
+
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
@@ -44,7 +43,7 @@ public class CourseScheduler {
         while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
             currentGeneration.clear();
             currentGeneration.addAll(timetableCandidates.values());  // fill current generation of candidates with the survivors from last generation
-            // timetableCandidates.clear(); // TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
+            // timetableCandidates.clear(); //TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
             for (ArrayList<ClassInfo> candidate : currentGeneration){   
                 for(int i=0; i<NUM_CHILDREN; i++){  // make certain number of children of each candidate by mutating it
                     mutatedTimetable = mutateTimetable(candidate);
@@ -78,29 +77,30 @@ public class CourseScheduler {
 
         HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
         int roomTypeIdCounter = 0;
-        for(Map.Entry<String, String[]> entry : Data.roomTypeMap.entrySet()){
+        for(Map.Entry<String, ArrayList<String>> entry : Data.roomTypeMap.entrySet()){
             roomTypes.put(entry.getKey(), new RoomType(entry.getValue(), roomTypeIdCounter));
             roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
         }    
         
         int[] fillOrder = {1,7,2,6,3,5,0,4}; // TODO generate this so it's different each time. Must still be alternating sem1/sem2 periods
 
-        TreeMap<String, Integer> sections = new TreeMap<String, Integer>(coursesRunning, new CourseFrequencyComparator());
-
-        ArrayList<String> sectionsToRun = new ArrayList<String>();
-        for(Map.Entry<String, Integer> entry: coursesRunning.entrySet()){
-            for(int i=0; i<entry.getValue(); i++){
-                sectionsToRun.add(entry.getKey());
-            }
+        ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
+        for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
+            sortedCoursesRunning.add(new CourseRunning(entry.getKey(), entry.getValue()));
         }
-        Collections.sort(sectionsToRun, new CourseFrequencyComparator());
+        Collections.sort(sortedCoursesRunning, new Comparator<Map.Entry<String, Integer>>(){
+            public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
+                return e1.getValue() - e2.getValue();
+            }
+        });    
+
 
         RoomType roomType = null;
         String lastCourse = null;
         String chosenRoom = null;
         int chosenTimeslot = -1;
-        for (String course : sectionsToRun) {
-            if (!specialClasses.contains(course)) {
+        for (Map.Entry<String, Integer> course : entries) {
+            if (!specialClasses.contains(course.getKey())) {
                 if (course != lastCourse) {
                     roomType = roomTypes.get(Data.courseMap.get(course).getRoomType());
                 }
@@ -109,7 +109,7 @@ public class CourseScheduler {
                     roomType.counter++;
                     chosenRoom = roomType.rooms.get(roomType.counter / 8);
                     chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
-                } while (Data.roomMap.get(chosenRoom).getAvailability(chosenTimeslot) == false && roomType.counter < roomType.rooms.size());
+                } while (Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot) == false && roomType.counter < roomType.rooms.size());
 
                 if()
             }
@@ -139,26 +139,20 @@ public class CourseScheduler {
         ArrayList<String> rooms = new ArrayList<String>();;
         int id;
         int counter;
-        RoomType(String[] rooms, int id){
-            this.rooms.addAll(Arrays.asList(rooms)); 
+        RoomType(ArrayList<String> rooms, int id){
+            this.rooms = rooms; 
             this.id = id;
             this.counter = 0;
         }
     }
 
-    private class CourseFrequencyComparator implements Comparator<String>{
-        @Override
-        public int compare(String s1, String s2) {
-            int s1Freq = coursesRunning.get(s1);
-            int s2Freq = coursesRunning.get(s2);
-            if (s1Freq < s2Freq) {
-                return -1;
-            } else if (s1Freq > s2Freq) {
-                return 1;
-            }
-            return 0;
-        }
-        
+    private class CourseRunning{
+        String courseName;
+        int sections;
+        CourseRunning(String courseName, int sections){
+            this.courseName = courseName;
+            this.sections = sections;
+        } 
     }
 
     private HashMap<String, Integer> countStudents() {
@@ -179,7 +173,7 @@ public class CourseScheduler {
         return courseCount;
     }
 
-    private HashMap<String, Integer> getCoursesRunning() {
+    private HashMap<String, Integer> calculateCoursesRunning() {
         double threshold = 0.50;
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
@@ -200,28 +194,43 @@ public class CourseScheduler {
         }
         return courseCount;
     }
+// TODO might have to check functionality later (after testing)
+    private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
+        final int FREQUENCY_THRESHOLD = 20;
 
+        // also i changed the course into hashSet 
+        HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of course, frequency
+        ArrayList<HashSet<String>> commonlyTakenTogetherCourses = new ArrayList<>();
 
-//TODO finish
-    private HashMap<String, ArrayList<String>> getCommonlyTakenTogetherCourses(){
-        HashMap<String, ArrayList<String>> output = new HashMap<String, ArrayList<String>>();
-        HashMap<String, Integer> commonCoursePopularity = new HashMap<String, Integer>();
-        for(String course:coursesRunning.keySet()){
-            output.put(course, new ArrayList<String>());
-            
-        }
-        
-        
         for(Student student:Data.studentMap.values()){
-            for(String course: student.getCourseChoices()){
-                
+            int start = 1; 
+            for(String choice : student.getCourseChoices()){
+                HashSet<String> check = new HashSet<>();
+                check.add(choice); 
+                for (int i = start; i < student.getCourseChoices().length; i++) { // create all PAIRS of chosen courses
+                    check.add(student.getCourseChoices()[i]); // idk i think it hshould work
+                    if(frequency.containsKey(check)){ 
+                        frequency.put(check, frequency.get(check) + 1); 
+                    } // 20 is just random, like if 20 people picked this pair then its considered as frequently picked
+                    else{ // 20 seems like a class size of people? idk like ex. adv and calc XD
+                        frequency.put(check, 1); 
+                    } // output is an arraylist of pairs of commonly taken courses,
+                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !commonlyTakenTogetherCourses.contains(check)){ // is 20 enough?
+                        commonlyTakenTogetherCourses.add(check);
+                    }
+                    check.remove(student.getCourseChoices()[i]);
+                }
+                start += 1;
+                check.remove(choice);
             }
+            start = 0;
         }
-        return output;
+        
+        return commonlyTakenTogetherCourses;
     }
 
     public int getTimetableFitness(ArrayList<ClassInfo> timetable) {
-        HashMap<Integer, int[]> roomTime = new HashMap<Integer, int[]>();
+        HashMap<String, int[]> roomTime = new HashMap<String, int[]>();
         HashMap<Integer, int[]> teacherTime = new HashMap<Integer, int[]>();
         int score = 0;
         // dupliace time slots
@@ -251,7 +260,7 @@ public class CourseScheduler {
         return score;
     }
 
-    public int findRoomConflicts(ClassInfo x, HashMap<Integer, int[]> roomTime) {
+    public int findRoomConflicts(ClassInfo x, HashMap<String, int[]> roomTime) {
         if (roomTime.containsKey(x.getRoom())) {
             int time[] = new int[roomTime.get(x.getRoom()).length + 1];
             for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
