@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Data{
 
@@ -8,6 +9,7 @@ public class Data{
     // public static HashMap<Integer, Teacher> teacherMap; // teacher id, Teacher object
     public static HashMap<String, Room> roomMap; // room number (as string), Room object
     public static HashMap<String, String[]> typesOfRooms; // room type, room numbers
+    public static HashMap<String, ArrayList<Room>> coursesToRooms;
 
     public Data(){
         loadData();
@@ -16,11 +18,13 @@ public class Data{
     public static void loadData(){
         DataReader dataReader = new DataReader();
         try{
-            //RoomMap = dataReader.getRooms(); //Rooom Map currently does not work 
+            typesOfRooms = dataReader.getRoomType();
             roomMap=dataReader.getRooms();
             courseMap = dataReader.getCourses();
             studentMap = dataReader.getStudents();
-            // teacherMap = dataReader.getTeachers();
+            coursesToRooms = dataReader.courseTypeToRooms();
+            
+
         }catch(Exception e){
             System.out.println("Error Loading Data");
             e.printStackTrace();

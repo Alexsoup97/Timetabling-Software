@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 
 public class DataReader{
     
@@ -70,9 +72,27 @@ public class DataReader{
         roomData.nextLine();
         while(roomData.hasNext()){
             String [] currentLine = (roomData.nextLine().split(","));
+            
             rooms.put(currentLine[0],new Room(currentLine[0],currentLine[1]));
         }
         return rooms;
+    }
+
+    public HashMap<String, ArrayList<Room>> courseTypeToRooms(){
+        HashMap<String, ArrayList<Room>> coursesToRooms = new HashMap<String,  ArrayList<Room>>();
+
+        for(String type: Data.typesOfRooms.keySet()){
+            ArrayList<Room> rooms = new ArrayList<Room>();
+            for(Room r: Data.roomMap.values()){
+                if(r.getRoomType().equals(type)){
+                    rooms.add(r);
+                }
+            }
+
+            coursesToRooms.put(type, rooms);
+
+        }
+        return coursesToRooms;
     }
     
     public HashMap<String, String[]> getRoomType() throws Exception{

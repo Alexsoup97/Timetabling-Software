@@ -11,6 +11,7 @@ public class CourseScheduler {
 
     private int numFixedClasses;
     private ArrayList<ClassInfo> initialTimetable;
+    private ArrayList<ClassInfo> specialTimetable = new ArrayList<ClassInfo>();
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
 
@@ -20,9 +21,11 @@ public class CourseScheduler {
         // ArrayList<ClassInfo> timetable = new ArrayList<ClassInfo>();
         studentCount = countStudents();
         coursesRunning = getCoursesRunning();
-        System.out.println(coursesRunning);
-        initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
-        numFixedClasses = initialTimetable.size();
+        initialTimetable = createInitialTimetable(specialTimetable);
+        f
+        
+        //numFixedClasses = initialTimetable.size();
+        
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
@@ -83,25 +86,45 @@ public class CourseScheduler {
 
         for(Map.Entry<String, Integer> map: coursesRunning.entrySet()){
             if(!specialClasses.contains(map.getKey())){
-                String roomType = Data.courseMap.get(map.getKey()).getType();
-                String[] rooms = Data.typesOfRooms.get(roomType);
-                int counter = typeCounter.get(map.getKey());
+                String course = map.getKey();
+                String roomType;
+                if(Data.courseMap.containsKey(course)){
+                    roomType= Data.courseMap.get(course).getRoomType();
+                   
+                }else{
+                    roomType = "classroom";
+                }
+                
+               
+                ArrayList<Room> rooms = Data.coursesToRooms.get(roomType);
+                int counter = typeCounter.get(course);
 
                 for(int i = 0; i < map.getValue();i ++){
                     boolean valid = false;
                     do{
-                        String currentRoom = rooms[(int)Math.floor(counter/8)];
-                        int timeslot = counter % 8;
 
-                        if(Data.roomMap.get(map.getKey()).get){
-
+                        String currentRoom;
+                        try{
+                            currentRoom = rooms.get((int)Math.floor(counter/8)).getRoomNum();
+                        }catch(Exception e){
+                            break;
+                        }
+                        int timeslot = fillOrder[counter % 8];
+                       
+                        if(!Data.roomMap.get(currentRoom).getAvailability(timeslot)){
+                            Data.roomMap.get(currentRoom).setAvailability(timeslot);
+                            
+                            initialTimetable.add(new ClassInfo(currentRoom,timeslot,course, false,students));
+                            counter++;
+                            valid = true;
+                        }else{
+                            counter++;
                         }
                        
-
                     }while(!valid);
 
                 }
-
+                typeCounter.put(course, counter);
             }
         }
     // list of rooms of each room type
@@ -120,8 +143,9 @@ public class CourseScheduler {
             // place the course into the room at the index of the counter/8 and the period of the index of the array (counter + id number given to room type)%8
             // if that room/timeslot pair was already occupied by special course, increment counter and put it into the next one
 
-        
+      
         return initialTimetable;
+        
 
     }
     private boolean roomChecker(){

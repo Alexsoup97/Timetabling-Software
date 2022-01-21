@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Course {
 
@@ -19,18 +20,16 @@ public class Course {
     }
 
 
-    // private String findRoomType(){
-    //     //String type;
-    //     if(code.startsWith("S")){
-    //         return "Science";
-    //     }else if (code.startsWith("P")){
-    //         return "Gym";
-    //     }else if (code.){
-
-    //     }else{
-    //         return "classroom";
-    //     }
-    // }
+    private String findRoomType(){
+        for(Map.Entry<String, String[]> map: Data.typesOfRooms.entrySet()){
+            for(int i = 0; i < map.getValue().length; i++){
+                if(map.getValue()[i].equals(this.code)){
+                    return map.getKey();
+                }
+            }
+        }
+        return "classroom";
+    }
 
 // -----------------------------------------------------------------------------------------
     // getters
