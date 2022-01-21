@@ -12,7 +12,7 @@ public class SpecialCourseScheduler {
         String course;
         int timeslot=0;
         int room=0;
-        int teacher=0;
+        // int teacher=0;
 
         int functionsTime=0;
         int calculasTime=0;
@@ -36,13 +36,12 @@ public class SpecialCourseScheduler {
                 //Ap Sciences
                 }else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")){
                 scienceTime++;
-                room=Data.roomMap.get("classroom")[functionsTime/4];
+                room=Data.roomMap.get("Science")[functionsTime/4];
                 timeslot=scienceTime%4;
                 //art protfolio semseter 2
                 }else if (s.contains ("AEA4O")){
                     artTime++;
                     timeslot=artTime%4;
-
                     if (artTime>4){
                         room=2005;
                     }else{
@@ -67,7 +66,7 @@ public class SpecialCourseScheduler {
                     }   
                 }
                 //dont worry about teachers
-                specialCourses.add(new ClassInfo(teacher,  room,  timeslot,  course, fixed, students));
+                specialCourses.add(new ClassInfo( room,  timeslot,  course, fixed, students));
             }
         }
         return specialCourses;

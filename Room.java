@@ -45,7 +45,7 @@ public class Room {
     /**
      * @param numberOfClasses the numberOfClasses to set
      */
-    public void setNumberOfClasses(int period, boolean occupied) {
+    public void setClass(int period, boolean occupied) {
         this.classes[period] = occupied;
     }
 
