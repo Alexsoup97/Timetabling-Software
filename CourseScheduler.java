@@ -66,47 +66,63 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable) {
         
         ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
+        ArrayList<String> specialClasses = new ArrayList<String>();
         ArrayList<Integer> students = null;
-        boolean fixed = false;
-        String code;
-        int timeslot = 0;
-        Room room = null;
-        // Teacher teacher = null;
 
-        // quick assess to determine a special course
-        HashSet<String> specialCourse = new HashSet<String>();
-        for (ClassInfo i : specialCourseTimetable) {
-            specialCourse.add(i.getCourse());
-            initialTimetable.add(i); // special schedule added to initialTimetable
+        HashMap<String, Integer> typeCounter = new HashMap<String, Integer>();
+        for(String s : coursesRunning.keySet()){
+            typeCounter.put(s, 0);
         }
-        for (Map.Entry<String, Integer> course : coursesRunning.entrySet()) {
-            code = course.getKey();
-            Course c = Data.courseMap.get(course);
-            for(int i=0; i<course.getValue() ; i++){
-                
-                if(!specialCourse.contains(c.getCode())){ // not preassigned (not special)
-                    boolean valid;
-                    do{
-                        valid = true;
-                        timeslot = random.nextInt(8) + 1;
-                
-    
-                        if(!room.checkPeriod(timeslot)){
-                            valid = false;
-                        } 
-                        room.setClass(timeslot, true) ;
-                        
+        int[] fillOrder = {1,7,2,6,3,5,0,4};
 
-                    }while(valid);
-                  
-                 
-                    initialTimetable.add(new ClassInfo(room.getRoomNum(),  timeslot,  code, fixed, students));
+        for(ClassInfo i: specialCourseTimetable){
+            initialTimetable.add(i);
+            specialClasses.add(i.getCourse());
+            
+        }
+
+        for(Map.Entry<String, Integer> map: coursesRunning.entrySet()){
+            if(!specialClasses.contains(map.getKey())){
+                String roomType = Data.courseMap.get(map.getKey()).getType();
+                String[] rooms = Data.typesOfRooms.get(roomType);
+                int counter = typeCounter.get(map.getKey());
+
+                for(int i = 0; i < map.getValue();i ++){
+                    boolean valid = false;
+                    do{
+                        String currentRoom = rooms[(int)Math.floor(counter/8)];
+                        int timeslot = counter % 8;
+
+                        if(Data.roomMap.get(map.getKey()).get){
+
+                        }
+                       
+
+                    }while(!valid);
+
                 }
-                
+
             }
-       
-        }   
+        }
+    // list of rooms of each room type
+    // counter for each room type
+    // each room type given a id number
+
+    // array with alternating sem1 and sem2 periods, eg. 1,7,2,6,3,5,0,4
+
+    // sort coursesrunning from fewest sections to most sections
+    // group C courses together at beginning
+    // potentially add more stuff like this
+    // go through all courses running
+        // if it isnt special course
+            // need to add to the timetable
+            // increment counter of the corresponding room type
+            // place the course into the room at the index of the counter/8 and the period of the index of the array (counter + id number given to room type)%8
+            // if that room/timeslot pair was already occupied by special course, increment counter and put it into the next one
+
+        
         return initialTimetable;
+
     }
     private boolean roomChecker(){
         return false;
@@ -152,6 +168,8 @@ public class CourseScheduler {
         return courseCount;
     }
 
+
+//TODO finish
     private HashMap<String, ArrayList<String>> getCommonlyTakenTogetherCourses(){
         HashMap<String, ArrayList<String>> output = new HashMap<String, ArrayList<String>>();
         HashMap<String, Integer> commonCoursePopularity = new HashMap<String, Integer>();
@@ -182,6 +200,8 @@ public class CourseScheduler {
                 time[roomTime.get(x.getRoom()).length] = x.getTimeslot();
                 roomTime.put(x.getRoom(), time);
             }
+
+            //TODO check how balanced the courses are between semesters
 
             // int add2 = findTeacherConflicts(x, teacherTime);
             // //score += add2; dont worry about teachers 
@@ -256,16 +276,12 @@ public class CourseScheduler {
     public ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
         ArrayList<ClassInfo> mutated = new ArrayList<ClassInfo>(timetable);
         int mutationTypeSelect = random.nextInt(100);
-        if (mutationTypeSelect < 40) {
+        if (mutationTypeSelect < 50) {
             swapClassTimeslots(timetable);
-        } else if (mutationTypeSelect < 55) {
+        } else if (mutationTypeSelect < 75) {
             swapRoom(timetable);
-        } else if (mutationTypeSelect < 70) {
-            moveRoom(timetable);
-        } else if (mutationTypeSelect < 85) {
-            swapTeacher(timetable);
         } else {
-            changeTeacher(timetable);
+            moveRoom(timetable);
         }
         return mutated;
     }
@@ -295,22 +311,22 @@ public class CourseScheduler {
         // where do I check the avaliable rooms?
     }
 
-    // Switch two teachers, ensuring both are still qualified for the course they are teaching
-    private void swapTeacher(ArrayList<ClassInfo> timetable) {
-        int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable);
+    // // Switch two teachers, ensuring both are still qualified for the course they are teaching
+    // private void swapTeacher(ArrayList<ClassInfo> timetable) {
+    //     int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable);
 
-        // where do I check teacher qulification
+    //     // where do I check teacher qulification
 
-        // int swap = timetable.get(class1Index).getTeacher();
-        // timetable.get(class1Index).setRoom(timetable.get(class2Index).getTeacher());
-        // timetable.get(class2Index).setRoom(swap);
-    }
+    //     // int swap = timetable.get(class1Index).getTeacher();
+    //     // timetable.get(class1Index).setRoom(timetable.get(class2Index).getTeacher());
+    //     // timetable.get(class2Index).setRoom(swap);
+    // }
 
-    private void changeTeacher(ArrayList<ClassInfo> timetable) {
-        // change the teacher for a class to another random teacher that is qualified
+    // private void changeTeacher(ArrayList<ClassInfo> timetable) {
+    //     // change the teacher for a class to another random teacher that is qualified
 
-        // where do I check the teachers? lol
-    }
+    //     // where do I check the teachers? lol
+    // }
 
     private int[] getTwoUniqueUnfixedClasses(ArrayList<ClassInfo> timetable){
         int class1Index, class2Index;
