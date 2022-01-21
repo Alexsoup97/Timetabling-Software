@@ -60,7 +60,7 @@ public class Student {
     public int correctCourses(){
         int counter = 0;
         for(int i = 0; i < courseChoices.length;i++){
-            if(courseChoices[i].endsWith("COMPLETE") || courseeChoices[i].equals("")){
+            if(courseChoices[i].endsWith("COMPLETE") || courseChoices[i].equals("")){
                 counter++;
             }
         }

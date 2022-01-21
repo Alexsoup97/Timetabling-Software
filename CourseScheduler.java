@@ -88,9 +88,9 @@ public class CourseScheduler {
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
             sortedCoursesRunning.add(new CourseRunning(entry.getKey(), entry.getValue()));
         }
-        Collections.sort(sortedCoursesRunning, new Comparator<Map.Entry<String, Integer>>(){
-            public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
-                return e1.getValue() - e2.getValue();
+        Collections.sort(sortedCoursesRunning, new Comparator<CourseRunning>(){
+            public int compare(CourseRunning c1, CourseRunning c2){
+                return c1.sections-c2.sections;
             }
         });    
 
