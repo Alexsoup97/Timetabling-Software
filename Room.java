@@ -2,7 +2,7 @@ public class Room {
 
     private String roomNum;
     private String roomType;
-    private boolean[] availability = new boolean[8];
+    private boolean[] availability = new boolean[Data.NUM_PERIODS];
 
     public Room(String roomNum, String roomType) {
         this.roomNum = roomNum;
@@ -33,6 +33,10 @@ public class Room {
 
     public void setAvailability(int time, boolean status){
         availability[time] = status;
+    }
+
+    public String toString(){
+        return this.roomNum + " (" + this.roomType + ") "; 
     }
 
 }

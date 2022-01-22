@@ -40,7 +40,7 @@ public class Course {
     public int getGrade(){
         return this.grade;
     }
-    public String getType(){
+    public String getLevel(){
         return this.level;
     }
     public int getClassSize(){
@@ -50,4 +50,9 @@ public class Course {
         return this.roomType;
     }
 // -----------------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        return code+", "+title+", "+roomType;
+    }
+
 }

@@ -80,4 +80,9 @@ class ClassInfo {
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }
+
+    @Override
+    public String toString(){
+        return course+", "+room+", "+timeslot+", "+fixed;
+    }
 }

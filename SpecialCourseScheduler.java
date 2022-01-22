@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Arrays;
 
 public class SpecialCourseScheduler { // TODO this needs to update the room availability
 
@@ -41,7 +39,7 @@ public class SpecialCourseScheduler { // TODO this needs to update the room avai
                 for (int i = 0; i < numberOfClasses.get(s); i++) {
                     calculusTime++;
                     room = Data.roomTypeMap.get("classroom").get(calculusTime / 4);
-                    timeslot = calculusTime % 4 + 5;
+                    timeslot = calculusTime % 4 + 4;
                     Data.roomMap.get(room).setAvailability(timeslot, true);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }

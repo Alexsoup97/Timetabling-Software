@@ -92,7 +92,7 @@ public class DataReader{
     public HashMap<String, ArrayList<String>> getRoomTypes(){
         HashMap<String, ArrayList<String>> coursesToRooms = new HashMap<String,  ArrayList<String>>();
 
-        for(String type: Data.roomTypeMap.keySet()){
+        for(String type: Data.roomTypeCourses.keySet()){
             ArrayList<String> rooms = new ArrayList<String>();
             for(Room r: Data.roomMap.values()){
                 if(r.getRoomType().equals(type)){
@@ -121,12 +121,10 @@ public class DataReader{
         return courses;
     }
 
-    public HashMap<Integer, Student> getStudents(){
-        Scanner studentData = null;
-        try{ 
-            studentData = new Scanner(new File("StudentDataObfuscated.csv"));
-        }catch(Exception e){}
-        
+    public HashMap<Integer, Student> getStudents() throws Exception{
+     
+     
+        Scanner studentData = new Scanner(new File("StudentDataObfuscated.csv"));
        
         HashMap<Integer,Student> students = new HashMap<Integer,Student>();
         
