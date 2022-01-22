@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.*;
 
 public class CourseScheduler {
 
@@ -20,11 +21,16 @@ public class CourseScheduler {
         studentCount = countStudents();
         coursesRunning = calculateCoursesRunning();
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
-        System.out.println(initialTimetable);
+        // TODO System.out.println(initialTimetable);
     }
     
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
+        Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
+            public int compare(ClassInfo c1, ClassInfo c2){
+                return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
+            }
+        });
         return initialTimetable;
         // TODO return evolveTimetable(initialTimetable);
     }
@@ -35,20 +41,20 @@ public class CourseScheduler {
             String[] temp = s.getCourseChoices();
             for (int i = 0; i < temp.length; i++) {
                 if (temp[i].equals("")) {
-                    continue;
-                }
+                    continue; 
+                } 
                 if (courseCount.containsKey(temp[i])) {
                     courseCount.put(temp[i], courseCount.get(temp[i]) + 1);
                 } else {
                     courseCount.put(temp[i], 1);
-                }
+                } 
             }
         }
         return courseCount;
     }
 
     private HashMap<String, Integer> calculateCoursesRunning() {
-        double threshold = 0.50;
+        double threshold = 0.70; 
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
             double maxClassSize;
@@ -59,7 +65,7 @@ public class CourseScheduler {
             }
            
             int numberCourses = (int) Math.floor(studentCount.get(c) / maxClassSize);
-            double additionalCourse = (studentCount.get(c) / maxClassSize) - numberCourses / 100;
+            double additionalCourse = (studentCount.get(c)*1.0 / maxClassSize) - numberCourses*1.0 / 100;
             if (additionalCourse > threshold) {
                 numberCourses++;
             }
@@ -84,9 +90,14 @@ public class CourseScheduler {
             roomTypes.put(entry.getKey(), new RoomType(entry.getValue(), roomTypeIdCounter));
             roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
         }    
+
+        // TODO make not hard coded
+        HashMap<String, String> roomTypeBackups = new HashMap<String, String>();
+        roomTypeBackups.put("science/biology", "science");
+        roomTypeBackups.put("science/physics", "science");
         
-        // int[] fillOrder = {1,7,2,6,3,5,0,4}; // TODO generate this so it's different each time. Must still be alternating sem1/sem2 periods
         int[] fillOrder = generatePeriodFillOrder();
+        System.out.println(Arrays.toString(fillOrder));
         
         ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
@@ -102,20 +113,32 @@ public class CourseScheduler {
         String chosenRoom = null; 
         int chosenTimeslot = -1; 
         for (CourseRunning course : sortedCoursesRunning) {
-            System.out.println(course.name + "");
-            if (!specialClasses.contains(course.name)) {
-                roomType = roomTypes.get(Data.courseMap.get(course.name).getRoomType());
+            if (!specialClasses.contains(course.code)) {
+                if(Data.courseMap.containsKey(course.code)){ 
+                    roomType = roomTypes.get(Data.courseMap.get(course.code).getRoomType());
+                }else{
+                    roomType = roomTypes.get("classroom");
+                }
                 for(int i=0; i<course.sections; i++){ 
-                    if(roomType.counter < roomType.rooms.size()*Data.NUM_PERIODS){
+                    if(roomType.counter/fillOrder.length >= roomType.rooms.size()){
+                        // if(roomTypeBackups.containsKey(roomType)
+                    }
+                    if(roomType.counter/fillOrder.length < roomType.rooms.size()){
                         do {
-                            roomType.counter++;
+                            System.out.println(course.code);
+                            System.out.println("Sections " + course.sections); 
+                            System.out.println(roomType.rooms);
+                            System.out.println(roomType.counter);
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
                             chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
-                        } while (Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot) == false);
-                    }else{
+                            roomType.counter++;
+                        } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot));
+                        Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
+                    }else{ 
                         System.out.println("Ran out of " + roomType);
-                    }
-                    initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.name, false));                   
+                        // System.exit(0);
+                    } 
+                    initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, false));                   
                 }
             } 
         }       
@@ -136,21 +159,41 @@ public class CourseScheduler {
             // place the course into the room at the index of the counter/8 and the period of the index of the array (counter + id number given to room type)%8
             // if that room/timeslot pair was already occupied by special course, increment counter and put it into the next one
     }
+
     // generate alternating periods to fill in classes
     private int[] generatePeriodFillOrder(){
         int[] alternatingPeriods = new int[Data.NUM_PERIODS]; 
+        HashSet<Integer> periods = new HashSet<>();
+        for(int i=0; i<Data.NUM_PERIODS; i++){
+            periods.add(i);
+        }
+        int adding;
+        
         for (int i = 0; i < alternatingPeriods.length; i++) {
             if(i%2 == 0){
-                alternatingPeriods[i] = random.nextInt(4) + 4;
+                adding = random.nextInt(4) + 4;
+                while(!periods.contains(adding)){
+                    adding = random.nextInt(4) + 4;
+                }
+                alternatingPeriods[i] = adding;
+                periods.remove(adding);
+                adding = 0;                
             }
             else {
-                alternatingPeriods[i] = random.nextInt(4);
+                adding = random.nextInt(4);
+                while(!periods.contains(adding)){
+                    adding = random.nextInt(4);
+                }
+                alternatingPeriods[i] = adding;
+                periods.remove(adding);
+                adding = 0;
             }
         }
         return alternatingPeriods;
     }
 
     private class RoomType{
+        String name;
         ArrayList<String> rooms = new ArrayList<String>();;
         int id;
         int counter;
@@ -159,13 +202,19 @@ public class CourseScheduler {
             this.id = id;
             this.counter = 0;
         }
+
+        //TODO remove
+        @Override
+        public String toString() {
+            return rooms.toString()+" "+id+" "+ counter;
+        }
     }
 
     private class CourseRunning{
-        String name;
+        String code;
         int sections;
         CourseRunning(String courseName, int sections){
-            this.name = courseName;
+            this.code = courseName;
             this.sections = sections;
         } 
     }

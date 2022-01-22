@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SpecialCourseScheduler { // TODO this needs to update the room availability
+public class SpecialCourseScheduler { 
 
     SpecialCourseScheduler() {
     }
@@ -30,7 +30,7 @@ public class SpecialCourseScheduler { // TODO this needs to update the room avai
                     functionsTime++;
                     room = Data.roomTypeMap.get("classroom").get(functionsTime / 4);
                     timeslot = functionsTime % 4;
-                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    Data.roomMap.get(room).setUnavailable(timeslot);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
                 // calculas
@@ -40,16 +40,16 @@ public class SpecialCourseScheduler { // TODO this needs to update the room avai
                     calculusTime++;
                     room = Data.roomTypeMap.get("classroom").get(calculusTime / 4);
                     timeslot = calculusTime % 4 + 4;
-                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    Data.roomMap.get(room).setUnavailable(timeslot);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
                 // Ap Sciences
             } else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")) {
                 for (int i = 0; i < numberOfClasses.get(s); i++) {
                     scienceTime++;
-                    room = Data.roomTypeMap.get("Science").get(scienceTime / 4);
+                    room = Data.roomTypeMap.get("science").get(scienceTime / 4);
                     timeslot = scienceTime % 4;
-                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    Data.roomMap.get(room).setUnavailable(timeslot);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
                 // art protfolio semseter 2
@@ -63,7 +63,7 @@ public class SpecialCourseScheduler { // TODO this needs to update the room avai
                     } else {
                         room = "2004";
                     }
-                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    Data.roomMap.get(room).setUnavailable(timeslot);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
                 // co op
@@ -85,7 +85,7 @@ public class SpecialCourseScheduler { // TODO this needs to update the room avai
                         // just incase its some weird co-op course
                         timeslot = 1;
                     }
-                    Data.roomMap.get(room).setAvailability(timeslot, true);
+                    Data.roomMap.get(room).setUnavailable(timeslot);
                     specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
                 }
             }

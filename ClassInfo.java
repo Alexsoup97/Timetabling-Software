@@ -7,7 +7,7 @@ class ClassInfo {
     private int timeslot; // integer from 1-8, 1-4 being sem 1 and 5-8 being sem 2
     private String course;
     private boolean fixed; // for courses that cannot be mutated (set period, etc.)
-    private ArrayList<Integer> students;
+    private ArrayList<Integer> students= new ArrayList<Integer>();;
 
     public ClassInfo(String room, int timeslot, String course, boolean fixed) {
         // this.teacher=teacher;
@@ -15,7 +15,7 @@ class ClassInfo {
         this.timeslot = timeslot;
         this.course = course;
         this.fixed = fixed;
-        this.students = null;
+        
 
     }
 
@@ -38,7 +38,15 @@ class ClassInfo {
     // }
 
     public boolean isFull(){
-        if(students.size() >= Data.courseMap.get(course).getClassSize()){
+        int maxClassSize = 30;
+        if(Data.courseMap.containsKey(course)){
+            maxClassSize = Data.courseMap.get(course).getClassSize();
+
+        }else{
+            maxClassSize = 30;
+        }
+   
+        if(students.size() >= maxClassSize){
             return true;
         }
 
@@ -79,10 +87,5 @@ class ClassInfo {
 
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
-    }
-
-    @Override
-    public String toString(){
-        return course+", "+room+", "+timeslot+", "+fixed;
     }
 }

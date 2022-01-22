@@ -16,7 +16,7 @@ public class StudentAssignment{
         getStudentTimetableFitness();
         try{
             outputCSV();
-        }catch(Exception e){}
+        }catch(Exception e){e.printStackTrace();}
     }
 
     public void outputCSV() throws Exception{
@@ -39,20 +39,39 @@ public class StudentAssignment{
         output.close();
     }
 
-    public void fillTimetable(){
-        for(ClassInfo c: timetable){
+    // public void fillTimetable(){
+    //     for(ClassInfo c: timetable){
            
-            for(Student s: Data.studentMap.values()){
-                if(c.isFull()){
-                   break;
-                }
+    //         for(Student s: Data.studentMap.values()){
+    //             if(c.isFull()){
+    //                break;
+    //             }
                
-                if(s.hasCourse(c.getCourse()) && s.checkTimeslot(c.getTimeslot())){
+    //             if(s.hasCourse(c.getCourse()) && s.checkTimeslot(c.getTimeslot())){
                
-                    c.addStudents(s.getStudentNumber());
-                    s.fillTimeslot(c.getCourse(), c.getTimeslot());
+    //                 c.addStudents(s.getStudentNumber());
+    //                 s.fillTimeslot(c.getCourse(), c.getTimeslot());
+    //             }
+    //         }
+    //     }
+    // }
+
+
+    public void fillTimetable(){
+        for(Student s: Data.studentMap.values()){
+            String[] studentTimetable = s.getTimetable();
+                for(int i = 0;i < studentTimetable.length; i++){
+                    if(studentTimetable[i] != null){
+                        for(ClassInfo c: timetable){
+                            if(studentTimetable[i].equals(c.getCourse()) && !c.isFull() && s.checkTimeslot(c.getTimeslot())){
+                                c.addStudents(s.getStudentNumber());
+                                s.fillTimeslot(c.getCourse(), c.getTimeslot());
+                            }
+                        }
+                    }
+                 
                 }
-            }
+
         }
     }
 

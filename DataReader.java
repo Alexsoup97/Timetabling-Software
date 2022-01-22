@@ -73,7 +73,7 @@ public class DataReader{
         return rooms;
     }
     
-    public HashMap<String, String[]> getRoomTypeCourses() throws Exception{ // TODO t
+    public HashMap<String, String[]> getRoomTypeCourses() throws Exception{
         Scanner roomData = new Scanner (new File("RoomType.csv"));
         HashMap<String, String[]> roomTypes = new HashMap<String, String[]>();         
         roomData.nextLine();
@@ -122,12 +122,8 @@ public class DataReader{
     }
 
     public HashMap<Integer, Student> getStudents() throws Exception{
-     
-     
         Scanner studentData = new Scanner(new File("StudentDataObfuscated.csv"));
-       
         HashMap<Integer,Student> students = new HashMap<Integer,Student>();
-        
         studentData.nextLine();
         while(studentData.hasNext()){
             

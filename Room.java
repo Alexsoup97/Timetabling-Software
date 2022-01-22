@@ -31,6 +31,10 @@ public class Room {
 
     }
 
+    public void setUnavailable(int time){
+        availability[time] = false;
+    }
+
     public void setAvailability(int time, boolean status){
         availability[time] = status;
     }
