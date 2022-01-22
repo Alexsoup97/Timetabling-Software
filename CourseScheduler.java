@@ -20,6 +20,7 @@ public class CourseScheduler {
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
         coursesRunning = calculateCoursesRunning();
+        System.out.println(coursesRunning);
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
         // TODO System.out.println(initialTimetable);
     }
@@ -54,7 +55,7 @@ public class CourseScheduler {
     }
 
     private HashMap<String, Integer> calculateCoursesRunning() {
-        double threshold = 0.70; 
+        double threshold = 0.50; 
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
             double maxClassSize;
@@ -87,7 +88,7 @@ public class CourseScheduler {
         HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
         int roomTypeIdCounter = 0;
         for(Map.Entry<String, ArrayList<String>> entry : Data.roomTypeMap.entrySet()){
-            roomTypes.put(entry.getKey(), new RoomType(entry.getValue(), roomTypeIdCounter));
+            roomTypes.put(entry.getKey(), new RoomType(entry.getKey(), entry.getValue(), roomTypeIdCounter));
             roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
         }    
 
@@ -121,14 +122,16 @@ public class CourseScheduler {
                 }
                 for(int i=0; i<course.sections; i++){ 
                     if(roomType.counter/fillOrder.length >= roomType.rooms.size()){
-                        // if(roomTypeBackups.containsKey(roomType)
+                        if(roomTypeBackups.containsKey(roomType.name)){
+                            roomType = roomTypes.get(roomTypeBackups.get(roomType.name));
+                        }
                     }
                     if(roomType.counter/fillOrder.length < roomType.rooms.size()){
                         do {
                             System.out.println(course.code);
                             System.out.println("Sections " + course.sections); 
-                            System.out.println(roomType.rooms);
-                            System.out.println(roomType.counter);
+                            // System.out.println(roomType.rooms);
+                            // System.out.println(roomType.counter);
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
                             chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
                             roomType.counter++;
@@ -197,7 +200,8 @@ public class CourseScheduler {
         ArrayList<String> rooms = new ArrayList<String>();;
         int id;
         int counter;
-        RoomType(ArrayList<String> rooms, int id){
+        RoomType(String name, ArrayList<String> rooms, int id){
+            this.name = name;
             this.rooms = rooms; 
             this.id = id;
             this.counter = 0;
@@ -278,7 +282,6 @@ public class CourseScheduler {
             int time[] = new int[roomTime.get(x.getRoom()).length + 1];
             for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
                 time[i] = roomTime.get(x.getRoom())[i];
-
                 if (roomTime.get(x.getRoom())[i] == x.getTimeslot()) {
                     return 10;
                 }
