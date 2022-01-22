@@ -128,6 +128,7 @@ public class DataReader{
         while(studentData.hasNext()){
             
             String [] currentLine = removeCommas(studentData.nextLine()).split("`");
+           
             
             String name = currentLine[0];
             char gender = currentLine[1].charAt(0); 
@@ -146,6 +147,7 @@ public class DataReader{
     public static String [] courseInputs(String [] currentLine){
         String courseChoices []= new String [11]; 
         for (int i =0; i <11; i++){
+            
             courseChoices[i]= currentLine[(3*i)+7];
         }
         return courseChoices;

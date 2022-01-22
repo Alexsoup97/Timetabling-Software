@@ -14,8 +14,8 @@ public class Main {
         SpecialCourseScheduler s = new SpecialCourseScheduler();
         CourseScheduler courseScheduler = new CourseScheduler(s);
         StudentAssignment studentAssignment =  new StudentAssignment(courseScheduler.getNewTimetable());
-        // courseScheduler.getNewTimetable()
-        // System.out.println(courseScheduler.getNewTimetable());
+        //courseScheduler.getNewTimetable()
+        //System.out.println(courseScheduler.getNewTimetable());
         
 
     }

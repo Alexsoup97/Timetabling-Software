@@ -8,12 +8,14 @@ import java.io.File;
 public class StudentAssignment{
     private ArrayList<ClassInfo> timetable;
     private ArrayList<Student> students = new ArrayList<Student>(Data.studentMap.values());
+    static int completeTimetableCount = 0; 
     
     
     public StudentAssignment(ArrayList<ClassInfo> timetable){
         this.timetable = timetable;
         fillTimetable();
         getStudentTimetableFitness();
+        System.out.println(completeTimetableCount);
         try{
             outputCSV();
         }catch(Exception e){e.printStackTrace();}
@@ -59,17 +61,28 @@ public class StudentAssignment{
 
     public void fillTimetable(){
         for(Student s: Data.studentMap.values()){
-            String[] studentTimetable = s.getTimetable();
+            String[] studentTimetable = s.getCourseChoices();
+            int counter = 0;
                 for(int i = 0;i < studentTimetable.length; i++){
-                    if(studentTimetable[i] != null){
+                    if(!studentTimetable[i].equals("")){
                         for(ClassInfo c: timetable){
+                            
                             if(studentTimetable[i].equals(c.getCourse()) && !c.isFull() && s.checkTimeslot(c.getTimeslot())){
+                               
                                 c.addStudents(s.getStudentNumber());
                                 s.fillTimeslot(c.getCourse(), c.getTimeslot());
+                                counter++;
+                                break;
                             }
                         }
+                    }else{
+                        counter++;
+                       
                     }
-                 
+                
+                }
+                if(counter == Data.NUM_PERIODS){
+                    completeTimetableCount++; 
                 }
 
         }
