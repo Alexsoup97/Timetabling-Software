@@ -16,13 +16,14 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> initialTimetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
+    private HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
         coursesRunning = calculateCoursesRunning();
         System.out.println(coursesRunning);
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
-        // TODO System.out.println(initialTimetable);
+        
     }
     
     public ArrayList<ClassInfo> getNewTimetable() {        
@@ -39,15 +40,15 @@ public class CourseScheduler {
     private HashMap<String, Integer> countStudents() {
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (Student s : Data.studentMap.values()) {
-            String[] temp = s.getCourseChoices();
-            for (int i = 0; i < temp.length; i++) {
-                if (temp[i].equals("")) {
+            ArrayList<String> temp = s.getCourseChoices();
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i).equals("")) {
                     continue; 
                 } 
-                if (courseCount.containsKey(temp[i])) {
-                    courseCount.put(temp[i], courseCount.get(temp[i]) + 1);
+                if (courseCount.containsKey(temp.get(i))) {
+                    courseCount.put(temp.get(i), courseCount.get(temp.get(i)) + 1);
                 } else {
-                    courseCount.put(temp[i], 1);
+                    courseCount.put(temp.get(i), 1);
                 } 
             }
         }
@@ -55,7 +56,7 @@ public class CourseScheduler {
     }
 
     private HashMap<String, Integer> calculateCoursesRunning() {
-        double threshold = 0.50; 
+        double threshold = 1.00; 
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
             double maxClassSize;
@@ -71,6 +72,7 @@ public class CourseScheduler {
                 numberCourses++;
             }
             courseCount.put(c, numberCourses);
+            coursesToTimeslot.put(c,new ArrayList<ClassInfo>());
 
         }
         return courseCount;
@@ -141,7 +143,10 @@ public class CourseScheduler {
                         System.out.println("Ran out of " + roomType);
                         // System.exit(0);
                     } 
-                    initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, false));                   
+
+                    ClassInfo newClass = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
+                    initialTimetable.add(newClass);   
+                    coursesToTimeslot.get(course.code).add(newClass);           
                 }
             } 
         }       
@@ -340,8 +345,8 @@ public class CourseScheduler {
             for(String choice : student.getCourseChoices()){
                 HashSet<String> check = new HashSet<>();
                 check.add(choice); 
-                for (int i = start; i < student.getCourseChoices().length; i++) { // create all PAIRS of chosen courses
-                    check.add(student.getCourseChoices()[i]); // idk i think it hshould work
+                for (int i = start; i < student.getCourseChoices().size(); i++) { // create all PAIRS of chosen courses
+                    check.add(student.getCourseChoices().get(i)); // idk i think it hshould work
                     if(frequency.containsKey(check)){ 
                         frequency.put(check, frequency.get(check) + 1); 
                     } // 20 is just random, like if 20 people picked this pair then its considered as frequently picked
@@ -351,9 +356,9 @@ public class CourseScheduler {
                     if(frequency.get(check) > FREQUENCY_THRESHOLD && !commonlyTakenTogetherCourses.contains(check)){ // is 20 enough?
                         commonlyTakenTogetherCourses.add(check);
                     }
-                    check.remove(student.getCourseChoices()[i]);
+                    check.remove(student.getCourseChoices().get(i));
                 }
-                start += 1; // yea i thi
+                start += 1; 
                 check.remove(choice);
             }
             start = 0;

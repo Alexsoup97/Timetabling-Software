@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Student {
 
@@ -5,12 +6,11 @@ public class Student {
     private char gender;
     private int id;
     private int grade;
-    private String[] courseChoices = new String[11]; // last 3 are alternatives
-    private String[] alternateChoices = new String[3];
+    private ArrayList<String> courseChoices = new ArrayList<String>(11);
+    private ArrayList<String> alternateChoices = new ArrayList<String>(3);
     private String[] timetable = new String[9]; // final timetable
 
-    public Student(String name, char gender, int studentNumber, int grade, String courseChoices[],
-            String alternateChoices[]) {
+    public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;
         this.gender = gender;
         this.id = studentNumber;
@@ -34,17 +34,14 @@ public class Student {
         return this.grade;
     }
 
-    public String[] getCourseChoices() {
+    public ArrayList<String> getCourseChoices() {
         return this.courseChoices;
     }
 
     public boolean hasCourse(String course) {
-
-        for (int i = 0; i < courseChoices.length; i++) {
-
-            if (courseChoices[i].equals(course)) {
-
-                courseChoices[i] = courseChoices[i] + "COMPLETE";
+        for (int i = 0; i < courseChoices.size(); i++) {
+            if (courseChoices.get(i).equals(course)) {
+                courseChoices.set(i, courseChoices.get(i) + "COMPLETE");
                 return true;
             }
 
@@ -55,15 +52,15 @@ public class Student {
 
     public int correctCourses() {
         int counter = 0;
-        for (int i = 0; i < courseChoices.length; i++) {
-            if (courseChoices[i].endsWith("COMPLETE") || courseChoices[i].equals("")) {
+        for (int i = 0; i < courseChoices.size(); i++) {
+            if (courseChoices.get(i).endsWith("COMPLETE")) {
                 counter++;
             }
         }
         return counter;
     }
 
-    public String[] getAlternateChoices() {
+    public ArrayList<String> getAlternateChoices() {
         return this.alternateChoices;
     }
 
