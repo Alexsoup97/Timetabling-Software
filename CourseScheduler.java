@@ -38,11 +38,7 @@ public class CourseScheduler {
 
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
-<<<<<<< HEAD
-       // initialTimetable = evolveTimetable(initialTimetable);// TODO
-=======
         // initialTimetable = evolveTimetable(initialTimetable);// TODO
->>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
         Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
@@ -115,8 +111,8 @@ public class CourseScheduler {
 
         // TODO make not hard coded
         HashMap<String, String> roomTypeBackups = new HashMap<String, String>();
-        roomTypeBackups.put("science/biology", "science");
-        roomTypeBackups.put("science/physics", "science");
+        roomTypeBackups.put("science-biology", "science");
+        roomTypeBackups.put("science-physics", "science");
         
         int[][] fillOrder = new int[Data.NUM_PERIODS][Data.NUM_PERIODS];
         for(int i=0; i<Data.NUM_PERIODS; i++){
@@ -139,27 +135,19 @@ public class CourseScheduler {
         ClassInfo newClass;
         for (CourseRunning course : sortedCoursesRunning) {
             if (!specialClasses.contains(course.code)) {
-                if(Data.courseMap.containsKey(course.code)){ 
-                    roomType = roomTypes.get(Data.courseMap.get(course.code).getRoomType());
-                }else{
-                    roomType = roomTypes.get("classroom");
-                }
-                for(int i=0; i<course.sections; i++){ 
-                    if(roomType.counter/fillOrder.length >= roomType.rooms.size()){
-                        if(roomTypeBackups.containsKey(roomType.name)){
+                roomType = roomTypes.get(Data.courseMap.get(course.code).getRoomType());
+
+                for (int i = 0; i < course.sections; i++) {
+                    if (roomType.counter / fillOrder.length >= roomType.rooms.size()) {
+                        if (roomTypeBackups.containsKey(roomType.name)) {
                             roomType = roomTypes.get(roomTypeBackups.get(roomType.name));
                         }
                     }
-                    if(roomType.counter/fillOrder.length < roomType.rooms.size()){
+                    if (roomType.counter / fillOrder.length < roomType.rooms.size()) {
                         do {
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
-<<<<<<< HEAD
-                            chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
-                            roomType.counter++; 
-=======
                             chosenTimeslot = fillOrder[roomType.id % fillOrder.length][roomType.counter % fillOrder[0].length];
                             roomType.counter++;
->>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot));
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
                     }else{ 
@@ -242,6 +230,7 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> evolveTimetable(ArrayList<ClassInfo> initialTimetable) {        
         final int SURVIVORS_PER_GENERATION = 5;
         final int NUM_CHILDREN = 4;
+        final int NUM_GENERATIONS = 100;
 
         TreeMap<Integer, ArrayList<ClassInfo>> timetableCandidates = new TreeMap<Integer, ArrayList<ClassInfo>>();
         ArrayList<ArrayList<ClassInfo>> currentGeneration = new ArrayList<ArrayList<ClassInfo>>();
@@ -250,8 +239,7 @@ public class CourseScheduler {
         int generationCount = 0;
         timetableCandidates.put(getTimetableFitness(initialTimetable), initialTimetable);
 
-        // while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
-        for(int j=0; j<100; j++){
+        for(int j=0; j<NUM_GENERATIONS; j++){
             currentGeneration.clear();
             currentGeneration.addAll(timetableCandidates.values());  // fill current generation of candidates with the survivors from last generation
             // timetableCandidates.clear(); //TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
