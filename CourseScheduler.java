@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.*;
+import java.io.File;
+import java.io.PrintWriter;
 
 
 public class CourseScheduler {
@@ -18,11 +20,18 @@ public class CourseScheduler {
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
     private HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
-    private ArrayList<HashSet<String>> commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
+    private ArrayList<HashSet<String>> commonlyTakenTogetherCourses;
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
         coursesRunning = calculateCoursesRunning();
+        int a = 0;
+        for(int value:coursesRunning.values()){
+            a+=value;
+        }
+        System.out.println("running courses " + a);
+
+        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
@@ -154,7 +163,7 @@ public class CourseScheduler {
             } 
         }
         Data.coursesToTimeslot = coursesToTimeslot;       
-       System.out.println(coursesToTimeslot);
+       
         return initialTimetable;
 
     // list of rooms of each room type -> in Data
@@ -245,7 +254,7 @@ public class CourseScheduler {
         timetableCandidates.put(getTimetableFitness(initialTimetable), initialTimetable);
 
         // while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
-        for(int j=0; j<1000; j++){
+        for(int j=0; j<100; j++){
             currentGeneration.clear();
             currentGeneration.addAll(timetableCandidates.values());  // fill current generation of candidates with the survivors from last generation
             // timetableCandidates.clear(); //TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
@@ -262,9 +271,26 @@ public class CourseScheduler {
                 }
             }
             generationCount++;
+            printGenereation(currentGeneration);
         }
         System.out.println("Course scheduling generations: " + generationCount);
         return timetableCandidates.firstEntry().getValue();
+    }
+
+    private void printGenereation(ArrayList<ArrayList<ClassInfo>> currentGeneration){
+        try{
+             File studentFile = new File("test.csv");
+            PrintWriter output  = new PrintWriter(studentFile);
+
+            for(ArrayList<ClassInfo> a:currentGeneration){
+                output.println();
+                output.println(a);
+            }
+
+            output.println("");
+            output.close();
+        }catch(Exception e){}
+        
     }
 
     private int getTimetableFitness(ArrayList<ClassInfo> timetable) {
@@ -293,8 +319,8 @@ public class CourseScheduler {
             for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
                 time[i] = roomTime.get(x.getRoom())[i];
                 if (roomTime.get(x.getRoom())[i] == x.getTimeslot()) {
-                    return 10;
-                }
+                   return 10;
+                 }
             }
         } else {
             int time[] = { x.getTimeslot() };
@@ -338,11 +364,10 @@ public class CourseScheduler {
     }
 // TODO might have to check functionality later (after testing)
     private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
-        final int FREQUENCY_THRESHOLD = 15;
+        final int FREQUENCY_THRESHOLD = 10;
 
-        // also i changed the course into hashSet 
         HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of course, frequency
-        ArrayList<HashSet<String>> commonlyTakenTogetherCourses = new ArrayList<>();
+        ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>();
 
         for(Student student:Data.studentMap.values()){
             int start = 1; 
@@ -357,8 +382,8 @@ public class CourseScheduler {
                     else{
                         frequency.put(check, 1); 
                     } // output is an arraylist of pairs of commonly taken courses,
-                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !commonlyTakenTogetherCourses.contains(check)){ // is 20 enough?
-                        commonlyTakenTogetherCourses.add(check);
+                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(check)){ // is 20 enough?
+                        frequentlyTakenTogetherCourses.add(check);
                     }
                     check.remove(student.getCourseChoices().get(i));
                 }
@@ -366,21 +391,20 @@ public class CourseScheduler {
                 check.remove(choice);
             }
             start = 0;
-        }
-        System.out.println(commonlyTakenTogetherCourses);
-        
-        return commonlyTakenTogetherCourses;
+        }        
+        System.out.println(frequentlyTakenTogetherCourses);
+        return frequentlyTakenTogetherCourses;
     }
 
     private ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
         ArrayList<ClassInfo> mutated = new ArrayList<ClassInfo>(timetable);
         int mutationTypeSelect = random.nextInt(100);
         if (mutationTypeSelect < 50) {
-            swapClassTimeslots(timetable);
+            swapClassTimeslots(mutated);
         } else if (mutationTypeSelect < 75) {
-            swapRoom(timetable);
+            swapRoom(mutated);
         } else {
-            moveRoom(timetable);
+            moveRoom(mutated);
         }
         return mutated;
     }

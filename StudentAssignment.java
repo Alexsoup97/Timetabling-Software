@@ -125,21 +125,16 @@ public class StudentAssignment{
             ArrayList<ClassInfo> currentCourse = Data.coursesToTimeslot.get(c);
            
             if(c.equals("EMPTY")){
-                
                 timeslot++;
                 counter++;
                 break;
             }
             for(ClassInfo classes: currentCourse){
-                
-                if(classes.getTimeslot() == timeslot && !classes.isFull()){
-                   
+                if(classes.getTimeslot() == timeslot && !classes.isFull()){  
                     counter++;
                     validClasses.add(classes);
                     break;
                 }
-                
-                
             }
             timeslot++;
        }
@@ -165,11 +160,8 @@ public class StudentAssignment{
                 for(int i = 0 ; i < courses.length;i++){
                     bestTimetable[i] = courses[i];
                 }
-               
-                
             }
         }
-           
         for (int i = 0; i < size; i++) {
             findValidTimetable(courses, size - 1, n, student);
  
@@ -179,8 +171,6 @@ public class StudentAssignment{
                 String temp = courses[0];
                 courses[0] = courses[courses.length -1];
                 courses[courses.length -1] = temp;
-            
-         
             }
  
             // If size is even, swap ith
@@ -189,7 +179,6 @@ public class StudentAssignment{
                 String temp = courses[i];
                 courses[i] = courses[courses.length -1];
                 courses[courses.length -1] = temp;
-               
             }
         }
         return bestTimetable;

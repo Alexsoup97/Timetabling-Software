@@ -85,29 +85,28 @@ public class DataReader {
             int grade = Integer.valueOf(currentLine[6]);
 
             ArrayList<String> courseChoices = courseInputs(currentLine);
+
+
             ArrayList<String> alternateChoices = alternateInputs(currentLine);
             students.put(studentNumber,
                     new Student(name, gender, studentNumber, grade, courseChoices, alternateChoices));
         }
         studentData.close();
-        // fixCivicsAndCareers(students);
         return students;
-    }
-
-    private void fixCivicsAndCareers(HashMap<Integer, Student> studentMap){
-    //     Collection<Student> students = studentMap.values();
-        
-    //     for(Student student:students){
-    //         student.
-    //     }
-
     }
 
     public static ArrayList<String> courseInputs(String[] currentLine){
         ArrayList<String> courseChoices= new ArrayList<String>();       
         for (int i =0; i <11; i++){
             if(!currentLine[(3*i)+7].equals("")) {
-                courseChoices.add(currentLine[(3*i)+7]);
+                if (currentLine[(3*i)+7].equals("CHV2O1")){
+                    courseChoices.add("CIVCAR");
+                }else if(currentLine[(3*i)+7].equals("CHV2OL")){
+                    courseChoices.add("CIVCAR ESL");
+                }else if (!currentLine[(3*i)+7].contains("GLC2O")){
+                  courseChoices.add(currentLine[(3*i)+7]);
+
+                }
                 courseCounter++;
             } 
         }
@@ -136,6 +135,7 @@ public class DataReader {
             } else if (line.charAt(i) == '"' && !remove) {
                 remove = true;
             }
+
             if (line.charAt(i) == ',' && !remove) {
                 line = line.substring(0, i) + "`" + line.substring(i + 1);
             }
