@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.*;
 
+
 public class CourseScheduler {
 
     private Random random = new Random();
@@ -16,15 +17,16 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> initialTimetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
-    private HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
+    private  HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
         coursesRunning = calculateCoursesRunning();
-        System.out.println(coursesRunning);
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
+
+  
     
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
@@ -75,6 +77,7 @@ public class CourseScheduler {
             coursesToTimeslot.put(c,new ArrayList<ClassInfo>());
 
         }
+        courseCount.put("ZREMOT", 0);
         return courseCount;
     }
 
@@ -85,6 +88,7 @@ public class CourseScheduler {
         for(ClassInfo i: specialCourseTimetable){
             initialTimetable.add(i);
             specialClasses.add(i.getCourse());
+            coursesToTimeslot.get(i.getCourse()).add(i);
         }
 
         HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
@@ -100,7 +104,7 @@ public class CourseScheduler {
         roomTypeBackups.put("science/physics", "science");
         
         int[] fillOrder = generatePeriodFillOrder();
-        System.out.println(Arrays.toString(fillOrder));
+        // System.out.println(Arrays.toString(fillOrder));
         
         ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
@@ -130,8 +134,8 @@ public class CourseScheduler {
                     }
                     if(roomType.counter/fillOrder.length < roomType.rooms.size()){
                         do {
-                            System.out.println(course.code);
-                            System.out.println("Sections " + course.sections); 
+                            // System.out.println(course.code);
+                            // System.out.println("Sections " + course.sections); 
                             // System.out.println(roomType.rooms);
                             // System.out.println(roomType.counter);
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
@@ -140,7 +144,7 @@ public class CourseScheduler {
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot));
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
                     }else{ 
-                        System.out.println("Ran out of " + roomType);
+                        // System.out.println("Ran out of " + roomType);
                         // System.exit(0);
                     } 
 
@@ -149,7 +153,9 @@ public class CourseScheduler {
                     coursesToTimeslot.get(course.code).add(newClass);           
                 }
             } 
-        }       
+        }
+        Data.coursesToTimeslot = coursesToTimeslot;       
+       System.out.println(coursesToTimeslot);
         return initialTimetable;
 
     // list of rooms of each room type -> in Data
