@@ -17,7 +17,8 @@ public class CourseScheduler {
     private ArrayList<ClassInfo> initialTimetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
-    private  HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
+    private HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot = new HashMap<String, ArrayList<ClassInfo>>(); 
+    private ArrayList<HashSet<String>> commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -26,17 +27,15 @@ public class CourseScheduler {
         
     }
 
-  
-    
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
+        initialTimetable = evolveTimetable(initialTimetable);// TODO
         Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
             }
         });
         return initialTimetable;
-        // TODO return evolveTimetable(initialTimetable);
     }
 
     private HashMap<String, Integer> countStudents() {
@@ -77,7 +76,7 @@ public class CourseScheduler {
             coursesToTimeslot.put(c,new ArrayList<ClassInfo>());
 
         }
-        courseCount.put("ZREMOT", 0);
+        courseCount.put("ZREMOT", 0); 
         return courseCount;
     }
 
@@ -104,7 +103,6 @@ public class CourseScheduler {
         roomTypeBackups.put("science/physics", "science");
         
         int[] fillOrder = generatePeriodFillOrder();
-        // System.out.println(Arrays.toString(fillOrder));
         
         ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
@@ -119,6 +117,7 @@ public class CourseScheduler {
         RoomType roomType;
         String chosenRoom = null; 
         int chosenTimeslot = -1; 
+        ClassInfo newClass;
         for (CourseRunning course : sortedCoursesRunning) {
             if (!specialClasses.contains(course.code)) {
                 if(Data.courseMap.containsKey(course.code)){ 
@@ -148,7 +147,7 @@ public class CourseScheduler {
                         // System.exit(0);
                     } 
 
-                    ClassInfo newClass = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
+                    newClass = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
                     initialTimetable.add(newClass);   
                     coursesToTimeslot.get(course.code).add(newClass);           
                 }
@@ -245,7 +244,8 @@ public class CourseScheduler {
         int generationCount = 0;
         timetableCandidates.put(getTimetableFitness(initialTimetable), initialTimetable);
 
-        while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
+        // while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
+        for(int j=0; j<1000; j++){
             currentGeneration.clear();
             currentGeneration.addAll(timetableCandidates.values());  // fill current generation of candidates with the survivors from last generation
             // timetableCandidates.clear(); //TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
@@ -279,10 +279,9 @@ public class CourseScheduler {
                 time[roomTime.get(x.getRoom()).length] = x.getTimeslot();
                 roomTime.put(x.getRoom(), time);
             }
-
-            //TODO check how balanced the courses are between semesters
-
         }
+
+        //TODO check how balanced the courses are between semesters
         score += conflictsBetweenCommonlyTakenTogetherCourses(timetable); // added as part of fitness? 
 
         return score;
@@ -303,10 +302,9 @@ public class CourseScheduler {
         }
         return 0;
     }
-// lemme check one more time lol
+
     private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable){
         int conflictScoreCTTC = 0;
-        ArrayList<HashSet<String>> commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
 
         for (HashSet<String> h : commonlyTakenTogetherCourses) {
             String[] check = new String[2];
@@ -340,7 +338,7 @@ public class CourseScheduler {
     }
 // TODO might have to check functionality later (after testing)
     private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
-        final int FREQUENCY_THRESHOLD = 20;
+        final int FREQUENCY_THRESHOLD = 15;
 
         // also i changed the course into hashSet 
         HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of course, frequency
@@ -355,8 +353,8 @@ public class CourseScheduler {
                     check.add(student.getCourseChoices().get(i)); // idk i think it hshould work
                     if(frequency.containsKey(check)){ 
                         frequency.put(check, frequency.get(check) + 1); 
-                    } // 20 is just random, like if 20 people picked this pair then its considered as frequently picked
-                    else{ // 20 seems like a class size of people? idk like ex. adv and calc XD
+                    }
+                    else{
                         frequency.put(check, 1); 
                     } // output is an arraylist of pairs of commonly taken courses,
                     if(frequency.get(check) > FREQUENCY_THRESHOLD && !commonlyTakenTogetherCourses.contains(check)){ // is 20 enough?
@@ -369,6 +367,7 @@ public class CourseScheduler {
             }
             start = 0;
         }
+        System.out.println(commonlyTakenTogetherCourses);
         
         return commonlyTakenTogetherCourses;
     }
