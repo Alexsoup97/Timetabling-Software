@@ -1,59 +1,100 @@
+<<<<<<< HEAD
 "Dolly,Clementine",,null,
+=======
+"Dolly,Clementine",MPM2D1,ENG2D1,TGJ2O1,PAF2O9,BBI2O1,SNC2D1,CHC2D1,CIVCAR,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Kip,Nata",,null,
 "Jobie,Willow",,null,
 "Augustine,Clarice",,null,
 "Merlina,Vonnie",,null,
 "Carroll,Florenza",,null,
+<<<<<<< HEAD
 "Yvette,Steffi",MHF4U1,ICS3U6,ENG3U1,HSP3U1,MCV4U1,PAF3O9,SBI3U1,SCH3U1,EMPTY,
+=======
+"Yvette,Steffi",PAF3O9,MHF4U1,SCH3U1,ICS3U6,MCV4U1,HSP3U1,SBI3U1,ENG3U1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Hedy,Therine",,null,
 "Catina,Auroora",,null,
 "Jorry,Ruthann",,null,
 "Merrilee,Luisa",,null,
 "Twyla,Brandi",,null,
 "Doro,Petronilla",,null,
-"Meris,Maren",,null,
+"Meris,Maren",CHC2D1,BBI2O1,ENG2DG,MCR3U6,ICS3U6,SNC2DG,SCH3U6,MPM2DG,EMPTY,
 "Ashely,Nani",,null,
 "Vilhelmina,Agretha",PAF3O9,ICS4UE,MHF4U1,ENG3U1,MCR3U6,SPH3U1,SCH3U1,SBI3U1,EMPTY,
 "Krissie,Gaynor",,null,
+<<<<<<< HEAD
 "Blancha,Marleen",PPL1O9,ADA1O1,CGC1D1,SNC1D1,FSF1D1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
+=======
+"Blancha,Marleen",PPL1O9,FSF1D1,MTH1W1,ENG1D1,SNC1D1,ADA1O1,BTT1O1,CGC1D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Una,Fay",,null,
 "Ofella,Annmarie",,null,
-"Denice,Brittan",,null,
+"Denice,Brittan",SBI4UE,IDC4UE,IDC4U1,SCH3U1,MCR3U1,CLU3M1,ENG3UE,SPH3U1,EMPTY,
 "Kathi,Guillemette",,null,
 "Wanda,Emili",,null,
+<<<<<<< HEAD
 "Clarinda,Christean",BAF3M1,SCH3U1,SBI3U1,MCR3U1,PPL3O9,SPH3U1,ENG3U1,TEJ3M1,EMPTY,
+=======
+"Clarinda,Christean",SCH3U1,TEJ3M1,BAF3M1,MCR3U1,SBI3U1,ENG3U1,SPH3U1,PPL3O9,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Sherry,Anastasie",,null,
 "Ginnie,Ainslee",,null,
 "Andreana,Christin",,null,
 "Ethelin,Cloris",,null,
+<<<<<<< HEAD
 "Corey,Annabella",,null,
 "Joan,Gilberte",,null,
 "Esmeralda,Marigold",,null,
 "Rennie,Lynne",CGC1D1,PPL1O8,FSF1D1,MTH1W1,ADA1O1,ENG1D1,SNC1D1,TIJ1O1,EMPTY,
 "Agnesse,Stephani",AMI1O1,ENG1D1,SNC1D7,TIJ1O1,MTH1W7,FSF1D1,CGC1D1,PAI1O1,EMPTY,
+=======
+"Corey,Annabella",CHC2D1,MCR3U6,SNC2D1,SBI3U6,ICS3U6,HSP3U1,ENG2D1,FSF2D1,EMPTY,
+"Joan,Gilberte",,null,
+"Esmeralda,Marigold",,null,
+"Rennie,Lynne",TIJ1O1,PPL1O8,ENG1D1,FSF1D1,MTH1W1,SNC1D1,CGC1D1,ADA1O1,EMPTY,
+"Agnesse,Stephani",TIJ1O1,ENG1D1,AMI1O1,SNC1D7,MTH1W7,FSF1D1,CGC1D1,PAI1O1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Nessa,Christin",,null,
 "Kelley,Nonie",,null,
 "Brynne,Trenna",,null,
 "Dari,Nicolea",,null,
 "Emiline,Sean",,null,
+<<<<<<< HEAD
 "Natassia,Verla",,null,
+=======
+"Natassia,Verla",CHC2D1,HFN2O1,CIVCAR,ENG2D1,AVI2O1,BBI2O1,MPM2D1,SNC2D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Minni,Tammy",,null,
 "Marigold,Kayley",,null,
 "Kalie,Cassey",PPL1O9,ADA1O1,CGC1D1,SNC1D1,FSF1D1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
 "Marianna,Amalea",,null,
+<<<<<<< HEAD
 "Krystyna,Tiff",ENG1D1,SNC1D1,FSF1P1,HIF1O1,ADA1O1,PAI1O1,CGC1P1,MTH1W1,EMPTY,
 "Petrina,Elfrida",,null,
 "Merrill,Peria",,null,
 "Dorie,Sibilla",,null,
 "Elsie,Tish",PAI1O1,ADA1O1,ENG1D1,HIF1O1,SNC1D1,FSF1D1,CGC1D1,MTH1W1,EMPTY,
 "Shirley,Rena",PPL1O9,ADA1O1,CGC1D1,SNC1D1,FSF1P1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
+=======
+"Krystyna,Tiff",MTH1W1,SNC1D1,ENG1D1,CGC1P1,FSF1P1,HIF1O1,PAI1O1,ADA1O1,EMPTY,
+"Petrina,Elfrida",,null,
+"Merrill,Peria",,null,
+"Dorie,Sibilla",,null,
+"Elsie,Tish",MTH1W1,HIF1O1,ENG1D1,FSF1D1,SNC1D1,CGC1D1,PAI1O1,ADA1O1,EMPTY,
+"Shirley,Rena",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Bobbee,Vernice",,null,
 "Caron,Nicolette",,null,
 "Ruthe,Annora",,null,
 "Larisa,Zondra",,null,
 "Xylina,Halette",,null,
 "Tammara,Mariejeanne",,null,
+<<<<<<< HEAD
 "Jenica,Charmine",PAI1O1,ADA1O1,CGC1D1,SNC1D1,FSF1D1,ENG1D1,AVI1O1,MTH1W1,EMPTY,
+=======
+"Jenica,Charmine",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Twila,Henryetta",,null,
 "Liuka,Neda",,null,
 "Carlee,Elmira",PAI1O1,ADA1O1,CGC1D1,SNC1D1,FSF1D1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
@@ -61,7 +102,11 @@
 "Ninnetta,Liesa",,null,
 "La Verne,Jocelyn",,null,
 "Verina,Eada",,null,
+<<<<<<< HEAD
 "Estel,Adeline",ICS3U1,SCH3U1,SBI3U1,HSP3U1,MCR3U1,BAF3M1,ENG3U1,SPH3U1,EMPTY,
+=======
+"Estel,Adeline",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Hephzibah,Denise",,null,
 "Hyacinthia,Elonore",,null,
 "Margarethe,Sheela",,null,
@@ -88,13 +133,17 @@
 "Leelah,Jennee",,null,
 "Harley,Dionne",,null,
 "Chandal,Hannis",,null,
+<<<<<<< HEAD
 "Vivia,Lucie",BAF3M1,FSF3U1,SBI3U1,SCH3U1,MCR3U6,SPH3U1,ENG3U1,TEJ3M1,EMPTY,
+=======
+"Vivia,Lucie",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Sonja,Jermaine",,null,
 "Bonita,Donella",PPL1O9,FSF1D1,AVI1O1,CGC1D1,SNC1D1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
 "Kenna,Sephira",,null,
 "Henka,Nicola",,null,
 "Merilyn,Lenka",,null,
-"Rosalie,Andy",,null,
+"Rosalie,Andy",ENG3UE,HSP3U1,BMI3C1,PAF2O9,HZT4U1,MCR3U6,CLU3M1,TGV3M1,EMPTY,
 "Lavina,Helenka",,null,
 "Haley,Malia",,null,
 "Maisie,Halette",,null,
@@ -104,7 +153,7 @@
 "Fayth,Therese",,null,
 "Harmonie,Gertruda",TIJ1O1,ENG1D1,FSF1P1,AVI1O1,MTH1W1,SNC1D1,CGC1P1,PAI1O1,EMPTY,
 "Riannon,Joye",,null,
-"Lesly,Othella",,null,
+"Lesly,Othella",SNC1DG,AVI1O1,PPL1O9,ENG1DG,MTH1WG,ICS2OG,CGC1DG,FSF1DG,EMPTY,
 "Alie,Vivyan",,null,
 "Susanetta,Jane",AMI1O1,ENG1DG,FSF1D1,CGC1DG,MTH1WG,TIJ1O1,SNC1DG,PPL1O9,EMPTY,
 "Elfrieda,Oralie",,null,
@@ -124,7 +173,7 @@
 "Selle,Hazel",,null,
 "Carma,Karmen",,null,
 "Johna,Marjorie",,null,
-"Legra,Celestina",,null,
+"Legra,Celestina",MPM2D1,HFN2O1,SNC2D1,TEJ2O1,CHC2D1,ICS2O1,CIVCAR,ENG2D1,EMPTY,
 "Nelly,Wylma",,null,
 "Korry,Eveline",,null,
 "Karlotte,Letizia",,null,
@@ -150,7 +199,11 @@
 "Evey,Danette",,null,
 "Eve,Dyanne",,null,
 "Dasi,Papagena",,null,
+<<<<<<< HEAD
 "Janaye,Nari",CGC1D1,MTH1W1,PPL1O8,AVI1O1,FSF1D1,ENG1D1,SNC1D1,TIJ1O1,EMPTY,
+=======
+"Janaye,Nari",TIJ1O1,SNC1D1,MTH1W1,AVI1O1,PPL1O8,FSF1D1,CGC1D1,ENG1D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Robinett,Cate",,null,
 "Tootsie,Maritsa",,null,
 "Madelena,Fiona",,null,
@@ -187,7 +240,11 @@
 "Selina,Violetta",,null,
 "Rebecka,Kyrstin",,null,
 "Niki,Ranice",,null,
+<<<<<<< HEAD
 "Katusha,Alvinia",CGC1D1,SNC1D1,ENG1D1,FSF1O1,ADA1O1,PPL1O8,BTT1O1,MTH1W1,EMPTY,
+=======
+"Katusha,Alvinia",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Faythe,Veronica",,null,
 "Lisetta,Laryssa",,null,
 "Veronika,Cecilia",,null,
@@ -217,7 +274,11 @@
 "Jenni,Celia",,null,
 "Renie,Elset",,null,
 "Elaina,Arabele",,null,
+<<<<<<< HEAD
 "Kerrin,Dot",CGC1D1,PPL1O8,FSF1P1,HIF1O1,SNC1D1,GLE1O1,ENG1D1,MTH1W1,EMPTY,
+=======
+"Kerrin,Dot",GLE1O1,HIF1O1,SNC1D1,FSF1P1,CGC1D1,PPL1O8,ENG1D1,MTH1W1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Nicki,Twyla",,null,
 "Larine,Filide",,null,
 "Guillemette,Gabriela",,null,
@@ -232,7 +293,7 @@
 "Ophelie,Orelee",,null,
 "Elsy,Merrily",,null,
 "Rikki,Bambie",,null,
-"Drucill,Ranique",,null,
+"Drucill,Ranique",SBI4U1,MHF4U1,IDC4U1,ENG4U1,MCV4U1,PSK4U1,HFA4U1,SCH4U1,EMPTY,
 "Leodora,Dolli",,null,
 "Netta,Avivah",,null,
 "Sissy,Mel",,null,
@@ -247,7 +308,11 @@
 "Brigitta,Tory",,null,
 "Shirl,Bonny",,null,
 "Laureen,Kasey",,null,
+<<<<<<< HEAD
 "Vinni,Dulci",CHC2D1,SNC2D1,ENG1D1,FSF1O1,AVI2O1,PPL1O8,CGC1D1,MPM2D1,EMPTY,
+=======
+"Vinni,Dulci",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Jojo,Giulia",,null,
 "Melosa,Cinnamon",,null,
 "Lynne,Aili",,null,
@@ -276,7 +341,11 @@
 "Larina,Lavinia",PAI1O1,ADA1O1,CGC1D1,SNC1D1,FSF1D1,ENG1D1,BTT1O1,MTH1W1,EMPTY,
 "Nalani,Dixie",,null,
 "Minda,Brietta",,null,
+<<<<<<< HEAD
 "Sibilla,Johanna",,null,
+=======
+"Sibilla,Johanna",SNC2D1,HSP3U1,ENG2D1,SBI3U1,MPM2D1,CHC2D1,CIVCAR,ICS2O1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Rozalie,Daisie",,null,
 "Gene,Waneta",,null,
 "Melanie,Chandal",,null,
@@ -294,7 +363,11 @@
 "Constanta,Vivia",,null,
 "Justina,Tracie",,null,
 "Eudora,Jolene",,null,
+<<<<<<< HEAD
 "Sidoney,Valerie",DCO3OC,ENG3U1,MCR3U6,AMR3M1,ICS4UE,PAF3O9,SCH3U1,SPH3U1,EMPTY,
+=======
+"Sidoney,Valerie",PAF3O9,SPH3U1,ICS4UE,ENG3U1,MCR3U6,SCH3U1,DCO3OC,AMR3M1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Malinde,Zoe",,null,
 "Stoddard,Rae",,null,
 "Hollyanne,Abby",,null,
@@ -326,8 +399,13 @@
 "Sharon,Tory",,null,
 "Aveline,Nicki",,null,
 "Tatiania,Dominga",,null,
+<<<<<<< HEAD
 "Denyse,Jacenta",ENG1D1,MTH1W7,SNC1D7,CGC1D1,FSF1D1,PAI1O1,BTT1O1,AVI1O1,EMPTY,
 "Lacy,Anjanette",CGC1DG,MTH1WG,ENG1DG,TIJ1O1,ADA1O1,FSF1D1,SNC1DG,PPL1O9,EMPTY,
+=======
+"Denyse,Jacenta",CGC1D1,BTT1O1,AVI1O1,SNC1D7,MTH1W7,FSF1D1,PAI1O1,ENG1D1,EMPTY,
+"Lacy,Anjanette",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Manya,Ester",,null,
 "Sibley,Dalila",,null,
 "Consuela,Carleen",,null,
@@ -384,8 +462,13 @@
 "Neely,Dorris",,null,
 "Lorilyn,Domeniga",,null,
 "Kellen,Nona",,null,
+<<<<<<< HEAD
 "Tiffy,Kalina",TIJ1O1,SNC1D1,AVI1O1,ENG1D1,MTH1W1,FSF1D1,CGC1D1,PPL1O9,EMPTY,
 "Mada,Aigneis",AWC2O1,ENG2D1,SNC2P1,CIVCAR,AVI2O1,BBI2O1,MPM2D1,CHC2P1,EMPTY,
+=======
+"Tiffy,Kalina",,null,
+"Mada,Aigneis",SNC2P1,CIVCAR,BBI2O1,ENG2D1,CHC2P1,MPM2D1,AWC2O1,AVI2O1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Herta,Roxana",,null,
 "Zia,Dasi",,null,
 "Mariann,Nevsa",,null,
@@ -452,7 +535,7 @@
 "Hannie,Annamaria",,null,
 "Angela,Tildie",,null,
 "Tess,Fredra",,null,
-"Fayina,Laverna",,null,
+"Fayina,Laverna",CHC2D1,CIVCAR,SNC2D1,ENG2D1,AVI2O1,MPM2D1,AWC2O1,BBI2O1,EMPTY,
 "Teresa,Tiffi",,null,
 "Felipa,Kellina",,null,
 "Frannie,Rhonda",,null,
@@ -514,8 +597,13 @@
 "Ranee,Lisbeth",TIJ1O1,SNC1D1,AVI1O1,ENG1D1,MTH1W1,FSF1D1,CGC1D1,PAI1O1,EMPTY,
 "Viva,Nicolette",MTH1W1,CGC1D1,FSF1P1,HIF1O1,ADA1O1,ENG1D1,PPL1O8,SNC1D1,EMPTY,
 "Ag,Zitella",,null,
+<<<<<<< HEAD
 "Marissa,Scarlet",PAF3O9,PPL3O9,ENG3U1,HSP3U1,MCR3U1,SCH3U1,SBI3U1,CLU3M1,EMPTY,
 "Latrena,Debor",SNC1D1,ADA1O1,PPL1O8,MTH1W1,CGC1D1,FSF1D2,BTT1O1,ENG1D1,EMPTY,
+=======
+"Marissa,Scarlet",,null,
+"Latrena,Debor",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Emmalyn,Joella",,null,
 "Becki,Cherie",,null,
 "Sara,Francene",MTH1W1,CGC1D1,AVI1O1,HIF1O1,FSF1D1,ENG1D1,PPL1O8,SNC1D1,EMPTY,
@@ -568,14 +656,23 @@
 "Roseanna,Wanids",,null,
 "Lenora,Jessamyn",,null,
 "Celestia,Madelina",,null,
+<<<<<<< HEAD
 "Gnni,Damaris",CGC1DG,ENG1DG,BTT1O1,TIJ1O1,MTH1WG,FSF1D1,SNC1DG,PAI1O1,EMPTY,
 "Ciel,Aridatha",MTH1W1,CGC1D1,FSF1D1,ICS2O1,ADA1O1,ENG1D1,PPL1O8,SNC1D1,EMPTY,
+=======
+"Gnni,Damaris",,null,
+"Ciel,Aridatha",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Janelle,Davine",,null,
 "Cathleen,Tomasina",,null,
 "Aimee,Saudra",,null,
 "Ina,Alfreda",,null,
 "Kassey,Gwendolen",,null,
+<<<<<<< HEAD
 "Denise,Blanche",GLE1O1,ADA1O1,SNC1D7,ENG1D1,MTH1W7,PPL1O9,CGC1D1,FSF1D1,EMPTY,
+=======
+"Denise,Blanche",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Marjorie,Lelah",,null,
 "Caprice,Colline",,null,
 "Alena,Kellie",,null,
@@ -600,8 +697,13 @@
 "Selina,Nananne",,null,
 "Gail,Tabitha",,null,
 "Maribel,Kimberley",,null,
+<<<<<<< HEAD
 "Barbaraanne,Collie",MTH1W1,ADA1O1,ENG1D1,HIF1O1,FSF1P1,CGC1D1,PPL1O8,SNC1D1,EMPTY,
 "Josselyn,Zelma",ICS3U1,PPL3O9,AVI2O1,ENG3U1,MCR3U1,BAF3M1,SBI3U1,SCH3U1,EMPTY,
+=======
+"Barbaraanne,Collie",,null,
+"Josselyn,Zelma",ENG3U1,MCR3U1,SBI3U1,ICS3U1,AVI2O1,SCH3U1,BAF3M1,PPL3O9,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Tobye,Marthena",,null,
 "Hannis,Sean",,null,
 "Ninetta,Harli",,null,
@@ -619,7 +721,11 @@
 "Babara,Junina",,null,
 "Marena,Amelia",,null,
 "Dottie,Carri",,null,
+<<<<<<< HEAD
 "Matti,Isahella",BAF3M1,SCH3U1,ENG3U1,SPH3U1,PPL3O9,MCR3U1,CLU3M1,SBI3U1,EMPTY,
+=======
+"Matti,Isahella",MCR3U1,SPH3U1,BAF3M1,ENG3U1,SBI3U1,SCH3U1,CLU3M1,PPL3O9,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Anni,Corina",,null,
 "Christie,Thia",,null,
 "Dorine,Mureil",,null,
@@ -627,11 +733,15 @@
 "Joceline,Larine",,null,
 "Raynell,Aggy",BTT1O1,FSF1P1,MTH1W1,AVI1O1,ENG1D1,CGC1D1,PPL1O8,SNC1D1,EMPTY,
 "Fifine,Malissa",,null,
-"Min,Gay",,null,
+"Min,Gay",SCH3U1,HSP3U1,TEJ3M1,MCR3U1,ICS3U1,ENG3U1,SPH3U1,BAF3M1,EMPTY,
 "Prisca,Cristi",,null,
 "Brinn,Alla",,null,
 "Joete,Jenny",,null,
+<<<<<<< HEAD
 "Brunhilde,Kerianne",CGC1D1,FSF1P1,SNC1D7,TIJ1O1,MTH1W7,GLE1O1,ENG1D1,PPL1O9,EMPTY,
+=======
+"Brunhilde,Kerianne",GLE1O1,CGC1D1,TIJ1O1,SNC1D7,MTH1W7,FSF1P1,ENG1D1,PPL1O9,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Elladine,Gerri",,null,
 "Windy,Anna-Diane",PPL1O9,SNC2D1,ENG1D1,MPM2D2,CIVCAR,BBI2O1,CHC2D1,ESLEO1,EMPTY,
 "Storm,Essa",,null,
@@ -684,7 +794,7 @@
 "Dulci,Aviva",,null,
 "Tildie,Clare",,null,
 "Peria,Cristin",,null,
-"Ainsley,Una",,null,
+"Ainsley,Una",ENG2D1,MPM2D1,SNC2D1,CHC2D1,BBI2O1,ICS2O1,BAF3M1,AVI2O1,EMPTY,
 "Clarissa,Frederique",,null,
 "Malvina,Freddie",,null,
 "Dorotea,Phyllys",,null,
@@ -760,7 +870,11 @@
 "Merridie,Alaine",,null,
 "Lesly,Lucy",,null,
 "Harriot,Steffane",,null,
+<<<<<<< HEAD
 "Bernelle,Orelee",PPL4O9,ENG4U1,MHF4U1,PSK4U1,SBI4U1,HFA4U1,SCH4U1,SPH4U1,EMPTY,
+=======
+"Bernelle,Orelee",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Darda,Tani",,null,
 "Darcey,Damara",,null,
 "Katherina,Sabine",,null,
@@ -769,8 +883,13 @@
 "Betteann,Belita",,null,
 "Enrichetta,Hildagard",GLE2O1,ENG2D1,SNC2P1,CHC2P1,HFN2O1,AWC2O1,MFM2P1,CIVCAR,EMPTY,
 "Winne,Avrit",,null,
+<<<<<<< HEAD
 "Gabey,Denys",AVI1O1,MTH1W1,HIF1O1,ENG1D1,FSF1D1,PPL1O9,CGC1D1,SNC1D1,EMPTY,
 "Verena,Karalee",BBB4M1,MCR3U6,CIVCAR,BAF3M1,SCH4U1,ENG3U1,SCH3U1,SBI3U1,EMPTY,
+=======
+"Gabey,Denys",,null,
+"Verena,Karalee",SCH4U1,ENG3U1,CIVCAR,SBI3U1,MCR3U6,SCH3U1,BBB4M1,BAF3M1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Austine,Rora",,null,
 "Carlie,Robbyn",,null,
 "Vivia,Ezmeralda",,null,
@@ -881,7 +1000,11 @@
 "Jemmy,Gabey",,null,
 "Avrit,Elnora",,null,
 "Larisa,Emyle",,null,
+<<<<<<< HEAD
 "Kore,Ashia",AMI1O1,MTH1W1,ENG1D1,PPL1O9,CGC1D1,SNC1D1,AVI1O1,FSF1D1,EMPTY,
+=======
+"Kore,Ashia",CGC1D1,SNC1D1,PPL1O9,ENG1D1,AMI1O1,MTH1W1,AVI1O1,FSF1D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Daisi,Drusy",,null,
 "Kara,Adriena",,null,
 "Kaitlin,Rochella",,null,
@@ -906,7 +1029,11 @@
 "Emlynne,Marisa",,null,
 "Mattie,Selma",,null,
 "Kynthia,Raychel",,null,
+<<<<<<< HEAD
 "Madelene,Leoline",BAT4M1,MCR3U1,SBI3U1,ENG3UE,HFA4U1,FSF4U1,SCH3U1,SPH3U1,EMPTY,
+=======
+"Madelene,Leoline",BAT4M1,MCR3U1,HFA4U1,SBI3U1,SPH3U1,SCH3U1,ENG3UE,FSF4U1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Rhody,Briana",,null,
 "Nadia,Lynnette",,null,
 "Gae,Billie",BAF3M1,FSF3U1,SCH3U1,HFC3M1,MCR3U1,PAF3O9,ENG3U1,SPH3U1,EMPTY,
@@ -1055,7 +1182,7 @@
 "Charline,Sheela",,null,
 "Henryetta,Sibby",,null,
 "Lorraine,Averyl",,null,
-"Darci,Blinny",,null,
+"Darci,Blinny",ENG2D1,CHC2D1,TIJ1O1,BBI2O1,CIVCAR,MPM2D1,SNC2D1,ICS2O1,EMPTY,
 "Ninette,Nina",,null,
 "Cara,Ingaberg",,null,
 "Suki,Prudence",,null,
@@ -1063,7 +1190,11 @@
 "Candis,Codee",AWL3M1,MHF4U1,ENG3U1,DCO3OC,BMI3C1,TGV3M1,SCH3U1,AMR3M1,EMPTY,
 "Angela,Cecilla",,null,
 "Tessa,Fay",,null,
+<<<<<<< HEAD
 "Josey,Betti",SPH3U1,ENG2D1,BTT1O1,FSF1O1,MPM2D1,MCR3U1,SCH3U1,SBI3U1,EMPTY,
+=======
+"Josey,Betti",FSF1O1,SCH3U1,SBI3U1,SPH3U1,MCR3U1,BTT1O1,ENG2D1,MPM2D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Lacie,Gretel",,null,
 "Tansy,Ashely",,null,
 "Georgianne,Tiphanie",,null,
@@ -1136,7 +1267,7 @@
 "Essa,Murial",,null,
 "Sunshine,Karna",,null,
 "Prudence,Harriet",,null,
-"Cinderella,Amabelle",,null,
+"Cinderella,Amabelle",CLU3M1,HSP3U1,TGV3M1,ENG3U1,SCH3U1,MCR3U1,TEJ3M1,SPH3U1,EMPTY,
 "Glynnis,Arly",,null,
 "Pearle,Griselda",,null,
 "Kinna,Mitzi",,null,
@@ -1169,8 +1300,13 @@
 "Simona,Marga",,null,
 "Giulia,Ferne",,null,
 "Kira,Marybeth",,null,
+<<<<<<< HEAD
 "Darice,Kessiah",MTH1W1,SNC1D1,PPL1O8,HIF1O1,ENG1D1,ADA1O1,CGC1D1,FSF1D1,EMPTY,
 "Cassie,Orelia",TIJ1O1,CGC1D1,FSF1D1,ICS2O1,MTH1W1,SNC1D1,ENG1D1,PPL1O9,EMPTY,
+=======
+"Darice,Kessiah",,null,
+"Cassie,Orelia",TIJ1O1,MTH1W1,FSF1D1,SNC1D1,PPL1O9,CGC1D1,ENG1D1,ICS2O1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Alvera,Gabriela",,null,
 "Anstice,Elsa",,null,
 "Cheri,Shayla",,null,
@@ -1260,11 +1396,19 @@
 "Marne,Tammie",,null,
 "Darryl,Tresa",BTT1O1,MTH1W1,CGC1D1,SNC1D1,ENG1D1,FSF1D2,PPL1O8,AVI1O1,EMPTY,
 "Morissa,Kerstin",,null,
+<<<<<<< HEAD
 "Ulrikaumeko,Cornie",BTT1O1,ENG1D1,FSF1P1,TIJ1O1,MTH1W7,CGC1D1,SNC1D7,PPL1O9,EMPTY,
 "Dayle,Dayle",BBB4M1,ENG4U1,MHF4U1,BOH4M1,MCV4U1,SPH3U1,SCH4U1,SCH3U1,EMPTY,
 "Annemarie,Mirelle",AVI1O1,ENG1D1,SNC1D7,TIJ1O1,MTH1W7,FSF1D1,CGC1D1,PPL1O9,EMPTY,
 "Gizela,Pippy",SNC1D1,FSF1P1,MTH1W1,PPL1O9,CGC1D1,ADA1O1,BBI2O1,ENG1D1,EMPTY,
 "Sibeal,Adella",SNC1D1,ENG1D1,AVI1O1,TIJ1O1,MTH1W1,FSF1D1,CGC1D1,PAI1O1,EMPTY,
+=======
+"Ulrikaumeko,Cornie",,null,
+"Dayle,Dayle",,null,
+"Annemarie,Mirelle",,null,
+"Gizela,Pippy",,null,
+"Sibeal,Adella",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Jacquelyn,Lola",,null,
 "Darsie,Gizela",ENG3U1,ICS3U6,MCR3U6,BAF3M1,FSF3U1,SCH3U1,CLU3M1,SPH3U1,EMPTY,
 "Bernette,Carmencita",,null,
@@ -1439,7 +1583,11 @@
 "Bell,Naomi",,null,
 "Mariejeanne,Rosie",,null,
 "Vitoria,Aubry",,null,
+<<<<<<< HEAD
 "Gavra,Teresita",SPH3U1,MCR3U1,ENG3U1,HFC3M1,PPL3O9,PAF3O9,SCH3U1,SBI3U1,EMPTY,
+=======
+"Gavra,Teresita",,null,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Angelique,Demetris",,null,
 "Helenka,Jessy",,null,
 "Feliza,Electra",,null,
@@ -1502,14 +1650,18 @@
 "Tabina,Carlynn",,null,
 "Ruthanne,Ambur",CGC1DG,ENG1DG,AVI1O1,TIJ1O1,MTH1WG,FSF1DG,SNC1DG,PAI1O1,EMPTY,
 "Gabriela,Maxy",,null,
+<<<<<<< HEAD
 "Gayel,Coleen",AMI1O1,PPL1O8,ENG1D1,MTH1W1,CGC1D1,SNC1D1,AVI1O1,FSF1D1,EMPTY,
+=======
+"Gayel,Coleen",MTH1W1,PPL1O8,AMI1O1,SNC1D1,CGC1D1,ENG1D1,AVI1O1,FSF1D1,EMPTY,
+>>>>>>> 2b7bf7b860c010bc41078f3d56bb2c7e07b0795f
 "Koral,Elisabeth",,null,
 "Anneliese,Kerstin",,null,
 "Iseabal,Regina",,null,
 "Chiquita,Coraline",,null,
 "Blanch,Cody",,null,
 "Junina,Gabriel",,null,
-"Crin,Lynette",,null,
+"Crin,Lynette",ENG2D1,SNC2D1,BBI2O1,HFN2O1,CHC2D1,MPM2D1,BAF3M1,AVI2O1,EMPTY,
 "Hanni,Nedda",,null,
 "Jyoti,Monah",,null,
 "Margit,Joanie",,null,
@@ -1519,7 +1671,7 @@
 "Delly,Brenn",,null,
 "Jolynn,Joleen",PPL1O9,FSF1P1,HIF1O1,SNC1D1,MTH1W1,ADA1O1,CGC1D1,ENG1D1,EMPTY,
 "Aime,Justinn",,null,
-"Helene,Afton",,null,
+"Helene,Afton",ENG2D1,SNC2D1,BBI2O1,MPM2D1,CIVCAR,CHC2D1,PAF3O9,ICS2O1,EMPTY,
 "Carmon,Dode",,null,
 "Fayth,Linnet",,null,
 "Sher,Janice",,null,
