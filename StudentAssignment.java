@@ -14,7 +14,7 @@ public class StudentAssignment{
     
     public StudentAssignment(ArrayList<ClassInfo> timetable){
         this.timetable = timetable;
-        System.out.println(fillTimetable());
+        System.out.println("COMPLETE TIMETABLES:" + fillTimetable());
         
         //getStudentTimetableFitness(new ArrayList<Student>(Data.studentMap.values()));
        

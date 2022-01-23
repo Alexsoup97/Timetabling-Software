@@ -22,6 +22,7 @@ public class UserInterface {
         frame.setSize(900, 900);
         frame.setLocationRelativeTo(null); //start the frame in the center of the screen
         frame.setResizable(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 
     }
