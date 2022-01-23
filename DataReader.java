@@ -65,7 +65,6 @@ public class DataReader {
             String type = currentLine[3];
             int maxSize = Integer.parseInt(currentLine[8]);
             courses.put(courseCode, new Course(courseCode, courseTitle, grade, type, maxSize));
-
         }
         return courses;
     }
@@ -85,7 +84,8 @@ public class DataReader {
             int grade = Integer.valueOf(currentLine[6]);
 
             ArrayList<String> courseChoices = courseInputs(currentLine);
-            ArrayList<String> alternateChoices = alternateInputs(currentLine);
+            ArrayList<String> alternateChoices = null;
+            //ArrayList<String> alternateChoices = alternateInputs(currentLine);
             students.put(studentNumber,new Student(name, gender, studentNumber, grade, courseChoices, alternateChoices));
         }
         studentData.close();
@@ -93,16 +93,17 @@ public class DataReader {
     }
 
     public static ArrayList<String> courseInputs(String[] currentLine){
-        ArrayList<String> courseChoices= new ArrayList<String>();       
+        ArrayList<String> courseChoices= new ArrayList<String>();      
+        int courseIndex; 
         for (int i =0; i <11; i++){
-            if(!currentLine[(3*i)+7].equals("")) {
-                if (currentLine[(3*i)+7].equals("CHV2O1")){
-                    courseChoices.add("CIVCAR");
-                }else if(currentLine[(3*i)+7].equals("CHV2OL")){
+            courseIndex = (3*i)+7;
+            if(!currentLine[courseIndex].equals("")) {
+                if (currentLine[courseIndex].equals("CHV2OL")){
                     courseChoices.add("CIVCAR ESL");
-                }else if (!currentLine[(3*i)+7].contains("GLC2O")){
-                  courseChoices.add(currentLine[(3*i)+7]);
-
+                }else if(currentLine[courseIndex].contains("CHV2O")){
+                    courseChoices.add("CIVCAR");
+                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT"))){
+                    courseChoices.add(currentLine[courseIndex]);
                 }
                 courseCounter++;
             } 
@@ -113,8 +114,8 @@ public class DataReader {
     public static ArrayList<String> alternateInputs(String[] currentLine) {
         ArrayList<String> alternateChoices = new ArrayList<String>();
         for (int i = 0; i < 3; i++) {
-            if(!currentLine[(3*i)+40].equals("")) {
-                  alternateChoices.add(currentLine[(3*i)+40]);
+            if(!currentLine[(3*i)+41].equals("")) {
+                  alternateChoices.add(currentLine[(3*i)+41]);
             } 
             // alternateChoices[i]= currentLine[(3*i)+42];
             // if (alternateCourses.containsKey(alternateChoices[i])){
