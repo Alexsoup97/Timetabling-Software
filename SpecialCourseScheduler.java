@@ -2,28 +2,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SpecialCourseScheduler { 
-
+    private ArrayList<ClassInfo> specialCourses = new ArrayList<ClassInfo>();
     SpecialCourseScheduler() {
     }
 
     public ArrayList<ClassInfo> getSpecialCourseTimetable(HashMap<String, Integer> numberOfClasses) {
-        ArrayList<ClassInfo> specialCourses = new ArrayList<ClassInfo>();
+        
         boolean fixed = true;
         int timeslot = 0;
         String room = "";
 
         for (String s : numberOfClasses.keySet()) {
-            if (s.equals("MHF4U1") || s.equals("MHF4UE")) {
-            specialCourses.add(addRooms(s,numberOfClasses,0,"classroom"));
+            if (s.contains("MHF4U")) {
+                addRooms(s,numberOfClasses,0,"classroom");
                 // calculas
-            } else if (s.contains("MCV4U1") || s.contains("MCV4UE")) {
-                specialCourses.add(addRooms(s,numberOfClasses,4,"classroom"));
+            } else if (s.contains("MCV4U")) {
+                //TODO make constants
+                addRooms(s,numberOfClasses,4,"classroom");
                 // Ap Sciences
-            } else if (s.contains("SBI4UE") || s.contains("SCH4UE") || s.contains("SPH4UE")) {
-                specialCourses.add(addRooms(s,numberOfClasses,0,"science"));
+            } else if (s.equals("SBI4UE") || s.equals("SCH4UE") || s.equals("SPH4UE")) {
+                addRooms(s,numberOfClasses,0,"science");
                 // art protfolio semseter 2
-            } else if (s.contains("AEA4O")) {
-                specialCourses.add(addRooms(s,numberOfClasses,4,"art"));
+            } else if (s.equals("AEA4O")) {
+                addRooms(s,numberOfClasses,4,"art");
                 // co op
             } else if (s.contains("COP")) {
                 for (int i = 0; i < numberOfClasses.get(s); i++) {
@@ -50,7 +51,7 @@ public class SpecialCourseScheduler {
         return specialCourses;
     }
 
-    public ClassInfo addRooms(String s, HashMap<String, Integer> numberOfClasses,int semester,String roomtype){
+    public void addRooms(String s, HashMap<String, Integer> numberOfClasses,int semester,String roomtype){
         String room="";
         int time=0;
         int timeslot=0;
@@ -61,7 +62,7 @@ public class SpecialCourseScheduler {
             room = Data.roomTypeMap.get(roomtype).get(time / 4);
             timeslot = time % 4+ semester;
             Data.roomMap.get(room).setUnavailable(timeslot);
+            specialCourses.add(new ClassInfo(room,timeslot,s,fixed));
         }
-        return new ClassInfo(room,timeslot,s,fixed);
     }
 }

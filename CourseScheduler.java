@@ -38,7 +38,7 @@ public class CourseScheduler {
 
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
-        initialTimetable = evolveTimetable(initialTimetable);// TODO
+       // initialTimetable = evolveTimetable(initialTimetable);// TODO
         Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
@@ -66,7 +66,7 @@ public class CourseScheduler {
     }
 
     private HashMap<String, Integer> calculateCoursesRunning() {
-        double threshold = 1.00; 
+        double threshold = 0.75; 
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
         for (String c : studentCount.keySet()) {
             double maxClassSize;
@@ -148,7 +148,7 @@ public class CourseScheduler {
                             // System.out.println(roomType.counter);
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
                             chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
-                            roomType.counter++;
+                            roomType.counter++; 
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot));
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
                     }else{ 
@@ -366,36 +366,36 @@ public class CourseScheduler {
     private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
         final int FREQUENCY_THRESHOLD = 10;
 
-        HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of course, frequency
+        HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of courses, frequency
         ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>();
 
         for(Student student:Data.studentMap.values()){
             int start = 1; 
             for(String choice : student.getCourseChoices()){
-                HashSet<String> check = new HashSet<>();
-                check.add(choice); 
                 for (int i = start; i < student.getCourseChoices().size(); i++) { // create all PAIRS of chosen courses
-                    check.add(student.getCourseChoices().get(i)); // idk i think it hshould work
+                    HashSet<String> check = new HashSet<>();
+                    check.add(choice);
+                    check.add(student.getCourseChoices().get(i)); 
                     if(frequency.containsKey(check)){ 
                         frequency.put(check, frequency.get(check) + 1); 
                     }
                     else{
                         frequency.put(check, 1); 
                     } // output is an arraylist of pairs of commonly taken courses,
-                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(check)){ // is 20 enough?
+                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(check)){
                         frequentlyTakenTogetherCourses.add(check);
                     }
+                    check.remove(choice);
                     check.remove(student.getCourseChoices().get(i));
                 }
-                start += 1; 
-                check.remove(choice);
+                start += 1;     
             }
-            start = 0;
+            start = 1;
         }        
         System.out.println(frequentlyTakenTogetherCourses);
         return frequentlyTakenTogetherCourses;
     }
-
+    // can check mutations now
     private ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
         ArrayList<ClassInfo> mutated = new ArrayList<ClassInfo>(timetable);
         int mutationTypeSelect = random.nextInt(100);
@@ -408,30 +408,57 @@ public class CourseScheduler {
         }
         return mutated;
     }
-
+// course obj
     // swap the timeslots of two random classes
     private void swapClassTimeslots(ArrayList<ClassInfo> timetable) {
-        int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable);
+        int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable); // not fixed, checked
         int swap = timetable.get(classesToSwap[0]).getTimeslot();
         timetable.get(classesToSwap[0]).setTimeslot(timetable.get(classesToSwap[1]).getTimeslot());
         timetable.get(classesToSwap[1]).setTimeslot(swap);
+        // TODO could check commonly take together courses, etc.
     }
 
     // swap the room of two random classes
     private void swapRoom(ArrayList<ClassInfo> timetable) {
-        int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable);
+        int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable); // not fixed
+        
         String swap = timetable.get(classesToSwap[0]).getRoom();
-        timetable.get(classesToSwap[0]).setRoom(timetable.get(classesToSwap[1]).getRoom());
+        String swap1 = timetable.get(classesToSwap[1]).getRoom();
+
+        boolean equal = checkRoomType(timetable, classesToSwap[0], classesToSwap[1]);
+        while(equal != true){
+            classesToSwap = getTwoUniqueUnfixedClasses(timetable);
+            equal = checkRoomType(timetable, classesToSwap[0], classesToSwap[1]);
+        }
+
+        timetable.get(classesToSwap[0]).setRoom(swap1);
         timetable.get(classesToSwap[1]).setRoom(swap);
     }
-
+    
+    private boolean checkRoomType(ArrayList<ClassInfo> timetable, int courseIndex1, int courseIndex2){
+        String swapRoomType = Data.courseMap.get(timetable.get(courseIndex1).getCourse()).getRoomType();
+        String swapRoomType1 = Data.courseMap.get(timetable.get(courseIndex2).getCourse()).getRoomType();
+        if(swapRoomType.equals(swapRoomType1)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     // move a random class to a random other room that is suitable
     private void moveRoom(ArrayList<ClassInfo> timetable) {
         int classIndex = random.nextInt(timetable.size());
         while (timetable.get(classIndex).isFixed() == true) {
             classIndex = random.nextInt(timetable.size());
         }
-        // where do I check the avaliable rooms?
+        String currentRoomType = Data.courseMap.get(timetable.get(classIndex).getCourse()).getRoomType();
+        for (Room r : Data.roomMap.values()) {
+            if(r.getRoomType().equals(currentRoomType) && r.isAvailable(timetable.get(classIndex).getTimeslot()) == true && r.getRoomNum() != timetable.get(classIndex).getRoom()){
+                timetable.get(classIndex).setRoom(r.getRoomNum());
+                r.setAvailability(timetable.get(classIndex).getTimeslot(), false);
+                break;
+            }
+        }
     }
 
     private int[] getTwoUniqueUnfixedClasses(ArrayList<ClassInfo> timetable){

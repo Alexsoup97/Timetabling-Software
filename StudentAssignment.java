@@ -14,9 +14,10 @@ public class StudentAssignment{
     
     public StudentAssignment(ArrayList<ClassInfo> timetable){
         this.timetable = timetable;
-        fillTimetable();
+        System.out.println(fillTimetable());
+        
         //getStudentTimetableFitness(new ArrayList<Student>(Data.studentMap.values()));
-        System.out.println("Test");
+       
         try{
             outputCSV();
         }catch(Exception e){e.printStackTrace();}
@@ -86,7 +87,8 @@ public class StudentAssignment{
     //     }
     // }
 
-    public void fillTimetable(){
+    public int fillTimetable(){
+        int counter = 0;
         for(Student s: Data.studentMap.values()){
             ArrayList<String> studentChoices= s.getCourseChoices();
             String[] studentChoicesArray = new String[9]; 
@@ -101,12 +103,22 @@ public class StudentAssignment{
                 }
             }
   
-            String[] currentTimetable = findValidTimetable(studentChoicesArray, 9, 9,s.getStudentNumber() );
+            String[] currentTimetable = findValidTimetable(studentChoicesArray, 9, 9,s.getStudentNumber());
           
             bestTimetable = null;
          
             if(currentTimetable != null){
-
+                counter++;
+                for(int i = 0; i < currentTimetable.length; i++){
+                    if(!currentTimetable[i].equals("EMPTY")){
+                        for(ClassInfo c: Data.coursesToTimeslot.get(currentTimetable[i])){
+                            if(c.getTimeslot() == i){
+                                c.addStudents(s.getStudentNumber());
+                                break;
+                            }
+                        }
+                    }
+                }
                 s.setTimetable(currentTimetable);     
             }else{
                 s.setTimetable(temp);
@@ -115,12 +127,12 @@ public class StudentAssignment{
            
     
         }
+        return counter;
     }
 
     public static boolean isValid(String[] choices, Integer student){
         int timeslot = 0;
         int counter = 0;
-        ArrayList<ClassInfo> validClasses = new ArrayList<ClassInfo>();
         for(String c: choices){
             ArrayList<ClassInfo> currentCourse = Data.coursesToTimeslot.get(c);
            
@@ -130,9 +142,10 @@ public class StudentAssignment{
                 break;
             }
             for(ClassInfo classes: currentCourse){
+              
                 if(classes.getTimeslot() == timeslot && !classes.isFull()){  
                     counter++;
-                    validClasses.add(classes);
+                    
                     break;
                 }
             }
@@ -141,9 +154,7 @@ public class StudentAssignment{
        
        if(counter == choices.length){
           
-           for(ClassInfo c : validClasses){
-                c.addStudents(student);
-           }
+
            return true;
        }else{
            return false;
@@ -157,30 +168,34 @@ public class StudentAssignment{
         if (size == 1 ){
             if(isValid(courses, student)){
                 bestTimetable = new String[9];
+                
                 for(int i = 0 ; i < courses.length;i++){
                     bestTimetable[i] = courses[i];
                 }
             }
         }
-        for (int i = 0; i < size; i++) {
-            findValidTimetable(courses, size - 1, n, student);
- 
-            // if size is odd, swap 0th i.e (first) and
-            // (size-1)th i.e (last) element
-            if (size % 2 == 1) {
-                String temp = courses[0];
-                courses[0] = courses[courses.length -1];
-                courses[courses.length -1] = temp;
+       
+            for (int i = 0; i < size; i++) {
+                findValidTimetable(courses, size - 1, n, student);
+     
+                // if size is odd, swap 0th i.e (first) and
+                // (size-1)th i.e (last) element
+                if (size % 2 == 1) {
+                    String temp = courses[0];
+                    courses[0] = courses[courses.length -1];
+                    courses[courses.length -1] = temp;
+                }
+     
+                // If size is even, swap ith
+                // and (size-1)th i.e last element
+                else {
+                    String temp = courses[i];
+                    courses[i] = courses[courses.length -1];
+                    courses[courses.length -1] = temp;
+                }
             }
- 
-            // If size is even, swap ith
-            // and (size-1)th i.e last element
-            else {
-                String temp = courses[i];
-                courses[i] = courses[courses.length -1];
-                courses[courses.length -1] = temp;
-            }
-        }
+        
+        
         return bestTimetable;
     }
 

@@ -57,6 +57,10 @@ class ClassInfo {
         students.add(student);
     }
 
+    public ArrayList<Integer> getStudents(){
+        return students;
+    }
+
     public String getRoom() {
         return this.room;
     }
