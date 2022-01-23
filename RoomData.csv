@@ -1,60 +1,34 @@
-1012,gym
-1013,weight room
-1014,family studies
-1024A,gym
-1024B,gym
-1031,science/biology
-1032,technology room
+2030,alt ed
+PB7,alt ed
+2004,art
+2005,art
+Cafeteria,cafeteria
 1033,classroom
 1034,classroom
 1035,classroom
 1036,classroom
-1037,technology room
-1040,special education
-1041,special education
-1042,special education
-1043,special education
-1044,science
-1050,science
-1055,science
 1059,classroom
 1059A,classroom
 1060,classroom
 1061,classroom
 1062,classroom
 1063,classroom
-1065,steam room
-1069,music
-1070,drama
-2001D,library classroom
-2002,technology room
-2002A,technology room
-2004,art
-2005,art
 2006,classroom
 2007,classroom
 2008,classroom
 2009,classroom
 2010,classroom
 2010A,classroom
-2011,science
-2018,science
-2023,science
 2024,classroom
 2024A,classroom
 2025,classroom
 2026,classroom
 2027,classroom
 2028,classroom
-2030,alt ed
 2034,classroom
 2035,classroom
 2036,classroom
 2037,classroom
-2038,computer science
-2038A,computer science
-2044,science/physics
-2001,library/co-op
 PB1,classroom
 PB10,classroom
 PB11,classroom
@@ -63,7 +37,33 @@ PB3,classroom
 PB4,classroom
 PB5,classroom
 PB6,classroom
-PB7,alt Ed
 PB8,classroom
 PB9,classroom
-0,Cafeteria
+2038,computer sci
+2038A,computer sci
+1070,drama
+1014,family studies
+1012,gym
+1024A,gym
+1024B,gym
+2001D,library classroom
+2001,library
+1069,music
+1044,science
+1050,science
+1055,science
+2011,science
+2018,science
+2023,science
+1031,science-biology
+2044,science-physics
+1040,special education
+1041,special education
+1042,special education
+1043,special education
+1065,steam room
+1032,technology room
+1037,technology room
+2002,technology room
+2002A,technology room
+1013,weight room

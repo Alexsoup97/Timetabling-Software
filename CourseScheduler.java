@@ -38,12 +38,15 @@ public class CourseScheduler {
 
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
-        initialTimetable = evolveTimetable(initialTimetable);// TODO
+        // initialTimetable = evolveTimetable(initialTimetable);// TODO
         Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
             }
         });
+        for(ClassInfo i:initialTimetable){
+            System.out.println(i);
+        }
         return initialTimetable;
     }
 
@@ -111,7 +114,10 @@ public class CourseScheduler {
         roomTypeBackups.put("science/biology", "science");
         roomTypeBackups.put("science/physics", "science");
         
-        int[] fillOrder = generatePeriodFillOrder();
+        int[][] fillOrder = new int[Data.NUM_PERIODS][Data.NUM_PERIODS];
+        for(int i=0; i<Data.NUM_PERIODS; i++){
+            fillOrder[i] = generatePeriodFillOrder();
+        }
         
         ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
@@ -142,23 +148,19 @@ public class CourseScheduler {
                     }
                     if(roomType.counter/fillOrder.length < roomType.rooms.size()){
                         do {
-                            // System.out.println(course.code);
-                            // System.out.println("Sections " + course.sections); 
-                            // System.out.println(roomType.rooms);
-                            // System.out.println(roomType.counter);
                             chosenRoom = roomType.rooms.get(roomType.counter / fillOrder.length); 
-                            chosenTimeslot = fillOrder[(roomType.counter + roomType.id) % fillOrder.length];
+                            chosenTimeslot = fillOrder[roomType.id % fillOrder.length][roomType.counter % fillOrder[0].length];
                             roomType.counter++;
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot));
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
                     }else{ 
-                        // System.out.println("Ran out of " + roomType);
+                        System.out.println("Ran out of " + roomType);
                         // System.exit(0);
                     } 
 
                     newClass = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
-                    initialTimetable.add(newClass);   
-                    coursesToTimeslot.get(course.code).add(newClass);           
+                    initialTimetable.add(newClass);
+                    coursesToTimeslot.get(course.code).add(newClass); 
                 }
             } 
         }
@@ -166,20 +168,6 @@ public class CourseScheduler {
        
         return initialTimetable;
 
-    // list of rooms of each room type -> in Data
-    // counter for each room type -> roomType class
-    // each room type given a id number -> roomType class
-
-    // array with alternating sem1 and sem2 periods, eg. 1,7,2,6,3,5,0,4
-
-    // sort coursesrunning from fewest sections to most sections
-    // group C courses together at beginning, potentially add more stuff like this
-    // go through all courses running
-        // if it isnt special course
-            // need to add to the timetable
-            // increment counter of the corresponding room type
-            // place the course into the room at the index of the counter/8 and the period of the index of the array (counter + id number given to room type)%8
-            // if that room/timeslot pair was already occupied by special course, increment counter and put it into the next one
     }
 
     // generate alternating periods to fill in classes
@@ -273,10 +261,11 @@ public class CourseScheduler {
             generationCount++;
             printGenereation(currentGeneration);
         }
-        System.out.println("Course scheduling generations: " + generationCount);
+        System.out.println("Course scheduling generations: " + generationCount); //TODO
         return timetableCandidates.firstEntry().getValue();
     }
 
+    //TODO
     private void printGenereation(ArrayList<ArrayList<ClassInfo>> currentGeneration){
         try{
              File studentFile = new File("test.csv");
