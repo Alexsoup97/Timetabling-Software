@@ -310,14 +310,13 @@ public class StudentAssignment{
         int timeslot = 0;
         int counter = 0;
         for(String c: choices){
-            ArrayList<ClassInfo> currentCourse = Data.coursesToClassInfo.get(c);
-           
+            ArrayList<ClassInfo> currentCourse = Data.coursesToClassInfo.get(c);   
             if(c.equals("EMPTY")){
                 timeslot++;
                 counter++;
                 break;
             }
-            
+        
             for(ClassInfo classes: currentCourse){
               
                 if(classes.getTimeslot() == timeslot && !classes.isFull()){  

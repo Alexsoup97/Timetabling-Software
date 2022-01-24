@@ -20,7 +20,7 @@ public class CourseScheduler {
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
     private ArrayList<HashSet<String>> commonlyTakenTogetherCourses;
-    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // TODO change to hashset
+    //private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // TODO change to hashset
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -45,9 +45,9 @@ public class CourseScheduler {
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
             }
         });
-        coursesToClassInfo = getCoursesToClassInfos(timetable);
-        Data.coursesToClassInfo = coursesToClassInfo;
-        return timetable;
+       // coursesToClassInfo = getCoursesToClassInfos(timetable); // TODO fix get course to ClassInfo
+       // Data.coursesToClassInfo = coursesToClassInfo;
+        return timetable; 
     }
 
 
@@ -86,6 +86,8 @@ public class CourseScheduler {
                 numberCourses++;
             }
             courseCount.put(c, numberCourses);
+            Data.coursesToClassInfo.put(c, new ArrayList<ClassInfo>());
+            
 
         }
         return courseCount;

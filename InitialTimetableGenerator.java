@@ -26,9 +26,11 @@ class InitialTimetableGenerator{
     public ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable, HashMap<String, Integer> coursesRunning) {
         ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
         HashSet<String> specialClasses = new HashSet<String>();
+        HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>();
         for(ClassInfo i: specialCourseTimetable){
             initialTimetable.add(i);
             specialClasses.add(i.getCourse());
+            Data.coursesToClassInfo.get(i.getCourse()).add(i);
         }
 
         HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
@@ -86,14 +88,16 @@ class InitialTimetableGenerator{
                             roomType.counter++;
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot)); // must be checked since special classes may have already taken the room/timeslot
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
-                        initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, false)); 
+                        ClassInfo test = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
+                        initialTimetable.add(test); 
+                        Data.coursesToClassInfo.get(course.code).add(test);
                     }else{ 
                         System.out.println("Ran out of " + roomType);
                     } 
                 }
             } 
         }
-        //Data.coursesToClassInfo = coursesToClassInfo;       
+       
        
         return initialTimetable;
     }

@@ -79,10 +79,10 @@ public class UserInterface {
         private JScrollPane pane;
 
         public StudentTimetable(){
-            Object[] columns = { "Student Name", "Grade","Student Number", "Sem 1: Period 1", "Sem 1: Period 2", "Sem 1: Period 3", "Sem 1: Period 4" };
+            Object[] columns = { "Student Name", "Grade","Student Number", "Sem 1: Period 1", "Sem 1: Period 2", "Sem 1: Period 3", "Sem 1: Period 4", "Sem 2: Period 1", "Sem 2: Period 2", "Sem 2: Period 3", "Sem 2: Period 4" };
 
             this.model = new DefaultTableModel();
-            this.table = new JTable(model){
+            this.table = new JTable(model){ 
                 @Override
                 public boolean isCellEditable(int row, int column){
                     return false;
@@ -92,20 +92,21 @@ public class UserInterface {
             table.setForeground(Color.black);
             Font font = new Font("Calibri", Font.ITALIC, 15);
             
-            // addData(timetable);
+            addData();
             table.setFont(font);
+            table.setAutoResizeMode(table.AUTO_RESIZE_OFF);
             table.setRowHeight(20);
             pane = new JScrollPane(table);  
-            pane.setPreferredSize(new Dimension(1000, 200));
-            setLayout(new BorderLayout());         
-            add(pane, BorderLayout.CENTER);
+            pane.setBounds(0, 0, 850, 500);
+            setLayout(null);         
+            add(pane);
         }
 
         public void addData(){
-            Object[] data = new Object[11];
-        
+            
             for(Student s: Data.studentMap.values()){
-                data[0] = s.getName();
+                Object[] data = new Object[12];
+                data[0] = s.getName().substring(1, s.getName().length()-1);
                 data[1] = s.getGrade();
                 data[2] = s.getStudentNumber();
                 int counter =3;
@@ -113,9 +114,10 @@ public class UserInterface {
                     data[counter]= s.getTimetable()[i];
                     counter++;
                 }
-            
-            }
+                this.model.addRow(data);
 
+            }
+      
         }
     
 
@@ -141,7 +143,7 @@ public class UserInterface {
             table.setForeground(Color.black);
             Font font = new Font("Calibri", Font.ITALIC, 15);
             
-            // addData(timetable);
+            addData(timetable);
             table.setFont(font);
             table.setRowHeight(20);
             pane = new JScrollPane(table);           
