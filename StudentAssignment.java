@@ -87,6 +87,11 @@ public class StudentAssignment{
     //     }
     // }
 
+    // start at period 0
+    // find course that the student took that is available in period 0
+    // if none available, check alternates
+    // if none available, leave empty?
+
     public int fillTimetable(){
         int counter = 0;
         // String[] test  = {"ENG4U1", null, "EMPTY", null, null, null, null, null,null};
@@ -174,7 +179,6 @@ public class StudentAssignment{
         if(timeslot != -1){
             choices[timeslot] = course;
         }
-      
 
         for(int i = 0; i < choices.length;i++){
             System.out.print(choices[i] + " ");
@@ -341,19 +345,6 @@ public class StudentAssignment{
         
         System.out.println(counter/Data.courseCount);
         return counter/Data.courseCount;
-    }
-
-    private HashMap<String, ArrayList<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
-        HashMap<String, ArrayList<ClassInfo>> courseToClassInfoMap = new HashMap<String, ArrayList<ClassInfo>>();
-        ArrayList<ClassInfo> classInfoList;
-        for(ClassInfo classInfo:masterTimetable){
-            if(!courseToClassInfoMap.containsKey(classInfo.getCourse())){
-                classInfoList = new ArrayList<ClassInfo>();
-                classInfoList.add(classInfo);
-                courseToClassInfoMap.put(classInfo.getCourse(), classInfoList);
-            }
-        }
-        return courseToClassInfoMap;
     }
 
     private ArrayList<Student> evolveStudentTimetables(ArrayList<Student> initialStudents) {        

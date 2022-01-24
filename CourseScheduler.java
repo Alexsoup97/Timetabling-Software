@@ -16,10 +16,11 @@ public class CourseScheduler {
     private Random random = new Random(1);
 
     private int numFixedClasses;
-    private ArrayList<ClassInfo> initialTimetable;
+    private ArrayList<ClassInfo> timetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
-    private ArrayList<HashSet<String>> commonlyTakenTogetherCourses;
+    private ArrayList<String[]> commonlyTakenTogetherCourses;
+    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo;
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -30,27 +31,23 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        // commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
-        initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
+        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
+        timetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
-        initialTimetable = createInitialTimetable(initialTimetable); 
-<<<<<<< HEAD
-        //initialTimetable = evolveTimetable(initialTimetable);// TODO
-=======
-        // initialTimetable = evolveTimetable(initialTimetable);// TODO
->>>>>>> 7ae1fe6ce557c0374ffce2a5b1fe0d5131e45968
-        Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
+        timetable = createInitialTimetable(timetable); 
+        coursesToClassInfo = getCoursesToClassInfos(timetable);
+        improveTimetable(timetable);
+        Collections.sort(timetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
             }
         });
-        // for(ClassInfo i:initialTimetable){
-        //     System.out.println(i);
-        // }
-        return initialTimetable;
+        coursesToClassInfo = getCoursesToClassInfos(timetable);
+        Data.coursesToClassInfo = coursesToClassInfo;
+        return timetable;
     }
 
     private HashMap<String, Integer> countStudents() {
@@ -93,6 +90,36 @@ public class CourseScheduler {
         return courseCount;
     }
 
+    private ArrayList<String[]> getCommonlyTakenTogetherCourses(){  
+        final int FREQUENCY_THRESHOLD = 10;
+
+        ArrayList<String[]> allPairs = new ArrayList<>();
+        ArrayList<String[]> frequentlyTakenTogetherCourses = new ArrayList<>();
+        
+        for(Student student: Data.studentMap.values()){ // for each student
+            int start = 1; 
+            for(String choice : student.getCourseChoices()){ // for each of their courses
+                for (int i = start; i < student.getCourseChoices().size(); i++) { // create all possible PAIRS between courses
+                    String[] pairsOfCourses = {choice, student.getCourseChoices().get(i)};
+                    allPairs.add(pairsOfCourses);
+                }
+                start += 1;     
+            }
+        }    
+        for (String[] i : allPairs) {
+            int counter = 0;
+            for (String[] j : allPairs) {
+                if(Arrays.equals(i,j)){
+                    counter ++;
+                }
+            }
+            if(counter >= FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(i)){
+                frequentlyTakenTogetherCourses.add(i);
+            }
+        }
+        return frequentlyTakenTogetherCourses;
+    }
+
     //TODO javadoc
     /**
      * Generates an initial master timetable allocating all needed classes into timeslots and rooms.
@@ -113,7 +140,7 @@ public class CourseScheduler {
         int roomTypeIdCounter = 0;
         for(Map.Entry<String, ArrayList<String>> entry : Data.roomTypeMap.entrySet()){
             roomTypes.put(entry.getKey(), new RoomType(entry.getKey(), entry.getValue(), roomTypeIdCounter));
-            roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
+            roomTypeIdCounter++; 
         }    
 
         // TODO make not hard coded
@@ -130,10 +157,11 @@ public class CourseScheduler {
         for(int i=0; i<fillOrder.length; i++){
             fillOrder[i] = generatePeriodFillOrder();
         }
-        
-        // Sort the courses running by the number of sections, so courses with few sections are placed first
-        // This ensures courses with few sections are put into different periods, since they will all be beside each other and classes are added
-        // to timeslots in the order of the fill order
+
+        // Sort the courses running by the number of sections, so courses with few
+        // sections are placed first. This ensures courses with few sections are put
+        // into different periods, since they will all be beside each other and classes
+        // are added to timeslots in the order of the fill order
         ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
         for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
             sortedCoursesRunning.add(new CourseRunning(entry.getKey(), entry.getValue()));
@@ -147,6 +175,7 @@ public class CourseScheduler {
         RoomType roomType;
         String chosenRoom = null; 
         int chosenTimeslot = -1; 
+        boolean fixed = false;
         for (CourseRunning course : sortedCoursesRunning) {
             if (!specialClasses.contains(course.code)) { // special classes were already added
                 roomType = roomTypes.get(Data.courseMap.get(course.code).getRoomType());
@@ -164,17 +193,18 @@ public class CourseScheduler {
                             roomType.counter++;
                         } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot)); // must be checked since special classes may have already taken the room/timeslot
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
-                        initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, false)); 
+                        // if there are enough sections to put one in each period, mark them as fixed
+                        if(course.sections > Data.NUM_PERIODS && i < Data.NUM_PERIODS)
+                            fixed = true;
+                        else
+                            fixed = false;
+                        initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, fixed)); 
                     }else{ 
                         System.out.println("Ran out of " + roomType);
                     } 
                 }
             } 
         }
-<<<<<<< HEAD
-        Data.coursesToClassInfo = coursesToTimeslot;       
-=======
->>>>>>> 7ae1fe6ce557c0374ffce2a5b1fe0d5131e45968
        
         return initialTimetable;
     }
@@ -246,6 +276,19 @@ public class CourseScheduler {
             this.sections = sections;
         } 
     }
+
+    private HashMap<String, ArrayList<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
+        HashMap<String, ArrayList<ClassInfo>> courseToClassInfoMap = new HashMap<String, ArrayList<ClassInfo>>();
+        ArrayList<ClassInfo> classInfoList;
+        for(ClassInfo classInfo:masterTimetable){
+            if(!courseToClassInfoMap.containsKey(classInfo.getCourse())){
+                classInfoList = new ArrayList<ClassInfo>();
+                classInfoList.add(classInfo);
+                courseToClassInfoMap.put(classInfo.getCourse(), classInfoList);
+            }
+        }
+        return courseToClassInfoMap;
+    }
     
     // private ArrayList<ClassInfo> evolveTimetable(ArrayList<ClassInfo> initialTimetable) {        
     //     final int SURVIVORS_PER_GENERATION = 5;
@@ -295,153 +338,42 @@ public class CourseScheduler {
     //         output.close();
     //     }catch(Exception e){}
         
-<<<<<<< HEAD
-    }
-
-    private int getTimetableFitness(ArrayList<ClassInfo> timetable) {
-        // HashMap<String, int[]> roomTime = new HashMap<String, int[]>();
-        int score = 0;
-        // dupliace time slots
-        // for (ClassInfo x : timetable) {
-        //     int add1 = findRoomConflicts(x, roomTime);
-        //     score += add1;
-        //     if (add1 == 0) {
-        //         int time[] = new int[roomTime.get(x.getRoom()).length + 1];
-        //         time[roomTime.get(x.getRoom()).length] = x.getTimeslot();
-        //         roomTime.put(x.getRoom(), time);
-        //     }
-        // }
-
-        //TODO check how balanced the courses are between semesters
-        score += conflictsBetweenCommonlyTakenTogetherCourses(timetable); // added as part of fitness? 
-      //  System.out.println("Fitness "+score);
-        return score;
-    }
-
-    private int findRoomConflicts(ClassInfo x, HashMap<String, int[]> roomTime) {
-        if (roomTime.containsKey(x.getRoom())) {
-            int time[] = new int[roomTime.get(x.getRoom()).length + 1];
-            for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
-                time[i] = roomTime.get(x.getRoom())[i];
-                if (roomTime.get(x.getRoom())[i] == x.getTimeslot()) {
-                   return 10;
-                 }
-            }
-        } else {
-            int time[] = { x.getTimeslot() };
-            roomTime.put(x.getRoom(), time);
-        }
-        return 0;
-    }
-
-    private int checkCourseBalance(ArrayList<ClassInfo> timetable){
-        int score = 0;
-
-        return score;
-    }
-=======
     // }
-    
->>>>>>> 7ae1fe6ce557c0374ffce2a5b1fe0d5131e45968
 
     // private int getTimetableFitness(ArrayList<ClassInfo> timetable) {
+    //     // HashMap<String, int[]> roomTime = new HashMap<String, int[]>();
     //     int score = 0;
+    //     // dupliace time slots
+    //     // for (ClassInfo x : timetable) {
+    //     //     int add1 = findRoomConflicts(x, roomTime);
+    //     //     score += add1;
+    //     //     if (add1 == 0) {
+    //     //         int time[] = new int[roomTime.get(x.getRoom()).length + 1];
+    //     //         time[roomTime.get(x.getRoom()).length] = x.getTimeslot();
+    //     //         roomTime.put(x.getRoom(), time);
+    //     //     }
+    //     // }
+
     //     score += conflictsBetweenCommonlyTakenTogetherCourses(timetable); // added as part of fitness? 
     //   //  System.out.println("Fitness "+score);
     //     return score;
     // }
 
-    // private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable){
-    //     int conflictScoreCTTC = 0;
-    //     int period;
-    //     for (HashSet<String> h : commonlyTakenTogetherCourses) {
-    //         period = -1;
-    //         for (ClassInfo c : timetable) {
-    //             if(h.contains(c.getCourse())){
-    //                 if(period == c.getTimeslot()){
-    //                     conflictScoreCTTC ++;
-    //                     break;
-    //                 }
-    //                 period = c.getTimeslot();
-    //             }
+    // private int findRoomConflicts(ClassInfo x, HashMap<String, int[]> roomTime) {
+    //     if (roomTime.containsKey(x.getRoom())) {
+    //         int time[] = new int[roomTime.get(x.getRoom()).length + 1];
+    //         for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
+    //             time[i] = roomTime.get(x.getRoom())[i];
+    //             if (roomTime.get(x.getRoom())[i] == x.getTimeslot()) {
+    //                return 10;
+    //              }
     //         }
+    //     } else {
+    //         int time[] = { x.getTimeslot() };
+    //         roomTime.put(x.getRoom(), time);
     //     }
-    //     return conflictScoreCTTC;
+    //     return 0;
     // }
-
-<<<<<<< HEAD
-            for (String s : h) {
-                check[counter] = s;
-                counter ++; 
-            }
-            for (ClassInfo c : timetable) {
-                if(c.getCourse().equals(check[0]) || c.getCourse().equals(check[1])){
-                    if(c.getCourse().equals(check[0])){
-                        period1 = c.getTimeslot();
-                    }else{
-                        period2 = c.getTimeslot();
-                    }
-                }
-            }
-            if(period1 == period2){
-                conflictScoreCTTC ++;
-            }
-            period1 = 0;
-            period2 = 0;
-            counter = 0;
-        }
-        return conflictScoreCTTC;
-    }
-=======
->>>>>>> 7ae1fe6ce557c0374ffce2a5b1fe0d5131e45968
-    private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
-        final int FREQUENCY_THRESHOLD = 10;
-
-        ArrayList<HashSet<String>> allPairs = new ArrayList<>();
-        ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>();
-        
-        for(Student student: Data.studentMap.values()){ // for each student
-            int start = 1; 
-            for(String choice : student.getCourseChoices()){ // for each of their courses
-                for (int i = start; i < student.getCourseChoices().size(); i++) { // create all possible PAIRS between courses
-<<<<<<< HEAD
-                    HashSet<String> pairsOfCourses = new HashSet<>();
-                    pairsOfCourses.add(choice);
-                    pairsOfCourses.add(student.getCourseChoices().get(i)); 
-                    allPairs.add(pairsOfCourses);
-=======
-                    HashSet<String> check = new HashSet<>();
-                    check.add(choice);
-                    check.add(student.getCourseChoices().get(i)); 
-                    if(frequency.containsKey(check)){ 
-                        frequency.put(check, frequency.get(check) + 1); 
-                    }
-                    else{
-                        frequency.put(check, 1); 
-                    } // output is an arraylist of pairs of commonly taken courses,
-                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(check)){
-                        frequentlyTakenTogetherCourses.add(check);
-                    }
-                    check.remove(choice);
-                    check.remove(student.getCourseChoices().get(i));
->>>>>>> 7ae1fe6ce557c0374ffce2a5b1fe0d5131e45968
-                }
-                start += 1;     
-            }
-        }    
-        for (HashSet<String> h : allPairs) {
-            int counter = 0;
-            for (HashSet<String> i : allPairs) {
-                if(h.equals(i)){
-                    counter ++;
-                }
-            }
-            if(counter >= FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(h)){
-                frequentlyTakenTogetherCourses.add(h);
-            }
-        }
-        return frequentlyTakenTogetherCourses;
-    }
 
     // // can check mutations now
     // private ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
@@ -458,12 +390,56 @@ public class CourseScheduler {
     // }
 
     private void improveTimetable(ArrayList<ClassInfo> timetable){
-        ArrayList<ClassInfo> sem1classes;
-        ArrayList<ClassInfo> sem2classes;
+        ArrayList<ClassInfo> sem1UnfixedClasses = new ArrayList<ClassInfo>();
+        ArrayList<ClassInfo> sem2UnfixedClasses = new ArrayList<ClassInfo>();
+
+        for (ClassInfo c : timetable) {
+            if(!c.isFixed()){
+                if (c.getTimeslot() < Data.NUM_PERIODS / 2)
+                    sem1UnfixedClasses.add(c);
+                else
+                    sem2UnfixedClasses.add(c);
+            }
+        }
+        improveSemester(sem1UnfixedClasses);
+        improveSemester(sem2UnfixedClasses);
 
         // check if switching two classes in the same semester would reduce conflicts between commonly taken together courses
         // Don't switch them if it means more sections of the same course than necessary at the same time
         // can also move courses between semesters if they are still balanced?
+    }
+
+    private void improveSemester(ArrayList<ClassInfo> unfixedSemesterTimetable){
+        final int NUM_ITERATIONS = 500;
+        for(int i=0; i<NUM_ITERATIONS; i++){
+            int class1Index = random.nextInt(unfixedSemesterTimetable.size());
+            int class2Index = random.nextInt(unfixedSemesterTimetable.size());
+
+            for(String[] coursePair: commonlyTakenTogetherCourses){
+
+            }
+        }
+       
+        // pick two random classes
+
+    }
+
+    private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable) {
+        int conflictScore = 0;
+        int period;
+        for (String[] a : commonlyTakenTogetherCourses) {
+            period = -1;
+            for (ClassInfo c : timetable) {
+                if (a[0].equals(c.getCourse()) || a[1].equals(c.getCourse())) {
+                    if (period == c.getTimeslot()) {
+                        conflictScore++;
+                        break;
+                    }
+                    period = c.getTimeslot();
+                }
+            }
+        }
+        return conflictScore;
     }
 
     // swap the timeslots of two random classes
