@@ -20,7 +20,7 @@ public class CourseScheduler {
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
     private ArrayList<HashSet<String>> commonlyTakenTogetherCourses;
-    private HashMap<String, HashSet<ClassInfo>> coursesToClassInfo; // TODO change to hashset
+    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // TODO change to hashset
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -91,12 +91,12 @@ public class CourseScheduler {
         return courseCount;
     }
 
-    private HashMap<String, HashSet<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
-        HashMap<String, HashSet<ClassInfo>> courseToClassInfoMap = new HashMap<String, HashSet<ClassInfo>>();
-        HashSet<ClassInfo> classInfoList;
+    private HashMap<String, ArrayList<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
+        HashMap<String, ArrayList<ClassInfo>> courseToClassInfoMap = new HashMap<String, ArrayList<ClassInfo>>();
+        ArrayList<ClassInfo> classInfoList;
         for(ClassInfo classInfo:masterTimetable){
             if(!courseToClassInfoMap.containsKey(classInfo.getCourse())){
-                classInfoList = new HashSet<ClassInfo>();
+                classInfoList = new ArrayList<ClassInfo>();
                 classInfoList.add(classInfo);
                 courseToClassInfoMap.put(classInfo.getCourse(), classInfoList);
             }else{

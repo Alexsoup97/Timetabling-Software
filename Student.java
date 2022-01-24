@@ -8,7 +8,7 @@ public class Student {
     private int grade;
     private ArrayList<String> courseChoices = new ArrayList<String>(11);
     private ArrayList<String> alternateChoices = new ArrayList<String>(3);
-    private String[] timetable = new String[9]; // final timetable
+    private ClassInfo[] timetable = new ClassInfo[9]; // final timetable
 
     public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;
@@ -64,6 +64,10 @@ public class Student {
         return courseChoices.size();
     }
 
+    public int getNumSpares(){
+        return Data.NUM_PERIODS - courseChoices.size();
+    }
+
     /**
      * Returns the number of top choices, alternate choices, and courses in this
      * student's timetable
@@ -75,12 +79,12 @@ public class Student {
      */
     public int[] getNumChoicesReceived() {
         int[] choicesReceived = { 0, 0 ,0 };
-        for (String course : timetable) {
+        for (ClassInfo course : timetable) {
             if (course != null) {
                 choicesReceived[2]++;
-                if (courseChoices.contains(course))
+                if (courseChoices.contains(course.getCourse()))
                     choicesReceived[0]++;
-                else if (alternateChoices.contains(course))
+                else if (alternateChoices.contains(course.getCourse()))
                     choicesReceived[1]++;
             }
         }
@@ -92,15 +96,15 @@ public class Student {
         return this.alternateChoices;
     }
 
-    public String[] getTimetable() {
+    public ClassInfo [] getTimetable() {
         return this.timetable;
     }
 
-    public void setTimetable(String timetable[]) {
+    public void setTimetable(ClassInfo timetable[]) {
         this.timetable = timetable;
     }
 
-    public void fillTimeslot(String course, int timeslot) {
+    public void fillTimeslot(ClassInfo course, int timeslot) {
         timetable[timeslot] = course;
     }
 

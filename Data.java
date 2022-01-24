@@ -12,7 +12,8 @@ public class Data {
     public static HashMap<String, String[]> roomTypeCourses; // room type, courses
     public static final int NUM_PERIODS = 8;
     public static int courseCount;
-    public static HashMap<String, HashSet<ClassInfo>> coursesToClassInfo; // map of all course codes to the ClassInfos of each class of that course
+    public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // map of all course codes to the ClassInfos of each class of that course
+    
 
     public static void loadData(DataReader dataReader) {
         // TODO make these two HashSets not hard coded and fill in all of them

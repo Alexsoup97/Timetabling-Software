@@ -37,24 +37,25 @@ class ClassInfo {
     // this.teacher = teacher;
     // }
 
+
+
     public boolean isFull(){
         int maxClassSize = 30;
         if(Data.courseMap.containsKey(course)){
             maxClassSize = Data.courseMap.get(course).getClassSize();
-
-        }else{
-            maxClassSize = 30;
-        }
-   
+        }   
         if(students.size() >= maxClassSize){
             return true;
         }
-
         return false;
     }
 
-    public void addStudents(Integer student){
+    public void addStudent(Integer student){
         students.add(student);
+    }
+    
+    public void removeStudent(Integer student){
+        students.remove(student);
     }
 
     public ArrayList<Integer> getStudents(){
