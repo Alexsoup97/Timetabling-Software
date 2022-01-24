@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class DataReader {
-    static int courseCounter = 0;
+    private int courseCounter = 0;
 
-    public int courseCounter(){
+    public int getNumCourses(){
         return courseCounter;
     }
 
@@ -84,7 +84,6 @@ public class DataReader {
             int grade = Integer.valueOf(currentLine[6]);
 
             ArrayList<String> courseChoices = courseInputs(currentLine);
-            //ArrayList<String> alternateChoices = null;
             ArrayList<String> alternateChoices = alternateInputs(currentLine);
             students.put(studentNumber,new Student(name, gender, studentNumber, grade, courseChoices, alternateChoices));
         }
@@ -92,7 +91,7 @@ public class DataReader {
         return students;
     }
 
-    public static ArrayList<String> courseInputs(String[] currentLine){
+    public ArrayList<String> courseInputs(String[] currentLine){
         ArrayList<String> courseChoices= new ArrayList<String>();      
         int courseIndex; 
         for (int i =0; i <11; i++){
@@ -100,30 +99,33 @@ public class DataReader {
             if(!currentLine[courseIndex].equals("")) {
                 if (currentLine[courseIndex].equals("CHV2OL")){
                     courseChoices.add("CIVCAR ESL");
+                    courseCounter++;
                 }else if(currentLine[courseIndex].contains("CHV2O")){
                     courseChoices.add("CIVCAR");
+                    courseCounter++;
                 }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT"))){
                     courseChoices.add(currentLine[courseIndex]);
+                    courseCounter++;
                 }
-                courseCounter++;
+                
             } 
         }
         return courseChoices;
     }
 
-    public static ArrayList<String> alternateInputs(String[] currentLine) {
+    public ArrayList<String> alternateInputs(String[] currentLine) {
         ArrayList<String> alternateChoices = new ArrayList<String>();
         int courseIndex; 
         for (int i = 0; i < 3; i++) {
             courseIndex=(3*i)+41;
-            if(!currentLine[courseIndex].equals("")) {
+            if(courseIndex < currentLine.length) {
                   alternateChoices.add(currentLine[courseIndex]);
             } 
         }
         return alternateChoices;
     }
 
-    public static String removeCommas(String line) {
+    public String removeCommas(String line) {
         boolean remove = false;
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == '"' && remove) {

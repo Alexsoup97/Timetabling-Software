@@ -12,9 +12,7 @@ public class Data {
     public static HashMap<String, String[]> roomTypeCourses; // room type, courses
     public static final int NUM_PERIODS = 8;
     public static int courseCount;
-    public static HashSet<String> compulsoryCourses;
-    public static HashSet<String> importantCourses;
-    public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo;
+    public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // map of all course codes to the ClassInfos of each class of that course
 
     public static void loadData(DataReader dataReader) {
         // TODO make these two HashSets not hard coded and fill in all of them
@@ -32,7 +30,7 @@ public class Data {
             roomTypeMap = dataReader.getRoomTypes();
             courseMap = dataReader.getCourses();
             studentMap = dataReader.getStudents();
-            courseCount = dataReader.courseCounter();
+            courseCount = dataReader.getNumCourses();
            
            
         } catch (Exception e) {

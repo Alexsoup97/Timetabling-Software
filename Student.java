@@ -38,27 +38,35 @@ public class Student {
         return this.courseChoices;
     }
 
-    public boolean hasCourse(String course) {
-        for (int i = 0; i < courseChoices.size(); i++) {
-            if (courseChoices.get(i).equals(course)) {
-                courseChoices.set(i, courseChoices.get(i) + "COMPLETE");
-                return true;
-            }
+    // public boolean hasCourse(String course) {
+    //     for (int i = 0; i < courseChoices.size(); i++) {
+    //         if (courseChoices.get(i).equals(course)) {
+    //             courseChoices.set(i, courseChoices.get(i) + "COMPLETE");
+    //             return true;
+    //         }
 
-        }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
-    public int correctCourses() {
-        int counter = 0;
-        for (int i = 0; i < courseChoices.size(); i++) {
-            if (courseChoices.get(i).endsWith("COMPLETE")) {
-                counter++;
-            }
-        }
-        return counter;
-    }
+    // public int correctCourses() {
+    //     int counter = 0;
+    //     for (int i = 0; i < courseChoices.size(); i++) {
+    //         if (courseChoices.get(i).endsWith("COMPLETE")) {
+    //             counter++;
+    //         }
+    //     }
+    //     return counter;
+    // }
+
+    // public int topChoicesReceived(){
+        
+    // }
+
+    // public int alternateChoicesReceived(){
+
+    // }
 
     public ArrayList<String> getAlternateChoices() {
         return this.alternateChoices;
