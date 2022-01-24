@@ -339,6 +339,7 @@ SBI3U1,Biology,11,University,1,[SNC2D1],[],[],30
 SBI3U6,Biology (Pre-AP),11,,,,,,29
 SBI4U1,Biology,12,University,1,[SBI3U1],[],[],29
 SBI4UE,Biology (AP),12,,,,,,29
+SBI4UO,Biology,12,,,,,,29
 SBI4UK,Biology,12,,,,,,29
 SCH3U1,Chemistry,11,University,1,[SNC2D1],[],[],29
 SCH3U6,Chemistry (Pre-AP),11,,,,,,29
@@ -360,13 +361,16 @@ SNC1PK,Science,9,Applied,,,,,22
 SNC1PV,Language Intensive Science,9,Applied,1,[],"[ENG1PV], [MFM1PV], [CGC1PV]",[],8
 SNC2D1,Science,10,Academic,1,"[SNC1D1, SNC1P1]",[],[],29
 SNC2D2,Science,10,Academic,,,,,29
+SNC2DI,Science,10,Academic,,,,,29
 SNC2DG,Science (Gifted),10,Academic,,,,,29
 SNC2L1,Science - Locally Developed,10,Locally-Developed,1,[],[],[],22
 SNC2P1,Science,10,Applied,1,"[SNC1D1, SNC1P1]",[],[],22
 SNC2PV,Language Intensive Science,10,Applied,1,[SNC1PV],"[ENG2PV], [MFM2PV], [CHC2PV]",[],8
 SPH3U1,Physics,11,University,1,[SNC2D1],[],[],29
+SPH3UT,Physics,11,University,,,,,29
 SPH4C1,Physics,12,College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],28
 SPH4U1,Physics,12,University,1,[SPH3U1],[],[],29
+SPH4UT,Physics,12,University,,,,,29
 SPH4UE,Physics (AP),12,University,,,,,29
 SVN3M1,Environmental Science,11,University/College,1,"[SNC2D1, SNC2P1, SNC2PV]",[],[],29
 SVN3MK,Environmental Science,11,University/College,,,,,29

@@ -65,7 +65,6 @@ public class DataReader {
             String type = currentLine[3];
             int maxSize = Integer.parseInt(currentLine[8]);
             courses.put(courseCode, new Course(courseCode, courseTitle, grade, type, maxSize));
-
         }
         return courses;
     }
@@ -94,16 +93,17 @@ public class DataReader {
     }
 
     public static ArrayList<String> courseInputs(String[] currentLine){
-        ArrayList<String> courseChoices= new ArrayList<String>();       
+        ArrayList<String> courseChoices= new ArrayList<String>();      
+        int courseIndex; 
         for (int i =0; i <11; i++){
-            if(!currentLine[(3*i)+7].equals("")) {
-                if (currentLine[(3*i)+7].equals("CHV2O1")){
-                    courseChoices.add("CIVCAR");
-                }else if(currentLine[(3*i)+7].equals("CHV2OL")){
+            courseIndex = (3*i)+7;
+            if(!currentLine[courseIndex].equals("")) {
+                if (currentLine[courseIndex].equals("CHV2OL")){
                     courseChoices.add("CIVCAR ESL");
-                }else if (!currentLine[(3*i)+7].contains("GLC2O")){
-                  courseChoices.add(currentLine[(3*i)+7]);
-
+                }else if(currentLine[courseIndex].contains("CHV2O")){
+                    courseChoices.add("CIVCAR");
+                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT"))){
+                    courseChoices.add(currentLine[courseIndex]);
                 }
                 courseCounter++;
             } 
