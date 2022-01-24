@@ -87,10 +87,15 @@ public class StudentAssignment{
     //     }
     // }
 
+    // <8 period timetables: add spare courses?
     // start at period 0
     // find course that the student took that is available in period 0
     // if none available, check alternates
     // if none available, leave empty?
+    // 
+    public boolean fillTimeslot(int timeslot, ){
+        
+    }
 
     public int fillTimetable(){
         int counter = 0;
@@ -115,10 +120,7 @@ public class StudentAssignment{
 
             String[] newTimetable = new String[9];
             String[] currentTimetable = findValidTimetable(newTimetable,-1, null);
-            
-          
-            
-         
+                      
             if(currentTimetable != null){
                 counter++;
                 for(int i = 0; i < currentTimetable.length; i++){
@@ -235,8 +237,7 @@ public class StudentAssignment{
         }
     }
 
- 
-
+    
     public int getScore(String[] choices){
         int counter = 0;
         int emptyCounter =0;

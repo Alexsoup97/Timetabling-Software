@@ -84,8 +84,8 @@ public class DataReader {
             int grade = Integer.valueOf(currentLine[6]);
 
             ArrayList<String> courseChoices = courseInputs(currentLine);
-            ArrayList<String> alternateChoices = null;
-            //ArrayList<String> alternateChoices = alternateInputs(currentLine);
+            // ArrayList<String> alternateChoices = null;
+            ArrayList<String> alternateChoices = alternateInputs(currentLine);
             students.put(studentNumber,new Student(name, gender, studentNumber, grade, courseChoices, alternateChoices));
         }
         studentData.close();
@@ -125,6 +125,7 @@ public class DataReader {
             // alternateCourses.put(alternateChoices[i],1);
             // }
         }
+        System.out.println(alternateChoices);
         return alternateChoices;
     }
 
