@@ -31,14 +31,14 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
+        // commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
         initialTimetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
         initialTimetable = createInitialTimetable(initialTimetable); 
-        initialTimetable = evolveTimetable(initialTimetable);// TODO
+        //initialTimetable = evolveTimetable(initialTimetable);// TODO
         Collections.sort(initialTimetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
@@ -167,7 +167,7 @@ public class CourseScheduler {
                 }
             } 
         }
-        Data.coursesToTimeslot = coursesToTimeslot;       
+        Data.coursesToClassInfo = coursesToTimeslot;       
        
         return initialTimetable;
 
@@ -320,9 +320,11 @@ public class CourseScheduler {
         return 0;
     }
 
-    // private int checkCourseBalance(ArrayList<ClassInfo> timetable){
+    private int checkCourseBalance(ArrayList<ClassInfo> timetable){
+        int score = 0;
 
-    // }
+        return score;
+    }
 
     private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable){
         int conflictScoreCTTC = 0;
@@ -355,40 +357,35 @@ public class CourseScheduler {
         }
         return conflictScoreCTTC;
     }
-// TODO might have to check functionality later (after testing)
     private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
         final int FREQUENCY_THRESHOLD = 10;
 
-        HashMap<HashSet<String>, Integer> frequency = new HashMap<>(); // pair of courses, and how many students chose them together
-        ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>(); // return this
+        ArrayList<HashSet<String>> allPairs = new ArrayList<>();
+        ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>();
         
-        for(Student student:Data.studentMap.values()){ // for each student
+        for(Student student: Data.studentMap.values()){ // for each student
             int start = 1; 
             for(String choice : student.getCourseChoices()){ // for each of their courses
                 for (int i = start; i < student.getCourseChoices().size(); i++) { // create all possible PAIRS between courses
-                    HashSet<String> check = new HashSet<>();
-                    check.add(choice);
-                    check.add(student.getCourseChoices().get(i)); 
-                    System.out.println(choice);
-                    if(frequency.containsKey(check)){ 
-                        frequency.put(check, frequency.get(check) + 1); 
-                    }
-                    else{
-                        frequency.put(check, 1); 
-                    } // output is an arraylist of pairs of commonly taken courses,
-                    if(frequency.get(check) > FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(check)){
-                        frequentlyTakenTogetherCourses.add(check);
-                    }
-                    check.remove(choice);
-                    check.remove(student.getCourseChoices().get(i));
+                    HashSet<String> pairsOfCourses = new HashSet<>();
+                    pairsOfCourses.add(choice);
+                    pairsOfCourses.add(student.getCourseChoices().get(i)); 
+                    allPairs.add(pairsOfCourses);
                 }
                 start += 1;     
             }
-            start = 1;
         }    
-       // System.out.println(frequency + "frequency");    
-        
-        System.out.println(frequentlyTakenTogetherCourses + "taken together courses");
+        for (HashSet<String> h : allPairs) {
+            int counter = 0;
+            for (HashSet<String> i : allPairs) {
+                if(h.equals(i)){
+                    counter ++;
+                }
+            }
+            if(counter >= FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(h)){
+                frequentlyTakenTogetherCourses.add(h);
+            }
+        }
         return frequentlyTakenTogetherCourses;
     }
     // can check mutations now

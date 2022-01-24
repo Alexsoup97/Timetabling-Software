@@ -63,7 +63,6 @@ public class DataReader {
             String courseTitle = currentLine[1];
             int grade = Integer.parseInt(currentLine[2]);
             String type = currentLine[3];
-            System.out.println(currentLine[0]);
             int maxSize = Integer.parseInt(currentLine[8]);
             courses.put(courseCode, new Course(courseCode, courseTitle, grade, type, maxSize));
 

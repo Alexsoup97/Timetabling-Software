@@ -14,7 +14,7 @@ public class Data {
     public static int courseCount;
     public static HashSet<String> compulsoryCourses;
     public static HashSet<String> importantCourses;
-    public static HashMap<String, ArrayList<ClassInfo>> coursesToTimeslot;
+    public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo;
 
     public static void loadData(DataReader dataReader) {
         // TODO make these two HashSets not hard coded and fill in all of them
