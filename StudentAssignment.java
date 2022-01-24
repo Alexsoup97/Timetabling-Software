@@ -211,6 +211,19 @@ public class StudentAssignment{
         return counter/Data.courseCount;
     }
 
+    private HashMap<String, ArrayList<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
+        HashMap<String, ArrayList<ClassInfo>> courseToClassInfoMap = new HashMap<String, ArrayList<ClassInfo>>();
+        ArrayList<ClassInfo> classInfoList;
+        for(ClassInfo classInfo:masterTimetable){
+            if(!courseToClassInfoMap.containsKey(classInfo.getCourse())){
+                classInfoList = new ArrayList<ClassInfo>();
+                classInfoList.add(classInfo);
+                courseToClassInfoMap.put(classInfo.getCourse(), classInfoList);
+            }
+        }
+        return courseToClassInfoMap;
+    }
+
     private ArrayList<Student> evolveStudentTimetables(ArrayList<Student> initialStudents) {        
         final int SURVIVORS_PER_GENERATION = 5;
         final int NUM_CHILDREN = 4;
