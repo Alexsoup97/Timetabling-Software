@@ -13,14 +13,14 @@ import java.io.PrintWriter;
 
 public class CourseScheduler {
 
-    private Random random = new Random(1);
+    private Random random = new Random();
 
     private int numFixedClasses;
     private ArrayList<ClassInfo> timetable;
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
-    private ArrayList<String[]> commonlyTakenTogetherCourses;
-    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo;
+    private ArrayList<HashSet<String>> commonlyTakenTogetherCourses;
+    private HashMap<String, HashSet<ClassInfo>> coursesToClassInfo; // TODO change to hashset
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -31,15 +31,15 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
+        //commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
         timetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
 
     public ArrayList<ClassInfo> getNewTimetable() {        
-        timetable = createInitialTimetable(timetable); 
-        coursesToClassInfo = getCoursesToClassInfos(timetable);
-        improveTimetable(timetable);
+        timetable = new InitialTimetableGenerator().createInitialTimetable(timetable, coursesRunning); 
+        // coursesToClassInfo = getCoursesToClassInfos(timetable);
+        // improveTimetable(timetable);
         Collections.sort(timetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
@@ -49,6 +49,7 @@ public class CourseScheduler {
         Data.coursesToClassInfo = coursesToClassInfo;
         return timetable;
     }
+
 
     private HashMap<String, Integer> countStudents() {
         HashMap<String, Integer> courseCount = new HashMap<String, Integer>();
@@ -90,290 +91,70 @@ public class CourseScheduler {
         return courseCount;
     }
 
-    private ArrayList<String[]> getCommonlyTakenTogetherCourses(){  
-        final int FREQUENCY_THRESHOLD = 10;
-
-        ArrayList<String[]> allPairs = new ArrayList<>();
-        ArrayList<String[]> frequentlyTakenTogetherCourses = new ArrayList<>();
-        
-        for(Student student: Data.studentMap.values()){ // for each student
-            int start = 1; 
-            for(String choice : student.getCourseChoices()){ // for each of their courses
-                for (int i = start; i < student.getCourseChoices().size(); i++) { // create all possible PAIRS between courses
-                    String[] pairsOfCourses = {choice, student.getCourseChoices().get(i)};
-                    allPairs.add(pairsOfCourses);
-                }
-                start += 1;     
-            }
-        }    
-        for (String[] i : allPairs) {
-            int counter = 0;
-            for (String[] j : allPairs) {
-                if(Arrays.equals(i,j)){
-                    counter ++;
-                }
-            }
-            if(counter >= FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(i)){
-                frequentlyTakenTogetherCourses.add(i);
-            }
-        }
-        return frequentlyTakenTogetherCourses;
-    }
-
-    //TODO javadoc
-    /**
-     * Generates an initial master timetable allocating all needed classes into timeslots and rooms.
-     * Prevents duplicate rooms and ensures sections of the same course are balanced across semesters
-     * @author Suyu
-     * @param specialCourseTimetable
-     * @return
-     */
-    private ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable) {
-        ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
-        HashSet<String> specialClasses = new HashSet<String>();
-        for(ClassInfo i: specialCourseTimetable){
-            initialTimetable.add(i);
-            specialClasses.add(i.getCourse());
-        }
-
-        HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
-        int roomTypeIdCounter = 0;
-        for(Map.Entry<String, ArrayList<String>> entry : Data.roomTypeMap.entrySet()){
-            roomTypes.put(entry.getKey(), new RoomType(entry.getKey(), entry.getValue(), roomTypeIdCounter));
-            roomTypeIdCounter++; 
-        }    
-
-        // TODO make not hard coded
-        HashMap<String, String> roomTypeBackups = new HashMap<String, String>();
-        roomTypeBackups.put("science-biology", "science");
-        roomTypeBackups.put("science-physics", "science");
-        roomTypeBackups.put("computer sci", "classroom");
-        roomTypeBackups.put("family studies", "classroom");
-        roomTypeBackups.put("science", "classroom");
-        
-        // each type of room has a different random order of filling classes into time periods for each room
-        // The fill order alternates between sem1 and sem2 periods so multi section courses are guaranteed to be balanced between semesters
-        int[][] fillOrder = new int[roomTypes.size()][Data.NUM_PERIODS];
-        for(int i=0; i<fillOrder.length; i++){
-            fillOrder[i] = generatePeriodFillOrder();
-        }
-
-        // Sort the courses running by the number of sections, so courses with few
-        // sections are placed first. This ensures courses with few sections are put
-        // into different periods, since they will all be beside each other and classes
-        // are added to timeslots in the order of the fill order
-        ArrayList<CourseRunning> sortedCoursesRunning = new ArrayList<CourseRunning>();
-        for(Map.Entry<String, Integer> entry : coursesRunning.entrySet()){
-            sortedCoursesRunning.add(new CourseRunning(entry.getKey(), entry.getValue()));
-        }
-        Collections.sort(sortedCoursesRunning, new Comparator<CourseRunning>(){
-            public int compare(CourseRunning c1, CourseRunning c2){
-                return c1.sections-c2.sections;
-            }
-        });    
-
-        RoomType roomType;
-        String chosenRoom = null; 
-        int chosenTimeslot = -1; 
-        boolean fixed = false;
-        for (CourseRunning course : sortedCoursesRunning) {
-            if (!specialClasses.contains(course.code)) { // special classes were already added
-                roomType = roomTypes.get(Data.courseMap.get(course.code).getRoomType());
-                for (int i = 0; i < course.sections; i++) {
-                    // if there are no more room/timeslot pairs of the correct room type, change to backup room type if available
-                    if (roomType.counter / Data.NUM_PERIODS >= roomType.rooms.size()) {
-                        if (roomTypeBackups.containsKey(roomType.name))
-                            roomType = roomTypes.get(roomTypeBackups.get(roomType.name));
-                    }
-                    // check if not out of room/timeslot pairs
-                    if (roomType.counter / Data.NUM_PERIODS < roomType.rooms.size()) {
-                        do {
-                            chosenRoom = roomType.rooms.get(roomType.counter / Data.NUM_PERIODS); 
-                            chosenTimeslot = fillOrder[roomType.id][roomType.counter % Data.NUM_PERIODS];
-                            roomType.counter++;
-                        } while (!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot)); // must be checked since special classes may have already taken the room/timeslot
-                        Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
-                        // if there are enough sections to put one in each period, mark them as fixed
-                        if(course.sections > Data.NUM_PERIODS && i < Data.NUM_PERIODS)
-                            fixed = true;
-                        else
-                            fixed = false;
-                        initialTimetable.add(new ClassInfo(chosenRoom, chosenTimeslot, course.code, fixed)); 
-                    }else{ 
-                        System.out.println("Ran out of " + roomType);
-                    } 
-                }
-            } 
-        }
-       
-        return initialTimetable;
-    }
-
-    // generate alternating periods to fill in classes
-    private int[] generatePeriodFillOrder(){
-        int[] alternatingPeriods = new int[Data.NUM_PERIODS]; 
-        HashSet<Integer> periods = new HashSet<>();
-        for(int i=0; i<Data.NUM_PERIODS; i++){
-            periods.add(i);
-        }
-        int adding;
-        
-        for (int i = 0; i < alternatingPeriods.length; i++) {
-            if(i%2 == 0){
-                adding = random.nextInt(4) + 4;
-                while(!periods.contains(adding)){
-                    adding = random.nextInt(4) + 4;
-                }
-                alternatingPeriods[i] = adding;
-                periods.remove(adding);
-                adding = 0;                
-            }
-            else {
-                adding = random.nextInt(4);
-                while(!periods.contains(adding)){
-                    adding = random.nextInt(4);
-                }
-                alternatingPeriods[i] = adding;
-                periods.remove(adding);
-                adding = 0;
-            }
-        }
-        return alternatingPeriods;
-    }
-
-    /**
-     * Helper class for generating initial timetable
-     * Stores some information about each room type
-     * @author Suyu
-     */
-    private class RoomType{
-        String name;
-        ArrayList<String> rooms = new ArrayList<String>();;
-        int id;
-        int counter;
-        RoomType(String name, ArrayList<String> rooms, int id){
-            this.name = name;
-            this.rooms = rooms; 
-            this.id = id;
-            this.counter = 0;
-        }
-        @Override
-        public String toString() {
-            return rooms.toString()+" "+id+" "+ counter;
-        }
-    }
-
-    /**
-     * Helper class for generating initial timetable
-     * Stores some information about a course that is running
-     * @author Suyu
-     */
-    private class CourseRunning{
-        String code;
-        int sections;
-        CourseRunning(String courseName, int sections){
-            this.code = courseName;
-            this.sections = sections;
-        } 
-    }
-
-    private HashMap<String, ArrayList<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
-        HashMap<String, ArrayList<ClassInfo>> courseToClassInfoMap = new HashMap<String, ArrayList<ClassInfo>>();
-        ArrayList<ClassInfo> classInfoList;
+    private HashMap<String, HashSet<ClassInfo>> getCoursesToClassInfos(ArrayList<ClassInfo> masterTimetable){
+        HashMap<String, HashSet<ClassInfo>> courseToClassInfoMap = new HashMap<String, HashSet<ClassInfo>>();
+        HashSet<ClassInfo> classInfoList;
         for(ClassInfo classInfo:masterTimetable){
             if(!courseToClassInfoMap.containsKey(classInfo.getCourse())){
-                classInfoList = new ArrayList<ClassInfo>();
+                classInfoList = new HashSet<ClassInfo>();
                 classInfoList.add(classInfo);
                 courseToClassInfoMap.put(classInfo.getCourse(), classInfoList);
+            }else{
+                courseToClassInfoMap.get(classInfo.getCourse()).add(classInfo);
             }
         }
         return courseToClassInfoMap;
     }
     
-    // private ArrayList<ClassInfo> evolveTimetable(ArrayList<ClassInfo> initialTimetable) {        
-    //     final int SURVIVORS_PER_GENERATION = 5;
-    //     final int NUM_CHILDREN = 4;
-    //     final int NUM_GENERATIONS = 100;
+    private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable){
+        int conflictScoreCTTC = 0;
+        ArrayList<Integer> periods = new ArrayList<>();
 
-    //     TreeMap<Integer, ArrayList<ClassInfo>> timetableCandidates = new TreeMap<Integer, ArrayList<ClassInfo>>();
-    //     ArrayList<ArrayList<ClassInfo>> currentGeneration = new ArrayList<ArrayList<ClassInfo>>();
-    //     ArrayList<ClassInfo> mutatedTimetable;
-    //     int mutatedTimetableFitness;
-    //     timetableCandidates.put(getTimetableFitness(initialTimetable), initialTimetable);
+        for (HashSet<String> h : commonlyTakenTogetherCourses) { // for each pair of CTTC (only 2 iterations)
+            for (ClassInfo c : timetable) { // for all courses running
+                if(h.contains(c.getCourse())){ // if h contains a course and period equal to some previous course (same course)
+                    if(periods.contains(c.getTimeslot())){
+                        conflictScoreCTTC ++;
+                    }   
+                    periods.add(c.getTimeslot());     
+                }
+            }
+            periods.clear();
+        }
+        return conflictScoreCTTC;
+    }
 
-    //     // while(timetableCandidates.firstKey() > 0){  // keep repeating mutation + checking fitness until a solution is found
-    //     for(int gen=0; gen<1000; gen++){
-    //         currentGeneration.clear();
-    //         currentGeneration.addAll(timetableCandidates.values());  // fill current generation of candidates with the survivors from last generation
-    //         // timetableCandidates.clear(); //TODO consider - by not including parents in the next generation, might increase mutations/stop algorithm from getting stuck on the same couple ones?
-    //         for (ArrayList<ClassInfo> candidate : currentGeneration){   
-    //             for(int i=0; i<NUM_CHILDREN; i++){  // make certain number of children of each candidate by mutating it
-    //                 mutatedTimetable = mutateTimetable(candidate);
-    //                 mutatedTimetableFitness = getTimetableFitness(mutatedTimetable);
-    //                 if (timetableCandidates.size() < SURVIVORS_PER_GENERATION){ // if the next generation hasn't been populated yet, just add the child
-    //                     timetableCandidates.put(mutatedTimetableFitness, mutatedTimetable);
-    //                 }else if (mutatedTimetableFitness < timetableCandidates.lastKey()){ // otherwise, if the new child is better than the worst one, add it and discard the worst one
-    //                     timetableCandidates.put(mutatedTimetableFitness, mutatedTimetable);
-    //                     timetableCandidates.remove(timetableCandidates.lastKey());
-    //                 }
-    //             }
-    //         }
-    //         // System.out.println("Generation " + gen);
-    //         printGeneration(currentGeneration);
-    //     }
-    //     return timetableCandidates.firstEntry().getValue();
-    // }
-         
-    // private void printGeneration(ArrayList<ArrayList<ClassInfo>> currentGeneration){
-    //     try{
-    //         File studentFile = new File("test.csv");
-    //         PrintWriter output  = new PrintWriter(studentFile);   
+    private ArrayList<HashSet<String>> getCommonlyTakenTogetherCourses(){  
+        final int FREQUENCY_THRESHOLD = 10; // TODO do we want this to be higher? or
 
-    //         for(ArrayList<ClassInfo> a:currentGeneration){
-    //             output.println();
-    //             output.println(a);
-    //         }
-
-    //         output.println("");
-    //         output.close();
-    //     }catch(Exception e){}
+        ArrayList<HashSet<String>> allPairs = new ArrayList<>();
+        ArrayList<HashSet<String>> frequentlyTakenTogetherCourses = new ArrayList<>();
         
-    // }
-
-    // private int getTimetableFitness(ArrayList<ClassInfo> timetable) {
-    //     // HashMap<String, int[]> roomTime = new HashMap<String, int[]>();
-    //     int score = 0;
-    //     // dupliace time slots
-    //     // for (ClassInfo x : timetable) {
-    //     //     int add1 = findRoomConflicts(x, roomTime);
-    //     //     score += add1;
-    //     //     if (add1 == 0) {
-    //     //         int time[] = new int[roomTime.get(x.getRoom()).length + 1];
-    //     //         time[roomTime.get(x.getRoom()).length] = x.getTimeslot();
-    //     //         roomTime.put(x.getRoom(), time);
-    //     //     }
-    //     // }
-
-    //     score += conflictsBetweenCommonlyTakenTogetherCourses(timetable); // added as part of fitness? 
-    //   //  System.out.println("Fitness "+score);
-    //     return score;
-    // }
-
-    // private int findRoomConflicts(ClassInfo x, HashMap<String, int[]> roomTime) {
-    //     if (roomTime.containsKey(x.getRoom())) {
-    //         int time[] = new int[roomTime.get(x.getRoom()).length + 1];
-    //         for (int i = 0; i < roomTime.get(x.getRoom()).length; i++) {
-    //             time[i] = roomTime.get(x.getRoom())[i];
-    //             if (roomTime.get(x.getRoom())[i] == x.getTimeslot()) {
-    //                return 10;
-    //              }
-    //         }
-    //     } else {
-    //         int time[] = { x.getTimeslot() };
-    //         roomTime.put(x.getRoom(), time);
-    //     }
-    //     return 0;
-    // }
+        for(Student student: Data.studentMap.values()){ // for each student
+            int start = 1; 
+            for(String choice : student.getCourseChoices()){ // for each of their courses
+                for (int i = start; i < student.getCourseChoices().size(); i++) { // create all possible PAIRS between courses
+                    HashSet<String> pair = new HashSet<String>();
+                    pair.add(choice);
+                    pair.add(student.getCourseChoices().get(i)); 
+                    allPairs.add(pair);
+                }
+                start += 1;     
+            }
+        }    
+        for (HashSet<String> h : allPairs) {
+            int counter = 0;
+            for (HashSet<String> i : allPairs) {
+                if(h.equals(i)){
+                    counter ++;
+                }
+            }
+            if(counter >= FREQUENCY_THRESHOLD && !frequentlyTakenTogetherCourses.contains(h)){
+                frequentlyTakenTogetherCourses.add(h);
+            }
+        }
+        return frequentlyTakenTogetherCourses;
+    }
 
     // // can check mutations now
     // private ArrayList<ClassInfo> mutateTimetable(ArrayList<ClassInfo> timetable) {
@@ -392,7 +173,6 @@ public class CourseScheduler {
     private void improveTimetable(ArrayList<ClassInfo> timetable){
         ArrayList<ClassInfo> sem1UnfixedClasses = new ArrayList<ClassInfo>();
         ArrayList<ClassInfo> sem2UnfixedClasses = new ArrayList<ClassInfo>();
-
         for (ClassInfo c : timetable) {
             if(!c.isFixed()){
                 if (c.getTimeslot() < Data.NUM_PERIODS / 2)
@@ -410,38 +190,52 @@ public class CourseScheduler {
     }
 
     private void improveSemester(ArrayList<ClassInfo> unfixedSemesterTimetable){
-        final int NUM_ITERATIONS = 500;
+        final int NUM_ITERATIONS = 500; // run 500 times
+
         for(int i=0; i<NUM_ITERATIONS; i++){
-            int class1Index = random.nextInt(unfixedSemesterTimetable.size());
+            int class1Index = random.nextInt(unfixedSemesterTimetable.size()); // index to switch
             int class2Index = random.nextInt(unfixedSemesterTimetable.size());
+            int class1Semester;
+            int class2Semester;
+            int CTTCScore = conflictsBetweenCommonlyTakenTogetherCourses(unfixedSemesterTimetable);
 
-            for(String[] coursePair: commonlyTakenTogetherCourses){
-
+            if(unfixedSemesterTimetable.get(class1Index).getTimeslot() < 4){class1Semester = 1;} // making sure its same semester
+            else{class1Semester = 2;}
+            if(unfixedSemesterTimetable.get(class1Index).getTimeslot() >= 4){ class2Semester = 1;}
+            else{class2Semester = 2;}
+            while(!(class1Semester == class2Semester)){ 
+                class1Index = random.nextInt(unfixedSemesterTimetable.size());
+                class2Index = random.nextInt(unfixedSemesterTimetable.size());
+                if(unfixedSemesterTimetable.get(class1Index).getTimeslot() < 4){class1Semester = 1;}
+                else{class1Semester = 2;}
+                if(unfixedSemesterTimetable.get(class1Index).getTimeslot() >= 4){class2Semester = 1;}
+                else{class2Semester = 2;}
             }
-        }
-       
-        // pick two random classes
+            // make the switch first
+            int switch1 = unfixedSemesterTimetable.get(class1Index).getTimeslot();
+            int switch2 = unfixedSemesterTimetable.get(class2Index).getTimeslot();
+            unfixedSemesterTimetable.get(class1Index).setTimeslot(switch2);
+            unfixedSemesterTimetable.get(class2Index).setTimeslot(switch1);
 
-    }
-
-    private int conflictsBetweenCommonlyTakenTogetherCourses(ArrayList<ClassInfo> timetable) {
-        int conflictScore = 0;
-        int period;
-        for (String[] a : commonlyTakenTogetherCourses) {
-            period = -1;
-            for (ClassInfo c : timetable) {
-                if (a[0].equals(c.getCourse()) || a[1].equals(c.getCourse())) {
-                    if (period == c.getTimeslot()) {
-                        conflictScore++;
-                        break;
-                    }
-                    period = c.getTimeslot();
-                }
+            if(CTTCScore < conflictsBetweenCommonlyTakenTogetherCourses(timetable)){
+                
             }
-        }
-        return conflictScore;
-    }
 
+            // HashSet<String> check = new HashSet<>(); 
+            // check.add(unfixedSemesterTimetable.get(class1Index).getCourse());
+            // check.add(unfixedSemesterTimetable.get(class2Index).getCourse());
+
+// max 2 in each period of same class (if less than 8, then 1 per period, less than 16, 2 per period max)
+// use coursesRunning maps course to # of classes
+
+                // try to switch two courses (periods)
+                // if it reduces conflicts between commonly taken together courses, keep the change
+                // this is using only one semester's courses because we don't want to move between semesters
+                // important - don't switch courses if it means there will be more classes of the same course than necessary in the same timeslot
+                
+            
+        }
+    }
     // swap the timeslots of two random classes
     private void swapClassTimeslots(ArrayList<ClassInfo> timetable) {
         int[] classesToSwap = getTwoUniqueUnfixedClasses(timetable); // not fixed, checked

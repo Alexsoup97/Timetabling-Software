@@ -38,26 +38,54 @@ public class Student {
         return this.courseChoices;
     }
 
-    public boolean hasCourse(String course) {
-        for (int i = 0; i < courseChoices.size(); i++) {
-            if (courseChoices.get(i).equals(course)) {
-                courseChoices.set(i, courseChoices.get(i) + "COMPLETE");
-                return true;
-            }
+    // public boolean hasCourse(String course) {
+    //     for (int i = 0; i < courseChoices.size(); i++) {
+    //         if (courseChoices.get(i).equals(course)) {
+    //             courseChoices.set(i, courseChoices.get(i) + "COMPLETE");
+    //             return true;
+    //         }
 
-        }
+    //     }
 
-        return false;
+    //     return false;
+    // }
+
+    // public int correctCourses() {
+    //     int counter = 0;
+    //     for (int i = 0; i < courseChoices.size(); i++) {
+    //         if (courseChoices.get(i).endsWith("COMPLETE")) {
+    //             counter++;
+    //         }
+    //     }
+    //     return counter;
+    // }
+
+    public int getNumCourseChoices(){
+        return courseChoices.size();
     }
 
-    public int correctCourses() {
-        int counter = 0;
-        for (int i = 0; i < courseChoices.size(); i++) {
-            if (courseChoices.get(i).endsWith("COMPLETE")) {
-                counter++;
+    /**
+     * Returns the number of top choices, alternate choices, and courses in this
+     * student's timetable
+     * 
+     * @author Suyu
+     * @return An integer array, with the number of honored top choices in index 0,
+     *         the number of honored alternate choices in index 1, and the total
+     *         number of courses in their timetable in index 2
+     */
+    public int[] getNumChoicesReceived() {
+        int[] choicesReceived = { 0, 0 ,0 };
+        for (String course : timetable) {
+            if (course != null) {
+                choicesReceived[2]++;
+                if (courseChoices.contains(course))
+                    choicesReceived[0]++;
+                else if (alternateChoices.contains(course))
+                    choicesReceived[1]++;
             }
         }
-        return counter;
+
+        return choicesReceived;
     }
 
     public ArrayList<String> getAlternateChoices() {
