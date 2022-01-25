@@ -27,6 +27,13 @@ class ClassInfo {
         this.students = students;
     }
 
+    public int getPercentageFull(){
+        int maxClassSize=30;
+        if(Data.courseMap.containsKey(course)){
+            maxClassSize = Data.courseMap.get(course).getClassSize();
+        } 
+        return (int) Math.round(100*(students.size()*1.0/maxClassSize));
+    }
     public boolean isFull(){
         int maxClassSize = 30;
         if(Data.courseMap.containsKey(course)){

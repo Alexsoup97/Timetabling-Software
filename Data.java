@@ -12,7 +12,7 @@ public class Data {
     public static int courseCount;
     public static HashMap<String, ArrayList<Integer>> userSpecialCourses = new HashMap<String, ArrayList<Integer>>();
     public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>(); // map of all course codes to the ClassInfos of each class of that course
-
+    public static int[] results;
 
     public static void loadData(DataReader dataReader) {
 

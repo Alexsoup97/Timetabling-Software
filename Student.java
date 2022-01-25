@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Student {
 
@@ -47,6 +49,31 @@ public class Student {
         return Data.NUM_PERIODS - courseChoices.size();
     }
 
+    public int[] emptyPeriods(){
+        ArrayList<Integer> emptyPeriods = new ArrayList<Integer>();
+        for(int i=0; i<timetable.length; i++){
+            if(timetable[i].getCourse() == "EMPTY"){
+                emptyPeriods.add(i);
+            }
+        }
+        Collections.shuffle(emptyPeriods);
+        int[] output = new int[emptyPeriods.size()];
+        for(int i=0; i<output.length; i++){
+            output[i] = emptyPeriods.get(i);
+        }
+        return output;
+    }
+
+    public ArrayList<String> incompleteCourseChoices(){
+        ArrayList<String> leftOverCourses = courseChoices;
+        for (ClassInfo course : timetable){
+            if (courseChoices.contains(course.getCourse())) {
+                leftOverCourses.remove(course.getCourse());
+            }
+        }
+        return leftOverCourses;
+    }
+
     /**
      * Returns the number of top choices, alternate choices, and empty timeslots in this
      * student's timetable
@@ -73,9 +100,8 @@ public class Student {
 
     public boolean hasFullTimetable(){
         for(ClassInfo c:timetable){
-            if(c.getCourse().equals("EMPTY")){
+            if(c.getCourse().equals("EMPTY"))
                 return false;
-            }
         }
         return true;
     }

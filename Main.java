@@ -16,13 +16,14 @@ public class Main {
       
         SpecialCourseScheduler s = new SpecialCourseScheduler();
         
-        CourseScheduler courseScheduler = new CourseScheduler(s);
-
-        // System.out.println(System.nanoTime() - time);
-        
+        CourseScheduler courseScheduler = new CourseScheduler(s);       
      
         ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
+
+        // long time = System.nanoTime();
         new StudentAssignment().getStudentTimetables(timetable);;
+        // System.out.println(System.nanoTime() - time);
+
         new UserInterface(timetable);
         
        //System.out.println(courseScheduler.getNewTimetable());

@@ -25,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import java.awt.BorderLayout;
 import javax.swing.JCheckBox;
+import javax.swing.event.RowSorterListener;
+import javax.swing.event.RowSorterEvent;
 
 public class UserInterface {
     private final int SCREEN_WIDTH = 900;
@@ -85,6 +87,7 @@ public class UserInterface {
         private Font font = new Font("Calibri", Font.ITALIC, 15);
         private JButton backbutton = new JButton("Back");
         private JPanel menu;
+        private JLabel rowCountLabel;
       
         
 
@@ -111,7 +114,7 @@ public class UserInterface {
             table.getTableHeader().setResizingAllowed(false);
 
             tableFilter.getDocument().addDocumentListener(new SortListener(tableFilter, rowSorter));
-            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 50,175,30);
+            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 25,175,30);
 
             
             table.getColumnModel().getColumn(STUDENTNAME_COLUMN).setPreferredWidth(STUDENTNAME_COLUMN_WIDTH);
@@ -126,12 +129,24 @@ public class UserInterface {
             backbutton.setBounds(25, 700, 75,40);
           
             JLabel searchLabel = new JLabel("Search");
-
             searchLabel.setForeground(Color.black);
-            searchLabel.setBounds(25,(SCREEN_HEIGHT/2) + 25,175,30);
+            searchLabel.setBounds(25,(SCREEN_HEIGHT/2) + 5,175,30);
             searchLabel.setFont(font);
+
+            JLabel fullTimetable = new JLabel("Full timetables: " + Data.results[0]);
+            JLabel topChoices = new JLabel("Top Choices fulfilled: " + Data.results[1]);
+            JLabel alternateChoices = new JLabel("Alternate Choices fulfilled: " + Data.results[2]);
+            JLabel percentage = new JLabel("Percentage of Courses Filled: " + Data.results[1] / Data.courseCount);
+            fullTimetable.setBounds(SCREEN_WIDTH/2 + 250, (SCREEN_HEIGHT/2) + 20, 175, 30);
+            topChoices.setBounds(SCREEN_WIDTH/2 + 250, (SCREEN_HEIGHT/2) + 35, 175, 30);
+            alternateChoices.setBounds(SCREEN_WIDTH/2 + 250, (SCREEN_HEIGHT/2) + 50, 175, 30);
+
+
+            rowCountLabel = new JLabel("Number of rows " + table.getRowCount());
+            rowCountLabel.setBounds(SCREEN_WIDTH/2 + 250, (SCREEN_HEIGHT/2) + 5, 175, 30);
             pane = new JScrollPane(table);  
             
+            rowSorter.addRowSorterListener(new RowCounter(table, rowCountLabel));
             pane.setBounds(0, 0, SCREEN_WIDTH-3, SCREEN_HEIGHT/2);
             
             setLayout(null);     
@@ -139,6 +154,10 @@ public class UserInterface {
             add(searchLabel);
             add(tableFilter);
             add(pane);
+            add(rowCountLabel);
+            add(fullTimetable);
+            add(topChoices);
+            add(alternateChoices);
         }
 
         public void addData(){
@@ -187,13 +206,13 @@ public class UserInterface {
            
             addData(timetable);
             table.setRowSorter(rowSorter);
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        
             table.getTableHeader().setReorderingAllowed(false);
             table.setRowHeight(20);
             table.getTableHeader().setResizingAllowed(false);
 
             tableFilter.getDocument().addDocumentListener(new SortListener(tableFilter, rowSorter));
-            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 50,175,30);
+            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 25,175,30);
            
             backbutton.addActionListener(new BackButton(frame, menu));
             backbutton.setBounds(25, 700, 30,40);
@@ -309,6 +328,21 @@ public class UserInterface {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
+    }
+
+    public class RowCounter implements RowSorterListener{
+
+        JTable table;
+        JLabel label;
+        public RowCounter(JTable table, JLabel label){
+            this.table =table;
+            this.label  = label;
+        }
+        @Override
+        public void sorterChanged(RowSorterEvent e){
+            int rowCount = table.getRowCount();
+            label.setText("Number of Rows: " + rowCount);
+        }
     }
 
 
