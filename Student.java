@@ -21,6 +21,14 @@ public class Student {
         this.alternateChoices = alternateChoices;
     }
 
+    public Student(Student student){
+        this.name = student.name;
+        this.gender = student.gender;
+        this.id = student.id;
+        this.courseChoices = student.courseChoices;
+        this.alternateChoices = student.alternateChoices;
+    }
+
     public String getName() {
         return this.name;
     }

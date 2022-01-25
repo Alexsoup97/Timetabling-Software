@@ -27,9 +27,13 @@ public class StudentAssignment {
         getCoursePeriods();
         getPeriodToCourses(masterTimetable);
 
-        int fullTimetables = fillStudentTimetables(masterTimetable, new ArrayList<Student>(Data.studentMap.values()));
+        ArrayList<Student> students = new ArrayList<Student>(Data.studentMap.values());
+        
+        fillStudentTimetables(masterTimetable, students);
+        
+        int fullTimetables = getNumFullTimetables(students);
+        int[] choicesHonored = getStudentChoicesHonored(students);
         System.out.println("Full timetables: " + fullTimetables);
-        int[] choicesHonored = getStudentChoicesHonored();
         System.out.println("Top choices fulfilled: " + choicesHonored[0]);
         System.out.println("Alternate choices fulfilled: " + choicesHonored[1]);
         System.out.println("Empty timeslots: " + choicesHonored[2]);
@@ -95,12 +99,12 @@ public class StudentAssignment {
      * @param students ArrayList of all Student objects after timetabling
      * @return
      */
-    private int[] getStudentChoicesHonored() {
+    private int[] getStudentChoicesHonored(ArrayList<Student> students) {
         int[] studentChoicesReceived;
         int correctTopChoices = 0;
         int correctAlternateChoices = 0;
         int missingCourses = 0;
-        for (Student student : Data.studentMap.values()) {
+        for (Student student : students) {
             studentChoicesReceived = student.getNumChoicesReceived();
             correctTopChoices += studentChoicesReceived[0];
             correctAlternateChoices += studentChoicesReceived[1];
@@ -124,11 +128,39 @@ public class StudentAssignment {
     //     return score;
     // }
 
+    // private void fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
+    //     ArrayList<ClassInfo> masterTimetableCopy = new ArrayList<ClassInfo>();
+    //     for(ClassInfo section:masterTimetable){
+    //         masterTimetableCopy.add(new ClassInfo(section));
+    //     }
+    //     ArrayList<Student> studentsCopy = new ArrayList<Student>();
+    //     for(Student student:students){
+    //         studentsCopy.add(new Student(student));
+    //     }
+
+    //     ArrayList<ClassInfo> bestMasterTimetableCopy;
+    //     ArrayList<Student> bestStudentTimetableCopy;
+
+    //     int bestFitness = Integer.MIN_VALUE;
+    //     int fitness;
+
+    //     for(int i=0; i<10; i++){
+    //         generateFilledStudentTimetable(masterTimetableCopy, studentsCopy);
+    //         fitness = getStudentTimetableFitness(studentsCopy);
+    //         if(fitness > bestFitness){
+    //             bestFitness = fitness;
+                
+    //         }
+    //     }
+
+    //     //  improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
+    // }
+
     /**
      * Timetables students into the master timetable
      * 
      */
-    private int fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
+    private void fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
         ArrayList<Student> studentsWithIncompleteTimteables = new ArrayList<Student>();
 
         LinkedList<String> courseChoices = new LinkedList<String>();
@@ -159,10 +191,8 @@ public class StudentAssignment {
                 studentsWithIncompleteTimteables.add(student);
         }
 
-         improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
+        //  improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
          //TODO
-        
-        return getNumFullTimetables(students);
     }
 
     private int getNumFullTimetables(ArrayList<Student> students){

@@ -27,6 +27,13 @@ class ClassInfo {
         this.students = students;
     }
 
+    public ClassInfo(ClassInfo other){
+        this.room = other.room;
+        this.timeslot = other.timeslot;
+        this.course = other.course;
+        this.fixed = other.fixed;
+    }
+
     public int getPercentageFull(){
         int maxClassSize=30;
         if(Data.courseMap.containsKey(course)){
