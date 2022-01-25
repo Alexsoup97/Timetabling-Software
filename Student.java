@@ -8,7 +8,7 @@ public class Student {
     private int grade;
     private ArrayList<String> courseChoices = new ArrayList<String>(11);
     private ArrayList<String> alternateChoices = new ArrayList<String>(3);
-    private ClassInfo[] timetable = new ClassInfo[9]; // final timetable
+    private ClassInfo[] timetable = new ClassInfo[8]; // final timetable
 
     public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;
@@ -48,30 +48,30 @@ public class Student {
     }
 
     /**
-     * Returns the number of top choices, alternate choices, and courses in this
+     * Returns the number of top choices, alternate choices, and empty timeslots in this
      * student's timetable
      * 
      * @author Suyu
      * @return An integer array, with the number of honored top choices in index 0,
      *         the number of honored alternate choices in index 1, and the total
-     *         number of courses in their timetable in index 2
+     *         number of empty timeslots in their timetable in index 2
      */
     public int[] getNumChoicesReceived() {
         int[] choicesReceived = { 0, 0 ,0 };
         for (ClassInfo course : timetable) {
             if (course != null) {
-                choicesReceived[2]++;
                 if (courseChoices.contains(course.getCourse()))
                     choicesReceived[0]++;
                 else if (alternateChoices.contains(course.getCourse()))
                     choicesReceived[1]++;
             }
+            if(course.getCourse().equals("EMPTY"))
+                choicesReceived[2]++;
         }
-
         return choicesReceived;
     }
 
-    public boolean isTimetableComplete(){
+    public boolean hasFullTimetable(){
         for(ClassInfo c:timetable){
             if(c.getCourse().equals("EMPTY")){
                 return false;

@@ -68,7 +68,7 @@ public class SpecialCourseScheduler {
         
         for(int i = 0; i < numberOfClasses.get(s); i++){
             String room = Data.roomTypeMap.get(roomType).get(i/timeSlot.size());
-            specialCourses.add(new ClassInfo(room, timeSlot.get(i),s,FIXED);
+            specialCourses.add(new ClassInfo(room, timeSlot.get(i),s,FIXED));
             Data.roomMap.get(room).setUnavailable(timeSlot.get(i));
         }
     }

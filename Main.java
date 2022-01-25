@@ -12,17 +12,18 @@ public class Main {
 
 // System.out.println(Data.studentMap);
 
-        long time = System.nanoTime();
+        // long time = System.nanoTime();
       
         SpecialCourseScheduler s = new SpecialCourseScheduler();
         
         CourseScheduler courseScheduler = new CourseScheduler(s);
 
         // System.out.println(System.nanoTime() - time);
-            ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
-        // StudentAssignment studentAssignment =  new StudentAssignment(timetable);
-
-        UserInterface UI = new UserInterface(timetable);
+        
+     
+        ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
+        new StudentAssignment().getStudentTimetables(timetable);;
+        new UserInterface(timetable);
         
        //System.out.println(courseScheduler.getNewTimetable());
         

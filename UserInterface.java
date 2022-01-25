@@ -34,14 +34,13 @@ public class UserInterface {
     public UserInterface(ArrayList<ClassInfo> timetable){
         JFrame frame = new JFrame();
 
-       // Menu menu = new Menu(frame, timetable);
+       Menu menu = new Menu(frame, timetable);
 
   
-       
-        SpecialCourseUI specialCourses = new SpecialCourseUI();
-        frame.setContentPane(specialCourses);
-       // menu.setOpaque(true);
-       // frame.setContentPane(menu);
+        // SpecialCourseUI specialCourses = new SpecialCourseUI();
+        // frame.setContentPane(specialCourses);
+       menu.setOpaque(true);
+       frame.setContentPane(menu);
         frame.setVisible(true);
         frame.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
         frame.setLocationRelativeTo(null); //start the frame in the center of the screen
@@ -57,13 +56,12 @@ public class UserInterface {
         
         public Menu(JFrame frame, ArrayList<ClassInfo> timetable){
             
-            MasterTimetable masterTimetablePane = new MasterTimetable(timetable);
+            MasterTimetable masterTimetablePane = new MasterTimetable(timetable, frame, this);
             StudentTimetable studentPane = new StudentTimetable(frame, this);    
             masterTimetablePane.setOpaque(true);
             timetableButton.addActionListener(new BackButton(frame, masterTimetablePane));
             studentButton.addActionListener(new BackButton(frame, studentPane));     
-       
-  
+    
             add(timetableButton);
             add(studentButton);
         }
@@ -109,6 +107,12 @@ public class UserInterface {
             table.setFont(font);
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             table.getTableHeader().setReorderingAllowed(false);
+            table.setRowHeight(20);
+            table.getTableHeader().setResizingAllowed(false);
+
+            tableFilter.getDocument().addDocumentListener(new SortListener(tableFilter, rowSorter));
+            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 50,175,30);
+
             
             table.getColumnModel().getColumn(STUDENTNAME_COLUMN).setPreferredWidth(STUDENTNAME_COLUMN_WIDTH);
             table.getColumnModel().getColumn(GRADE_COLUMN).setPreferredWidth(GRADE_COLUMN_WIDTH);
@@ -117,41 +121,10 @@ public class UserInterface {
                 table.getColumnModel().getColumn(i).setPreferredWidth(COURSE_COLUMN_WIDTH);
             }
 
-            tableFilter.getDocument().addDocumentListener(new DocumentListener(){
-
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    String text = tableFilter.getText();
-
-                    if (text.trim().length() == 0) {
-                        rowSorter.setRowFilter(null);
-                    } else {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                    }
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    String text = tableFilter.getText();
-
-                    if (text.trim().length() == 0) {
-                        rowSorter.setRowFilter(null);
-                    } else {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                    }
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-            });
+           
             backbutton.addActionListener(new BackButton(frame, menu));
             backbutton.setBounds(25, 700, 30,40);
-            
-            table.setRowHeight(20);
-            table.getTableHeader().setResizingAllowed(false);
+          
             JLabel searchLabel = new JLabel("Search");
 
             searchLabel.setForeground(Color.black);
@@ -160,7 +133,7 @@ public class UserInterface {
             pane = new JScrollPane(table);  
             
             pane.setBounds(0, 0, SCREEN_WIDTH-3, SCREEN_HEIGHT/2);
-            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 50,175,30);
+            
             setLayout(null);     
             add(backbutton);
             add(searchLabel);
@@ -176,8 +149,9 @@ public class UserInterface {
                 data[1] = s.getGrade();
                 data[2] = s.getStudentNumber();
                 int counter =3;
+
                 for(int i= 0; i<s.getTimetable().length;i++){
-                    data[counter]= s.getTimetable()[i];
+                    data[counter]= s.getTimetable()[i].getCourse();
                     counter++;
                 }
                 this.model.addRow(data);
@@ -190,15 +164,18 @@ public class UserInterface {
 
     class MasterTimetable extends JPanel{
         private  JTable table;
-        private DefaultTableModel model;
+        private DefaultTableModel model= new DefaultTableModel();;
         private JScrollPane pane;
+        private JButton backbutton = new JButton("Back");
+        private JTextField tableFilter = new JTextField();
+        private TableRowSorter<TableModel> rowSorter= new TableRowSorter<>(model);
     
 
-        public MasterTimetable(ArrayList<ClassInfo> timetable){
-            Object[] columns = { "Course", "Room", "Period" };
-
-            this.model = new DefaultTableModel();
-            this.table = new JTable(model){
+        public MasterTimetable(ArrayList<ClassInfo> timetable, JFrame frame, JPanel menu){
+            Object[] columns = { "Course", "Room", "Semester", "Period", "Student Count" };
+            
+            
+            this.table = new JTable(model){ 
                 @Override
                 public boolean isCellEditable(int row, int column){
                     return false;
@@ -206,26 +183,48 @@ public class UserInterface {
             };
             model.setColumnIdentifiers(columns);
             table.setForeground(Color.black);
-            Font font = new Font("Calibri", Font.ITALIC, 15);
-            
+
+           
             addData(timetable);
-            table.setFont(font);
+            table.setRowSorter(rowSorter);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            table.getTableHeader().setReorderingAllowed(false);
             table.setRowHeight(20);
+            table.getTableHeader().setResizingAllowed(false);
+
+            tableFilter.getDocument().addDocumentListener(new SortListener(tableFilter, rowSorter));
+            tableFilter.setBounds(25,(SCREEN_HEIGHT/2) + 50,175,30);
+           
+            backbutton.addActionListener(new BackButton(frame, menu));
+            backbutton.setBounds(25, 700, 30,40);
+          
+            JLabel searchLabel = new JLabel("Search");
+
+            pane = new JScrollPane(table);  
             
+            pane.setBounds(0, 0, SCREEN_WIDTH-3, SCREEN_HEIGHT/2);
             
-            pane = new JScrollPane(table);           
-            pane.setBounds(0, 0, 880, 200);
+            setLayout(null);     
+            add(backbutton);
+            add(searchLabel);
+            add(tableFilter);
             add(pane);
+         
             
         }
 
+
         public void addData(ArrayList<ClassInfo> timetable){
-            Object[] data = new Object[3];
+            Object[] data = new Object[5];
             for(ClassInfo classes: timetable){
+                
                 data[0] = classes.getCourse();
                 data[1] = classes.getRoom();
-                data[2] = classes.getTimeslot();
-                this.model.addRow(data);
+                data[2] = (int)classes.getTimeslot()/4 +1;
+                data[3] = (classes.getTimeslot()) %4 + 1;
+                data[4] = classes.getStudents().size();
+                
+                model.addRow(data);
             }
 
 
@@ -256,7 +255,7 @@ public class UserInterface {
                     ArrayList<Integer> selected = new ArrayList<Integer>();
                     for(int i = 0; i < timeslotSelection.length; i++){
                         if(timeslotSelection[i].isSelected()){
-                            selected.add(i, BorderLayout.LINE_START);
+                            selected.add(i);
                         }
                  
                     }
@@ -265,7 +264,7 @@ public class UserInterface {
                 }
             });
 
-            setLayout(new BorderLayout());
+           // setLayout(new BorderLayout());
             add(updateCourses);
                 
 
@@ -273,6 +272,46 @@ public class UserInterface {
 
         
     }
+
+    public class SortListener implements DocumentListener{
+        private JTextField tableFilter;
+        private TableRowSorter<TableModel> rowSorter;
+
+        public SortListener(JTextField tableFilter, TableRowSorter<TableModel> rowSorter){
+            this.tableFilter = tableFilter;
+            this.rowSorter = rowSorter;
+
+        }
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            String text = tableFilter.getText();
+
+            if (text.trim().length() == 0) {
+                rowSorter.setRowFilter(null);
+            } else {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            String text = tableFilter.getText();
+
+            if (text.trim().length() == 0) {
+                rowSorter.setRowFilter(null);
+            } else {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
+
+
     public class BackButton implements ActionListener{
         private JFrame frame;
         private JPanel panel;

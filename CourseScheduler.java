@@ -7,26 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.TreeMap;
-import java.util.Map;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.*;
-import java.io.File;
-import java.io.PrintWriter;
 
 
 public class CourseScheduler {
 
     private Random random = new Random();
-    // fixed class = special classes such as AP, etc. 
-    // unfixed class = classes that doesnt need special consideration
+    // fixed class = special classes such as AP, CO-OP, etc. (so we do not "mutate" it)
+    // unfixed class = classes that doesnt need special consideration ("mutations" allowed)
     private int numFixedClasses;
-    private ArrayList<ClassInfo> timetable; // master time table
+    private ArrayList<ClassInfo> timetable; // master timetable
     private HashMap<String, Integer> studentCount; // Number of students in each course
     private HashMap<String, Integer> coursesRunning; // Number of sections of each course running
     private ArrayList<HashSet<String>> commonlyTakenTogetherCourses; // based on student course choices (ex. calc and advFunc)
-    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo;
+    private HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo; // course
 
     public CourseScheduler(SpecialCourseScheduler s) {
         studentCount = countStudents();
@@ -37,7 +32,7 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        //-+commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
+        //commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
         timetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
@@ -46,7 +41,6 @@ public class CourseScheduler {
      */
     public ArrayList<ClassInfo> getNewTimetable() {        
         timetable = new InitialTimetableGenerator().createInitialTimetable(timetable, coursesRunning); 
-        // coursesToClassInfo = getCoursesToClassInfos(timetable);
         // improveTimetable(timetable);
         Collections.sort(timetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){

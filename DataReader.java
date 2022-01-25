@@ -75,10 +75,7 @@ public class DataReader {
         HashMap<Integer, Student> students = new HashMap<Integer, Student>();
         studentData.nextLine();
         while(studentData.hasNext()){
-            
-            String [] currentLine = removeCommas(studentData.nextLine()).split("`");
-           
-            
+            String [] currentLine = removeCommas(studentData.nextLine()).split("`"); 
             String name = currentLine[0];
             char gender = currentLine[1].charAt(0);
             int studentNumber = Integer.valueOf(currentLine[2]);
@@ -104,12 +101,16 @@ public class DataReader {
                 }else if(currentLine[courseIndex].contains("CHV2O")){
                     courseChoices.add("CIVCAR");
                     courseCounter++;
-                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT"))){
+                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT") || currentLine[courseIndex].contains("AMR"))){
                     courseChoices.add(currentLine[courseIndex]);
                     courseCounter++;
                 }
                 
             } 
+        }
+        // TODO basically having >8 courses crashes the student assignment method, so this is a temp fix
+        while(courseChoices.size()>8){
+            courseChoices.remove(courseChoices.size()-1);
         }
         return courseChoices;
     }
@@ -123,7 +124,6 @@ public class DataReader {
                   alternateChoices.add(currentLine[courseIndex]);
             } 
         }
-        System.out.println(alternateChoices);
         return alternateChoices;
     }
 

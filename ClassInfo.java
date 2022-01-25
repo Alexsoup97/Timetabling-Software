@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+/**
+ * [ClassInfo.java]
+ * Class for storing information for each class (i.e. each section)
+ * @version 1.0 Jan 5, 2022
+ */
 
 class ClassInfo {
     private String room; // room #

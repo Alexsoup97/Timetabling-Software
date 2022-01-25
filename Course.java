@@ -1,4 +1,10 @@
 import java.util.Map;
+/**
+ * [Course.java]
+ * Class for storing information for each course
+ * @version 1.0 Jan 5, 2022
+ */
+
 public class Course {
 
     private String code;
