@@ -2,33 +2,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SpecialCourseScheduler { 
+    private final String CLASSROOM= "classroom";
+    private final String SCIENCE= "science";
+    private final String ART= "art";
+    private final boolean FIXED = true;
+    private final String CALCULAS= "MCV4U";
+    private final String ADVANCED_FUNCTIONS= "MHF4U";
+    private final String PHYSICS= "SPH4UE";
+    private final String CHEMISTRY= "SCH4UE";
+    private final String BIOLOGY= "SBI4UE";
+    private final String ART_PROTFOLIO= "AEA4O";
+    private final String CO_OP="COP";
+    private final String LIBRARY_ROOM="2001";
+    private final int PERIODS=4;
+    private final int SEMESTER1=0;
+    private final int SEMESTER2=4;
+
     private ArrayList<ClassInfo> specialCourses = new ArrayList<ClassInfo>();
     SpecialCourseScheduler() {
     }
-
     public ArrayList<ClassInfo> getSpecialCourseTimetable(HashMap<String, Integer> numberOfClasses) {
-        
-        boolean fixed = true;
         int timeslot = 0;
         String room = "";
-
         for (String s : numberOfClasses.keySet()) {
-            if (s.contains("MHF4U")) {
-                addRooms(s,numberOfClasses,0,"classroom");
-                // calculas
-            } else if (s.contains("MCV4U")) {
-                //TODO make constants
-                addRooms(s,numberOfClasses,4,"classroom");
-                // Ap Sciences
-            } else if (s.equals("SBI4UE") || s.equals("SCH4UE") || s.equals("SPH4UE")) {
-                addRooms(s,numberOfClasses,0,"science");
-                // art protfolio semseter 2
-            } else if (s.equals("AEA4O")) {
-                addRooms(s,numberOfClasses,4,"art");
-                // co op
-            } else if (s.contains("COP")) {
+            if (s.contains(ADVANCED_FUNCTIONS)) {
+                addRooms(s,numberOfClasses,SEMESTER1,CLASSROOM);
+            } else if (s.contains(CALCULAS)) {
+                addRooms(s,numberOfClasses,SEMESTER2,CLASSROOM);
+            } else if (s.equals(BIOLOGY) || s.equals(CHEMISTRY) || s.equals(PHYSICS)) {
+                addRooms(s,numberOfClasses,SEMESTER1,SCIENCE);
+            } else if (s.equals(ART_PROTFOLIO)) {
+                addRooms(s,numberOfClasses,SEMESTER2,ART);
+            } else if (s.contains(CO_OP)) {
                 for (int i = 0; i < numberOfClasses.get(s); i++) {
-                    room = "2001";
+                    room = LIBRARY_ROOM;
                     // semester1 period 1,2 - period 3,4
                     if (s.contains("1")) {
                         timeslot = 1;
@@ -40,11 +47,10 @@ public class SpecialCourseScheduler {
                     } else if (s.contains("5")) {
                         timeslot = 7;
                     } else {
-                        // just incase its some weird co-op course
                         timeslot = 1;
                     }
                     Data.roomMap.get(room).setUnavailable(timeslot);
-                    specialCourses.add(new ClassInfo(room, timeslot, s, fixed));
+                    specialCourses.add(new ClassInfo(room, timeslot, s, FIXED));
                 }
             }
         }
@@ -55,14 +61,13 @@ public class SpecialCourseScheduler {
         String room="";
         int time=0;
         int timeslot=0;
-        boolean fixed=true;
 
         for (int i = 0; i < numberOfClasses.get(s); i++) {
             time++;
-            room = Data.roomTypeMap.get(roomtype).get(time / 4);
-            timeslot = time % 4+ semester;
+            room = Data.roomTypeMap.get(roomtype).get(time / PERIODS);
+            timeslot = time % PERIODS  + semester;
             Data.roomMap.get(room).setUnavailable(timeslot);
-            specialCourses.add(new ClassInfo(room,timeslot,s,fixed));
+            specialCourses.add(new ClassInfo(room,timeslot,s,FIXED));
         }
     }
 }

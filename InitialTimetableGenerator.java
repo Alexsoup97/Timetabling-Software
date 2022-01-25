@@ -26,20 +26,20 @@ class InitialTimetableGenerator{
     public ArrayList<ClassInfo> createInitialTimetable(ArrayList<ClassInfo> specialCourseTimetable, HashMap<String, Integer> coursesRunning) {
         ArrayList<ClassInfo> initialTimetable = new ArrayList<ClassInfo>();
         HashSet<String> specialClasses = new HashSet<String>();
-        HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>();
+      
         for(ClassInfo i: specialCourseTimetable){
             initialTimetable.add(i);
             specialClasses.add(i.getCourse());
-            Data.coursesToClassInfo.get(i.getCourse()).add(i);
+      
         }
 
         HashMap<String, RoomType> roomTypes = new HashMap<String, RoomType>(Data.roomTypeMap.size());
         int roomTypeIdCounter = 0;
         for(Map.Entry<String, ArrayList<String>> entry : Data.roomTypeMap.entrySet()){
             roomTypes.put(entry.getKey(), new RoomType(entry.getKey(), entry.getValue(), roomTypeIdCounter));
-            roomTypeIdCounter++; // TODO give room types that have not really conflicitng courses the same ID
+            roomTypeIdCounter++;
         }    
-
+ 
         // TODO make not hard coded
         HashMap<String, String> roomTypeBackups = new HashMap<String, String>();
         roomTypeBackups.put("science-biology", "science");
@@ -90,7 +90,7 @@ class InitialTimetableGenerator{
                         Data.roomMap.get(chosenRoom).setUnavailable(chosenTimeslot);
                         ClassInfo test = new ClassInfo(chosenRoom, chosenTimeslot, course.code, false);
                         initialTimetable.add(test); 
-                        Data.coursesToClassInfo.get(course.code).add(test);
+                       
                     }else{ 
                         System.out.println("Ran out of " + roomType);
                     } 

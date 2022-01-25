@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.*;
 
 public class DataReader {
     private int courseCounter = 0;
@@ -21,6 +20,7 @@ public class DataReader {
         }
         return rooms;
     }
+
 
     public HashMap<String, String[]> getRoomTypeCourses() throws Exception {
         Scanner roomData = new Scanner(new File("RoomType.csv"));
@@ -122,6 +122,7 @@ public class DataReader {
                   alternateChoices.add(currentLine[courseIndex]);
             } 
         }
+        System.out.println(alternateChoices);
         return alternateChoices;
     }
 

@@ -14,6 +14,7 @@ public class Data {
     public static int courseCount;
     public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>(); // map of all course codes to the ClassInfos of each class of that course
 
+
     public static void loadData(DataReader dataReader) {
         // TODO make these two HashSets not hard coded and fill in all of them
         // String[] compulsoryCoursesArray = {"SNC1D1","FSF1D1","ENG1D1","CGC1D1","MTH1W1","PPL1O8","PPL1O9",
@@ -38,5 +39,4 @@ public class Data {
             e.printStackTrace();
         }
     }
-
 }
