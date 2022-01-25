@@ -8,7 +8,7 @@ public class Student {
     private int grade;
     private ArrayList<String> courseChoices = new ArrayList<String>(11);
     private ArrayList<String> alternateChoices = new ArrayList<String>(3);
-    private ClassInfo[] timetable = new ClassInfo[9]; // final timetable
+    private ClassInfo[] timetable = new ClassInfo[8]; // final timetable
 
     public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;

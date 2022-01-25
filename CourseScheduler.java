@@ -37,7 +37,7 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
+        // commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
         timetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }
@@ -46,7 +46,6 @@ public class CourseScheduler {
      */
     public ArrayList<ClassInfo> getNewTimetable() {        
         timetable = new InitialTimetableGenerator().createInitialTimetable(timetable, coursesRunning); 
-        // coursesToClassInfo = getCoursesToClassInfos(timetable);
         // improveTimetable(timetable);
         Collections.sort(timetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){

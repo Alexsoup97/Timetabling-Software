@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.*;
 
 public class StudentAssignment {
-    private Random random = new Random();
+    private Random random = new Random(0);
     private HashMap<String, HashSet<Integer>> courseToPeriods = new HashMap<String, HashSet<Integer>>();// coures to which period it has that class
     private HashMap<Integer, HashSet<String>> periodToCourses = new HashMap<Integer, HashSet<String>>(); // periods to all courses running in that period
     private ClassInfo[] spares = new ClassInfo[Data.NUM_PERIODS];
@@ -77,14 +77,24 @@ public class StudentAssignment {
 
         LinkedList<String> courseChoices = new LinkedList<String>();
         for (Student student : students) { 
-            System.out.println("Student");
-            
-            courseChoices.addAll(student.getCourseChoices());
+            courseChoices.clear();
+            courseChoices.addAll(student.getCourseChoices()); // sort this from least to most sections
             for(int i=0; i<student.getNumSpares(); i++){
                 courseChoices.add("SPARE");
             }
             courseChoices.addAll(student.getAlternateChoices());
-            student.setTimetable(backtrackFillStudentTimetable(student.getTimetable(), student, courseChoices, generateRandomNumberSequence(Data.NUM_PERIODS + 3), 0));
+
+            // System.out.println("\n\nStudent");
+            // System.out.println("NAME: "+student.getName());
+            // System.out.println("studentcoursechoices: "+student.getCourseChoices());
+            // System.out.println("Spares: " +student.getNumSpares());
+            // System.out.println("alternates: "+ student.getAlternateChoices());
+            // System.out.println("compiledcoursechoices" + courseChoices);
+            int[] fillOrder = generateRandomNumberSequence(Data.NUM_PERIODS);
+            // System.out.println("Fill order "+Arrays.toString(fillOrder));
+            // System.out.println();
+
+            student.setTimetable(backtrackFillStudentTimetable(student.getTimetable(), student, courseChoices, fillOrder, 0));
             for(ClassInfo course: student.getTimetable()){
                 course.addStudent(student.getStudentNumber());
             }
@@ -100,18 +110,30 @@ public class StudentAssignment {
     }
 
     private ClassInfo[] backtrackFillStudentTimetable(ClassInfo[] studentTimetable, Student s, LinkedList<String> courseChoices, int[] periodOrder, int orderIndex){
+        // System.out.println("_________________");
+        // System.out.println(isStudentTimetableFinished(studentTimetable, s));
         if(isStudentTimetableFinished(studentTimetable, s))
             return studentTimetable;
-
+    
+        // TODO this crashes if the student takes more than 8 courses
         // make copy of student timetable
         ClassInfo[] st = Arrays.copyOf(studentTimetable, studentTimetable.length);
-
-        
         int period = periodOrder[orderIndex];
         HashSet<String> availableCourses = periodToCourses.get(period);
         ClassInfo toAdd = null;
+
+        // printTimetable(st);
+        // System.out.println("COURSE CHOICES" + courseChoices);
+        // System.out.println("OrderIndex: " + orderIndex);
+        // System.out.println("Period:" + period);
+
         // repeats through courseChoices list, which first lists top choices, then the correct # of "spare" courses, then alternates
         for(String course:courseChoices){
+
+            // System.out.println("looking at course: " + course);
+            // System.out.println("Available courses: " + availableCourses);
+            // System.out.println("course is available in period? " + availableCourses.contains(course));
+
             // if it's a spare, that means all of the top choices have already been added or could not be found, so add a spare TODO maybe move down which would prioritize alternates over spares
             if(course.equals("SPARE")){
                 toAdd = spares[period];
@@ -125,9 +147,13 @@ public class StudentAssignment {
                     }
                 }
             }  
+
             // i.e. if a top choice, spare, or alternate could be scheduled in this period, add it and look for the next one
             if(toAdd != null){
                 st[period] = toAdd;
+
+                // printTimetable(st);
+
                 ClassInfo[] recurse = backtrackFillStudentTimetable(st, s, courseChoices, periodOrder, orderIndex+1);
                 if(recurse!= null){ //TODO maybe don't need to check
                     return recurse;
@@ -144,26 +170,30 @@ public class StudentAssignment {
         return null;
     }
 
+    private void printTimetable(ClassInfo[] st){
+        System.out.print("ST   ");
+        for(ClassInfo c:st){
+            System.out.print(c + " // ");
+        }
+        System.out.println();
+    }
+
     private int[] generateRandomNumberSequence(int size) {
         int[] order = new int[size];
-        int num;
-        for (int i = 0; i < size; i++) {
-            do {
-                num = random.nextInt(size);
-            } while (!arrayContains(order, num));
-            order[i] = num;
+        for(int i=0; i<size; i++){
+            order[i] = i;
+        }
+        int swap;
+        int randomIndex;
+        for(int i=0; i<size; i++){
+            randomIndex = random.nextInt(size);
+            swap = order[i];
+            order[i] = order[randomIndex];
+            order[randomIndex] = swap;
         }
         return order;
     }
        
-    private boolean arrayContains(int[] array, int num) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == num)
-                return true;
-        }
-        return false;
-    }
-
     private boolean isStudentTimetableFinished(ClassInfo[] studentTimetable, Student s){
         int courseCounter = 0;
         int spareCounter = 0;

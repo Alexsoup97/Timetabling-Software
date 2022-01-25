@@ -83,6 +83,6 @@ class ClassInfo {
 
     @Override
     public String toString() {
-        return course + ", " + room + ", " + timeslot;
+        return course;// + ", " + room + ", " + timeslot;
     }
 }

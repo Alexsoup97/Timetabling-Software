@@ -103,12 +103,16 @@ public class DataReader {
                 }else if(currentLine[courseIndex].contains("CHV2O")){
                     courseChoices.add("CIVCAR");
                     courseCounter++;
-                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT"))){
+                }else if (!(currentLine[courseIndex].contains("GLC2O") || currentLine[courseIndex].contains("ZREMOT") || currentLine[courseIndex].contains("AMR"))){
                     courseChoices.add(currentLine[courseIndex]);
                     courseCounter++;
                 }
                 
             } 
+        }
+        // TODO basically having >8 courses crashes the student assignment method, so this is a temp fix
+        while(courseChoices.size()>8){
+            courseChoices.remove(courseChoices.size()-1);
         }
         return courseChoices;
     }
@@ -122,7 +126,6 @@ public class DataReader {
                   alternateChoices.add(currentLine[courseIndex]);
             } 
         }
-        System.out.println(alternateChoices);
         return alternateChoices;
     }
 
