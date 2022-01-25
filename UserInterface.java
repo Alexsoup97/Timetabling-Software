@@ -105,7 +105,7 @@ public class UserInterface {
             addData();
             table.setRowSorter(rowSorter);
             table.setFont(font);
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             table.getTableHeader().setReorderingAllowed(false);
             table.setRowHeight(20);
             table.getTableHeader().setResizingAllowed(false);
@@ -123,12 +123,12 @@ public class UserInterface {
 
            
             backbutton.addActionListener(new BackButton(frame, menu));
-            backbutton.setBounds(25, 700, 30,40);
+            backbutton.setBounds(25, 700, 75,40);
           
             JLabel searchLabel = new JLabel("Search");
 
             searchLabel.setForeground(Color.black);
-            searchLabel.setBounds(25,(SCREEN_HEIGHT/2) + 200,175,30);
+            searchLabel.setBounds(25,(SCREEN_HEIGHT/2) + 25,175,30);
             searchLabel.setFont(font);
             pane = new JScrollPane(table);  
             
