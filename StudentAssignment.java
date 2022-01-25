@@ -46,14 +46,17 @@ public class StudentAssignment {
         ArrayList<Student> students = new ArrayList<Student>(Data.studentMap.values());
         ArrayList<Student> studentsWithIncompleteTimetables;
 
-        final double TARGET_CHOICES_HONORED = .85;
+        System.out.println("Starting student timetabling");
+
+        // final double TARGET_CHOICES_HONORED = .9;
         do{
             for(Student student:students)
                 student.clearTimetable();
             for(ClassInfo ci:masterTimetable)
                 ci.getStudents().clear();
             studentsWithIncompleteTimetables = fillStudentTimetables(masterTimetable, students);
-        }while(getStudentChoicesHonored(students)[0]*1.0/Data.courseCount < TARGET_CHOICES_HONORED);
+        // }while(getStudentChoicesHonored(students)[0]*1.0/Data.courseCount < TARGET_CHOICES_HONORED);
+        }while(getNumFullTimetables(students) < 1000);
              
         // improveStudentTimetables(students, studentsWithIncompleteTimetables, masterTimetable); 
          //TODO
