@@ -21,7 +21,7 @@ public class Main {
         ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
 
         // long time = System.nanoTime();
-        new StudentAssignment().getStudentTimetables(timetable);;
+        new StudentAssignment(timetable).getStudentTimetables(timetable);;
         // System.out.println(System.nanoTime() - time);
 
         new UserInterface(timetable);

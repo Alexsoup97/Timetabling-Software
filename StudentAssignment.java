@@ -3,33 +3,60 @@ import java.util.Random;
 import java.util.HashMap;
 import java.io.PrintWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.Arrays;
 
+/**
+ * [StudentAssignment.java]
+ * Class for filling students into the master timetable
+ * @author Alex, Samson, Suyu
+ * @version 1.0
+ */
 public class StudentAssignment {
+    private final String EMPTY = "EMPTY";
+    private final String SPARE = "SPARE";
     private Random random = new Random();
     private HashMap<String, HashSet<Integer>> courseToPeriods = new HashMap<String, HashSet<Integer>>();// coures to which period it has that class
     private HashMap<Integer, HashSet<String>> periodToCourses = new HashMap<Integer, HashSet<String>>(); // periods to all courses running in that period
     private ClassInfo[] spares = new ClassInfo[Data.NUM_PERIODS];
     private ClassInfo[] emptyCourse = new ClassInfo[Data.NUM_PERIODS];
 
-    public StudentAssignment() {
+    /**
+     * Creates a new StudentAssignment object and initializes variables
+     * @param masterTimetable the master timetable to fill
+     */
+    public StudentAssignment(ArrayList<ClassInfo> masterTimetable) {
         for(int i=0; i<spares.length; i++){
             spares[i] = new ClassInfo("Cafeteria", i, "SPARE", false);
             emptyCourse[i] = new ClassInfo("Cafeteria", i, "EMPTY", false);
         }
-    }
-
-    public void getStudentTimetables(ArrayList<ClassInfo> masterTimetable){
         getCoursePeriods();
         getPeriodToCourses(masterTimetable);
+    }
 
+    /**
+     * Uses a master timetable to fill in all student timetables and outputs to a CSV file
+     * @param masterTimetable the master timetable
+     */
+    public void getStudentTimetables(ArrayList<ClassInfo> masterTimetable){
         ArrayList<Student> students = new ArrayList<Student>(Data.studentMap.values());
-        
-        fillStudentTimetables(masterTimetable, students);
+        ArrayList<Student> studentsWithIncompleteTimetables;
+
+        final double TARGET_CHOICES_HONORED = .85;
+        do{
+            for(Student student:students)
+                student.clearTimetable();
+            for(ClassInfo ci:masterTimetable)
+                ci.getStudents().clear();
+            studentsWithIncompleteTimetables = fillStudentTimetables(masterTimetable, students);
+        }while(getStudentChoicesHonored(students)[0]*1.0/Data.courseCount < TARGET_CHOICES_HONORED);
+             
+        // improveStudentTimetables(students, studentsWithIncompleteTimetables, masterTimetable); 
+         //TODO
         
         int fullTimetables = getNumFullTimetables(students);
         int[] choicesHonored = getStudentChoicesHonored(students);
@@ -48,7 +75,11 @@ public class StudentAssignment {
         }
     }
 
-    public void outputCSV() throws Exception {
+    /**
+     * Outputs all student timetables to a CSV file called "StudentTimetables.csv"
+     * @throws FileNotFoundException file errors
+     */
+    private void outputCSV() throws FileNotFoundException {
         File studentFile = new File("StudentTimetables.csv");
         PrintWriter output = new PrintWriter(studentFile);
 
@@ -66,7 +97,11 @@ public class StudentAssignment {
         output.close();
     }
 
-    public void getCoursePeriods() {
+    /**
+     * Initializes the class variable courseToPeriods that maps courses to all
+     * periods they are running. The map includes EMPTY and SPARE courses
+     */
+    private void getCoursePeriods() {
         for (String s : Data.coursesToClassInfo.keySet()) {
             HashSet<Integer> times = new HashSet<Integer>();
             for (int i = 0; i < Data.coursesToClassInfo.get(s).size(); i++) {
@@ -83,6 +118,12 @@ public class StudentAssignment {
         courseToPeriods.put(emptyCourse[0].getCourse(), allPeriods);
     }
 
+    /**
+     * Initializes the class variable periodToCourses that maps periods to all
+     * classes running in that period.
+     * 
+     * @param masterTimetable the master timetable
+     */
     public void getPeriodToCourses(ArrayList<ClassInfo> masterTimetable){
         for(int i=0; i<Data.NUM_PERIODS; i++){
             periodToCourses.put(i, new HashSet<String>());
@@ -93,11 +134,13 @@ public class StudentAssignment {
     }
 
     /**
-     * Determines a fitness score for all student timetables, based on how many
-     * students have top choices, alternate choices, or incomplete timetables
+     * Gets how many students have top choices, alternate choices, or incomplete
+     * timetables
      * 
-     * @param students ArrayList of all Student objects after timetabling
-     * @return
+     * @author Suyu
+     * @param students ArrayList of all Student objects, with filled timetables
+     * @return length 3 integer array of total honored top choices, total honoured
+     *         alternate choices, and total empty student timeslots
      */
     private int[] getStudentChoicesHonored(ArrayList<Student> students) {
         int[] studentChoicesReceived;
@@ -113,54 +156,11 @@ public class StudentAssignment {
         return new int[]{correctTopChoices, correctAlternateChoices, missingCourses};
     }
 
-    // private int getStudentTimetableFitness(ArrayList<Student> students) {
-    //     final int TOP_CHOICE_WEIGHT = 4;
-    //     final int ALTERNATE_WEIGHT = 1;
-    //     final int EMPTY_WEIGHT = -3;
-    //     int[] studentChoicesReceived;
-    //     int score = 0;
-    //     for (Student student : students) {
-    //         studentChoicesReceived = student.getNumChoicesReceived();
-    //         score += studentChoicesReceived[0]*TOP_CHOICE_WEIGHT;
-    //         score += studentChoicesReceived[1]*ALTERNATE_WEIGHT;
-    //         score += studentChoicesReceived[2]*EMPTY_WEIGHT;
-    //     }
-    //     return score;
-    // }
-
-    // private void fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
-    //     ArrayList<ClassInfo> masterTimetableCopy = new ArrayList<ClassInfo>();
-    //     for(ClassInfo section:masterTimetable){
-    //         masterTimetableCopy.add(new ClassInfo(section));
-    //     }
-    //     ArrayList<Student> studentsCopy = new ArrayList<Student>();
-    //     for(Student student:students){
-    //         studentsCopy.add(new Student(student));
-    //     }
-
-    //     ArrayList<ClassInfo> bestMasterTimetableCopy;
-    //     ArrayList<Student> bestStudentTimetableCopy;
-
-    //     int bestFitness = Integer.MIN_VALUE;
-    //     int fitness;
-
-    //     for(int i=0; i<10; i++){
-    //         generateFilledStudentTimetable(masterTimetableCopy, studentsCopy);
-    //         fitness = getStudentTimetableFitness(studentsCopy);
-    //         if(fitness > bestFitness){
-    //             bestFitness = fitness;
-                
-    //         }
-    //     }
-
-    //     //  improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
-    // }
-
     /**
      * Timetables students into the master timetable
      * 
      */
-    private void fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
+    private ArrayList<Student> fillStudentTimetables(ArrayList<ClassInfo> masterTimetable, ArrayList<Student> students) {
         ArrayList<Student> studentsWithIncompleteTimteables = new ArrayList<Student>();
 
         LinkedList<String> courseChoices = new LinkedList<String>();
@@ -191,10 +191,9 @@ public class StudentAssignment {
                 studentsWithIncompleteTimteables.add(student);
         }
 
-        // improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
-         //TODO
+        return studentsWithIncompleteTimteables;
     }
-
+    
     private int getNumFullTimetables(ArrayList<Student> students){
         int fullTimetables = 0;
         for (Student s: students){
@@ -298,30 +297,33 @@ public class StudentAssignment {
     private void improveStudentTimetables(ArrayList<Student> students, ArrayList<Student> studentsWithIncompleteTimteables, ArrayList<ClassInfo> masterTimetable){
         final int NUM_ITERATIONS = 1;
         for (int i = 0; i < NUM_ITERATIONS; i++) {
-            // if (random.nextInt(10)<7){
+            if (random.nextInt(10)<7){
                 System.out.println("Start");
                 long time = System.nanoTime();
                 moveAround(masterTimetable);
                 System.out.println("time "+(System.nanoTime()-time));
-
-            // }else{
-            //     swapPeriods(students);
-            // }
-            // LinkedList<String> courseChoices = new LinkedList<String>();
-            // for (Student student : studentsWithIncompleteTimteables) { 
-            //     courseChoices.clear();
-            //     courseChoices.addAll(student.incompleteCourseChoices());
-            //     student.setTimetable(backtrackFillStudentTimetables(student.getTimetable(), student, courseChoices, student.emptyPeriods(), 0));
-            //     for(ClassInfo course: student.getTimetable()){
-            //         course.addStudent(student.getStudentNumber());
-            //     }
-            // }
+            }else{
+                swapPeriods(students);
+            }
+            
+            for (Student s : studentsWithIncompleteTimteables) {
+                for (String choice : s.getUnfulfilledCourseChoicesAlternates()) {
+                    for (int period : s.emptyPeriods()) {
+                        if(periodToCourses.get(period).contains(choice)){
+                            for(ClassInfo section:Data.coursesToClassInfo.get(choice)){
+                                if(section.getTimeslot() == period && !section.isFull()){
+                                    s.addToTimetable(section);
+                                    section.addStudent(s.getStudentNumber());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }        
     }   
 
-  
-
-    //if class is full, move people around
+     //if class is full, move people around
     private void moveAround(ArrayList<ClassInfo> masterTimetable) {
         // sort in order of fullest to least full classes
         Collections.sort(masterTimetable, new Comparator<ClassInfo>(){
@@ -336,21 +338,32 @@ public class StudentAssignment {
         }
     }
 
+
     //move students in full classes
     private void swapStudents(ClassInfo fullClass){
+        int i=0;
+        int swapped=0;
+        int studentListSize= fullClass.getStudents().size();
         //loop through all studnets in class
-        for (int i =0; i<fullClass.getStudents().size();i++){
+        while(i<studentListSize){
+            System.out.println(i);
+            System.out.println(studentListSize);
+            swapped=0;
             //loop timetable for student
-            ClassInfo [] studentTimeTable=Data.studentMap.get(fullClass.getStudent(i)).getTimetable();
+            ClassInfo [] studentTimeTable=Data.studentMap.get(fullClass.getStudents().get(i)).getTimetable();
             for (int j= 0; j < studentTimeTable.length; j++){
-                if (!studentTimeTable[j].getCourse().equals("EMPTY") && !studentTimeTable[j].getCourse().equals("SPARE") && fullClass.getTimeslot() != j && courseToPeriods.get(studentTimeTable[j].getCourse()).contains(fullClass.getTimeslot()) && courseToPeriods.get(fullClass.getCourse()).contains(studentTimeTable[j].getTimeslot()) ){
-                    swap(Data.studentMap.get(fullClass.getStudent(i)), fullClass,studentTimeTable[j]);
+                if (!studentTimeTable[j].getCourse().equals(EMPTY) && !studentTimeTable[j].getCourse().equals(SPARE) && fullClass.getTimeslot() != j && courseToPeriods.get(studentTimeTable[j].getCourse()).contains(fullClass.getTimeslot()) && courseToPeriods.get(fullClass.getCourse()).contains(studentTimeTable[j].getTimeslot()) ){
+                    swapped+=swap(Data.studentMap.get(fullClass.getStudents().get(i)), fullClass,studentTimeTable[j]);
                 }
             }
+            if(swapped == 0){
+                i++;
+            }
+            studentListSize= fullClass.getStudents().size();
         } 
     }
     
-    private void swap(Student c, ClassInfo c1, ClassInfo c2) {
+    private int swap(Student c, ClassInfo c1, ClassInfo c2) {
         int x = 0;
         boolean done1 = false;
         while (x < Data.coursesToClassInfo.get(c1.getCourse()).size() && !done1) {
@@ -370,16 +383,16 @@ public class StudentAssignment {
                 y++;
             }
         }
-        
         if (done1 && done2) {
             c1.removeStudent(c.getStudentNumber());
             c2.removeStudent(c.getStudentNumber());
             //add student to new class
             Data.coursesToClassInfo.get(c1.getCourse()).get(x).addStudent(c.getStudentNumber());
             Data.coursesToClassInfo.get(c2.getCourse()).get(y).addStudent(c.getStudentNumber());
-            c.swapTimeTable(Data.coursesToClassInfo.get(c1.getCourse()).get(x),x,Data.coursesToClassInfo.get(c2.getCourse()).get(y),y);
-            return;
+            c.swapTimeTable(Data.coursesToClassInfo.get(c1.getCourse()).get(x),Data.coursesToClassInfo.get(c1.getCourse()).get(x).getTimeslot(),Data.coursesToClassInfo.get(c2.getCourse()).get(y),Data.coursesToClassInfo.get(c1.getCourse()).get(x).getTimeslot());
+            return 1;
         }
+        return 0;
     }
 
     //move periods that studnets have around
@@ -388,9 +401,9 @@ public class StudentAssignment {
         for (Student c: studentTimetable){
             ClassInfo [] timetable=c.getTimetable();
             for (int i=0; i<timetable.length;i++){
-                if (Data.coursesToClassInfo.get(timetable[i].getCourse()).size() != 1) {
+                if ( !timetable[i].getCourse().equals(EMPTY) && !timetable[i].getCourse().equals(SPARE)&&Data.coursesToClassInfo.get(timetable[i].getCourse()).size() != 1 ) {
                     for (int j=i+1;j<timetable.length;j++){
-                        if (Data.coursesToClassInfo.get(timetable[j].getCourse()).size() != 1){
+                        if ( !timetable[j].getCourse().equals(EMPTY) && !timetable[j].getCourse().equals(SPARE) && Data.coursesToClassInfo.get(timetable[j].getCourse()).size() != 1 ){
                             if (courseToPeriods.get(timetable[i].getCourse()).contains(timetable[j].getTimeslot()) && courseToPeriods.get(timetable[j].getCourse()).contains(timetable[i].getTimeslot())){
                                 swap(c,timetable[i],timetable[j]);
                             }

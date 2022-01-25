@@ -21,14 +21,6 @@ public class Student {
         this.alternateChoices = alternateChoices;
     }
 
-    public Student(Student student){
-        this.name = student.name;
-        this.gender = student.gender;
-        this.id = student.id;
-        this.courseChoices = student.courseChoices;
-        this.alternateChoices = student.alternateChoices;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -64,7 +56,6 @@ public class Student {
                 emptyPeriods.add(i);
             }
         }
-        Collections.shuffle(emptyPeriods);
         int[] output = new int[emptyPeriods.size()];
         for(int i=0; i<output.length; i++){
             output[i] = emptyPeriods.get(i);
@@ -72,8 +63,9 @@ public class Student {
         return output;
     }
 
-    public ArrayList<String> incompleteCourseChoices(){
+    public ArrayList<String> getUnfulfilledCourseChoicesAlternates(){
         ArrayList<String> leftOverCourses = courseChoices;
+        leftOverCourses.addAll(alternateChoices);
         for (ClassInfo course : timetable){
             if (courseChoices.contains(course.getCourse())) {
                 leftOverCourses.remove(course.getCourse());
@@ -118,6 +110,12 @@ public class Student {
         if (timetable[timeslot] == null)
             return true;
         return false;
+    }
+
+    public void clearTimetable(){
+        for(ClassInfo c:timetable){
+            c = null;
+        }
     }
 
     public ArrayList<String> getAlternateChoices() {
