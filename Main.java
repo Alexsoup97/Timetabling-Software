@@ -18,10 +18,11 @@ public class Main {
         
         CourseScheduler courseScheduler = new CourseScheduler(s);
 
-        System.out.println(System.nanoTime() - time);
-        // ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
+        // System.out.println(System.nanoTime() - time);
+            ArrayList<ClassInfo> timetable =  courseScheduler.getNewTimetable();
         // StudentAssignment studentAssignment =  new StudentAssignment(timetable);
-        UserInterface UI = new UserInterface(null);
+
+        UserInterface UI = new UserInterface(timetable);
         
        //System.out.println(courseScheduler.getNewTimetable());
         

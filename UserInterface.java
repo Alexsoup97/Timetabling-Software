@@ -1,7 +1,9 @@
 import javax.swing.JTable;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.util.Collection;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -20,6 +22,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import java.awt.BorderLayout;
+import javax.swing.JCheckBox;
 
 public class UserInterface {
     private final int SCREEN_WIDTH = 900;
@@ -29,13 +34,14 @@ public class UserInterface {
     public UserInterface(ArrayList<ClassInfo> timetable){
         JFrame frame = new JFrame();
 
-        Menu menu = new Menu(frame, timetable);
+       // Menu menu = new Menu(frame, timetable);
+
   
        
-        
-
-        menu.setOpaque(true);
-        frame.setContentPane(menu);
+        SpecialCourseUI specialCourses = new SpecialCourseUI();
+        frame.setContentPane(specialCourses);
+       // menu.setOpaque(true);
+       // frame.setContentPane(menu);
         frame.setVisible(true);
         frame.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
         frame.setLocationRelativeTo(null); //start the frame in the center of the screen
@@ -141,13 +147,8 @@ public class UserInterface {
                 }
 
             });
-
-            
-
             backbutton.addActionListener(new BackButton(frame, menu));
             backbutton.setBounds(25, 700, 30,40);
-            
-
             
             table.setRowHeight(20);
             table.getTableHeader().setResizingAllowed(false);
@@ -229,6 +230,47 @@ public class UserInterface {
 
 
         }
+        
+    }
+
+    class SpecialCourseUI extends JPanel{
+        private Collection<String> values = Data.courseMap.keySet();
+        private String[] courseCode= values.toArray(new String[0]);
+        
+        private  JComboBox<String> courseBox = new JComboBox<String>(courseCode);
+        private JCheckBox[] timeslotSelection = new JCheckBox[Data.NUM_PERIODS];
+        private JButton updateCourses = new JButton("Update");
+    
+    
+        public SpecialCourseUI(){
+            courseBox.setBounds(0, 0, 175, 25);
+            add(courseBox);
+            for(int i = 1; i < timeslotSelection.length-1; i++){
+                timeslotSelection[i-1] = new JCheckBox("Semester: " + (int)Math.floor(i/4) + "Period: " + i%4);
+                timeslotSelection[i-1].setBounds(500 , 230+ i*10, 175,25);
+                add(timeslotSelection[i-1]);
+            }
+            updateCourses.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    ArrayList<Integer> selected = new ArrayList<Integer>();
+                    for(int i = 0; i < timeslotSelection.length; i++){
+                        if(timeslotSelection[i].isSelected()){
+                            selected.add(i, BorderLayout.LINE_START);
+                        }
+                 
+                    }
+
+                  //  Data.userSpecialCourses.put(courseBox.getSelectedItem(), selected);
+                }
+            });
+
+            setLayout(new BorderLayout());
+            add(updateCourses);
+                
+
+        }
+
         
     }
     public class BackButton implements ActionListener{

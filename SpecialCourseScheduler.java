@@ -53,15 +53,30 @@ public class SpecialCourseScheduler {
                     specialCourses.add(new ClassInfo(room, timeslot, s, FIXED));
                 }
             }
+
+            for(String course: Data.userSpecialCourses.keySet()){
+                if(course.equals(s)){
+                    addRooms(course, numberOfClasses, Data.userSpecialCourses.get(course),"PlaceHolder");
+                }
+
+            }
         }
         return specialCourses;
+    }
+
+    public void addRooms(String s, HashMap<String, Integer> numberOfClasses, ArrayList<Integer> timeSlot, String roomType){
+        
+        for(int i = 0; i < numberOfClasses.get(s); i++){
+            String room = Data.roomTypeMap.get(roomType).get(i/timeSlot.size());
+            specialCourses.add(new ClassInfo(room, timeSlot.get(i),s,FIXED);
+            Data.roomMap.get(room).setUnavailable(timeSlot.get(i));
+        }
     }
 
     public void addRooms(String s, HashMap<String, Integer> numberOfClasses,int semester,String roomtype){
         String room="";
         int time=0;
         int timeslot=0;
-
         for (int i = 0; i < numberOfClasses.get(s); i++) {
             time++;
             room = Data.roomTypeMap.get(roomtype).get(time / PERIODS);

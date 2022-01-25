@@ -37,7 +37,7 @@ public class CourseScheduler {
         }
         System.out.println("running courses " + a);
 
-        commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
+        //-+commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses(); // TODO fix triple loop maybe
         timetable = s.getSpecialCourseTimetable(coursesRunning);
         
     }

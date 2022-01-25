@@ -12,6 +12,7 @@ public class Data {
     public static HashMap<String, String[]> roomTypeCourses; // room type, courses
     public static final int NUM_PERIODS = 8;
     public static int courseCount;
+    public static HashMap<String, ArrayList<Integer>> userSpecialCourses = new HashMap<String, ArrayList<Integer>>();
     public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>(); // map of all course codes to the ClassInfos of each class of that course
 
 
@@ -25,7 +26,6 @@ public class Data {
         // importantCourses.addAll(Arrays.asList(importantCoursesArray));
 
         try {
-          
             roomTypeCourses = dataReader.getRoomTypeCourses();
             roomMap = dataReader.getRooms();
             roomTypeMap = dataReader.getRoomTypes();
