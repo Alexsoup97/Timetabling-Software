@@ -159,7 +159,7 @@ public class StudentAssignment {
                 studentsWithIncompleteTimteables.add(student);
         }
 
-         improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
+        // improveStudentTimetables(students,studentsWithIncompleteTimteables, masterTimetable); 
          //TODO
         
         return getNumFullTimetables(students);
@@ -313,7 +313,7 @@ public class StudentAssignment {
             //loop timetable for student
             ClassInfo [] studentTimeTable=Data.studentMap.get(fullClass.getStudent(i)).getTimetable();
             for (int j= 0; j < studentTimeTable.length; j++){
-                if (fullClass.getTimeslot() != j && courseToPeriods.get(studentTimeTable[j].getCourse()).contains(fullClass.getTimeslot()) && courseToPeriods.get(fullClass.getCourse()).contains(studentTimeTable[j].getTimeslot()) ){
+                if (!studentTimeTable[j].getCourse().equals("EMPTY") && !studentTimeTable[j].getCourse().equals("SPARE") && fullClass.getTimeslot() != j && courseToPeriods.get(studentTimeTable[j].getCourse()).contains(fullClass.getTimeslot()) && courseToPeriods.get(fullClass.getCourse()).contains(studentTimeTable[j].getTimeslot()) ){
                     swap(Data.studentMap.get(fullClass.getStudent(i)), fullClass,studentTimeTable[j]);
                 }
             }
@@ -321,23 +321,26 @@ public class StudentAssignment {
     }
     
     private void swap(Student c, ClassInfo c1, ClassInfo c2) {
-        int x = -1;
+        int x = 0;
         boolean done1 = false;
         while (x < Data.coursesToClassInfo.get(c1.getCourse()).size() && !done1) {
-            x++;
             // if there is a course c1 at the c2 timeslot, and if the course x at the y timeslot is not full
             if (c2.getTimeslot() == Data.coursesToClassInfo.get(c1.getCourse()).get(x).getTimeslot()&& !Data.coursesToClassInfo.get(c1.getCourse()).get(x).isFull()) {
                 done1 = true;
+            }else{
+                x++;
             }
         }
-        int y = -1;
-        boolean done2 = false;
-        while (y < Data.coursesToClassInfo.get(c2.getCourse()).size() &&!done2) {
-            y++;
+        int y = 0;
+        boolean done2 = false;        
+        while (y < Data.coursesToClassInfo.get(c2.getCourse()).size() && !done2) {
             if (c1.getTimeslot() == Data.coursesToClassInfo.get(c2.getCourse()).get(y).getTimeslot()&&!Data.coursesToClassInfo.get(c2.getCourse()).get(y).isFull()) {
                 done2 = true;
+            }else{
+                y++;
             }
         }
+        
         if (done1 && done2) {
             c1.removeStudent(c.getStudentNumber());
             c2.removeStudent(c.getStudentNumber());
