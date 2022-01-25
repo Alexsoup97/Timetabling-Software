@@ -48,7 +48,7 @@ public class StudentAssignment {
 
         System.out.println("Starting student timetabling");
 
-        final double TARGET_CHOICES_HONORED = .9;
+        final double TARGET_CHOICES_HONORED = .86;
         do{
             for(Student student:students)
                 student.clearTimetable();
@@ -57,7 +57,7 @@ public class StudentAssignment {
             studentsWithIncompleteTimetables = fillStudentTimetables(masterTimetable, students);
         }while(getStudentChoicesHonored(students)[0]*1.0/Data.courseCount < TARGET_CHOICES_HONORED);
              
-        // improveStudentTimetables(students, studentsWithIncompleteTimetables, masterTimetable); 
+        improveStudentTimetables(students, studentsWithIncompleteTimetables, masterTimetable); 
          //TODO
         
         int fullTimetables = getNumFullTimetables(students);
@@ -136,29 +136,6 @@ public class StudentAssignment {
     }
 
     /**
-     * Gets how many students have top choices, alternate choices, or incomplete
-     * timetables
-     * 
-     * @author Suyu
-     * @param students ArrayList of all Student objects, with filled timetables
-     * @return length 3 integer array of total honored top choices, total honoured
-     *         alternate choices, and total empty student timeslots
-     */
-    private int[] getStudentChoicesHonored(ArrayList<Student> students) {
-        int[] studentChoicesReceived;
-        int correctTopChoices = 0;
-        int correctAlternateChoices = 0;
-        int missingCourses = 0;
-        for (Student student : students) {
-            studentChoicesReceived = student.getNumChoicesReceived();
-            correctTopChoices += studentChoicesReceived[0];
-            correctAlternateChoices += studentChoicesReceived[1];
-            missingCourses += studentChoicesReceived[2];
-        }
-        return new int[]{correctTopChoices, correctAlternateChoices, missingCourses};
-    }
-
-    /**
      * Timetables students into the master timetable
      * 
      */
@@ -194,16 +171,6 @@ public class StudentAssignment {
         }
 
         return studentsWithIncompleteTimteables;
-    }
-    
-    private int getNumFullTimetables(ArrayList<Student> students){
-        int fullTimetables = 0;
-        for (Student s: students){
-            if(s.hasFullTimetable()){
-                fullTimetables++;
-            }
-        }
-        return fullTimetables;
     }
 
     /**
@@ -291,22 +258,55 @@ public class StudentAssignment {
         return courseCounter == s.getNumCourseChoices() && spareCounter == s.getNumSpares();
     }
 
+    private int getNumFullTimetables(ArrayList<Student> students){
+        int fullTimetables = 0;
+        for (Student s: students){
+            if(s.hasFullTimetable()){
+                fullTimetables++;
+            }
+        }
+        return fullTimetables;
+    }
+
+     /**
+     * Gets how many students have top choices, alternate choices, or incomplete
+     * timetables
+     * 
+     * @author Suyu
+     * @param students ArrayList of all Student objects, with filled timetables
+     * @return length 3 integer array of total honored top choices, total honoured
+     *         alternate choices, and total empty student timeslots
+     */
+    private int[] getStudentChoicesHonored(ArrayList<Student> students) {
+        int[] studentChoicesReceived;
+        int correctTopChoices = 0;
+        int correctAlternateChoices = 0;
+        int missingCourses = 0;
+        for (Student student : students) {
+            studentChoicesReceived = student.getNumChoicesReceived();
+            correctTopChoices += studentChoicesReceived[0];
+            correctAlternateChoices += studentChoicesReceived[1];
+            missingCourses += studentChoicesReceived[2];
+        }
+        return new int[]{correctTopChoices, correctAlternateChoices, missingCourses};
+    }
+
     /**
      * TODO
      * @param students
      * @param studentsWithIncompleteTimteables
      */
     private void improveStudentTimetables(ArrayList<Student> students, ArrayList<Student> studentsWithIncompleteTimteables, ArrayList<ClassInfo> masterTimetable){
-        final int NUM_ITERATIONS = 1;
+        final int NUM_ITERATIONS = 50;
         for (int i = 0; i < NUM_ITERATIONS; i++) {
-            if (random.nextInt(10)<7){
-                System.out.println("Start");
-                long time = System.nanoTime();
+            if (random.nextInt(10)<5){
                 moveAround(masterTimetable);
-                System.out.println("time "+(System.nanoTime()-time));
             }else{
                 swapPeriods(students);
             }
+
+            System.out.print(getNumFullTimetables(students) + "  ");
+            System.out.println(Arrays.toString(getStudentChoicesHonored(students)));
             
             for (Student s : studentsWithIncompleteTimteables) {
                 for (String choice : s.getUnfulfilledCourseChoicesAlternates()) {
@@ -334,7 +334,7 @@ public class StudentAssignment {
             }
         });
         int index = 0;
-        while(masterTimetable.get(index).getPercentageFull()>90){
+        while(masterTimetable.get(index).getPercentageFull()>70){
             swapStudents(masterTimetable.get(index));
             index++;
         }
@@ -344,28 +344,22 @@ public class StudentAssignment {
     //move students in full classes
     private void swapStudents(ClassInfo fullClass){
         int i=0;
-        int swapped=0;
-        int studentListSize= fullClass.getStudents().size();
+        int studentNumber;
         //loop through all studnets in class
-        while(i<studentListSize){
-            System.out.println(i);
-            System.out.println(studentListSize);
-            swapped=0;
+        while(i<fullClass.getStudents().size()){
+            studentNumber=fullClass.getStudents().get(i);
             //loop timetable for student
-            ClassInfo [] studentTimeTable=Data.studentMap.get(fullClass.getStudents().get(i)).getTimetable();
+            ClassInfo [] studentTimeTable=Data.studentMap.get(studentNumber).getTimetable();
             for (int j= 0; j < studentTimeTable.length; j++){
                 if (!studentTimeTable[j].getCourse().equals(EMPTY) && !studentTimeTable[j].getCourse().equals(SPARE) && fullClass.getTimeslot() != j && courseToPeriods.get(studentTimeTable[j].getCourse()).contains(fullClass.getTimeslot()) && courseToPeriods.get(fullClass.getCourse()).contains(studentTimeTable[j].getTimeslot()) ){
-                    swapped+=swap(Data.studentMap.get(fullClass.getStudents().get(i)), fullClass,studentTimeTable[j]);
+                    swap(Data.studentMap.get(studentNumber), fullClass,studentTimeTable[j]);
                 }
             }
-            if(swapped == 0){
-                i++;
-            }
-            studentListSize= fullClass.getStudents().size();
+            i++;
         } 
     }
     
-    private int swap(Student c, ClassInfo c1, ClassInfo c2) {
+    private void swap(Student c, ClassInfo c1, ClassInfo c2) {
         int x = 0;
         boolean done1 = false;
         while (x < Data.coursesToClassInfo.get(c1.getCourse()).size() && !done1) {
@@ -392,14 +386,14 @@ public class StudentAssignment {
             Data.coursesToClassInfo.get(c1.getCourse()).get(x).addStudent(c.getStudentNumber());
             Data.coursesToClassInfo.get(c2.getCourse()).get(y).addStudent(c.getStudentNumber());
             c.swapTimeTable(Data.coursesToClassInfo.get(c1.getCourse()).get(x),Data.coursesToClassInfo.get(c1.getCourse()).get(x).getTimeslot(),Data.coursesToClassInfo.get(c2.getCourse()).get(y),Data.coursesToClassInfo.get(c1.getCourse()).get(x).getTimeslot());
-            return 1;
+            return;
         }
-        return 0;
+        return ;
     }
 
     //move periods that studnets have around
     private void swapPeriods(ArrayList<Student> studentTimetable){
-       // Collections.shuffle(studentTimetable);
+        Collections.shuffle(studentTimetable);
         for (Student c: studentTimetable){
             ClassInfo [] timetable=c.getTimetable();
             for (int i=0; i<timetable.length;i++){
