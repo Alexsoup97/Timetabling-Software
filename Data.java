@@ -1,7 +1,10 @@
 import java.util.HashMap;
 import java.util.ArrayList;
 
-/** TODO */
+/** 
+ * [Data.java]
+ * Stores static data for accessing from other classes
+ */
 public class Data {
 
     public static HashMap<String, Course> courseMap; // course code, course object
@@ -17,6 +20,11 @@ public class Data {
     public static int[] results;
     
 
+    /**
+     * Loads data from files using a DataReader object
+     * @author Alex
+     * @param dataReader the DataReader object
+     */
     public static void loadData(DataReader dataReader) {
 
         try {

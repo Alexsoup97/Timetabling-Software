@@ -80,6 +80,15 @@ class InitialTimetableGenerator{
                         if (roomTypeBackups.containsKey(roomType.name))
                             roomType = roomTypes.get(roomTypeBackups.get(roomType.name));
                     }
+                    // Deal with edge case where the last period of the last room in the roomType list is occupied by a special course, 
+                    // which causes the do-while loop below to loop past the end of the list
+                    if (roomType.counter / Data.NUM_PERIODS == roomType.rooms.size()-1) {
+                        chosenRoom = roomType.rooms.get(roomType.counter / Data.NUM_PERIODS); 
+                        chosenTimeslot = fillOrder[roomType.id][roomType.counter % Data.NUM_PERIODS];
+                        if(!Data.roomMap.get(chosenRoom).isAvailable(chosenTimeslot)){
+                            roomType.counter++;
+                        }
+                    }
                     // check if not out of room/timeslot pairs
                     if (roomType.counter / Data.NUM_PERIODS < roomType.rooms.size()) {
                         do {

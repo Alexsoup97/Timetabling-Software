@@ -31,7 +31,7 @@ public class CourseScheduler {
             a+=value;
         }
         System.out.println("running courses " + a);
-        // this.commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
+        this.commonlyTakenTogetherCourses = getCommonlyTakenTogetherCourses();
         timetable = s.getSpecialCourseTimetable(coursesRunning);
     }
 
@@ -41,7 +41,7 @@ public class CourseScheduler {
      */
     public ArrayList<ClassInfo> getNewTimetable() {        
         timetable = new InitialTimetableGenerator().createInitialTimetable(timetable, coursesRunning); 
-        // improveTimetable(timetable);
+        improveTimetable(timetable);
         Collections.sort(timetable, new Comparator<ClassInfo>(){
             public int compare(ClassInfo c1, ClassInfo c2){
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
@@ -229,7 +229,7 @@ public class CourseScheduler {
      * @return unfixedSemesterTimetable pass from the method above
      */
     private void improveSemester(ArrayList<ClassInfo> unfixedSemesterTimetable){
-        final int NUM_ITERATIONS = 50; 
+        final int NUM_ITERATIONS = 200; 
 
         for(int i=0; i<NUM_ITERATIONS; i++){// note: the two courses are in the same semester
             int class1Index = random.nextInt(unfixedSemesterTimetable.size()); // index to switch
@@ -251,8 +251,8 @@ public class CourseScheduler {
             Data.roomMap.get(switch1Room).setAvailability(switch1, false);
             Data.roomMap.get(switch2Room).setAvailability(switch2, false);
             Data.roomMap.get(switch2Room).setAvailability(switch1, true);
-            // TODO possible breaking point, just delete CTTCScore part
-            while(Data.roomMap.get(switch1Room).getRoomType() != Data.roomMap.get(switch2Room).getRoomType() || CTTCScore < conflictsBetweenCommonlyTakenTogetherCourses(timetable)){
+
+            while(Data.roomMap.get(switch1Room).getRoomType() != Data.roomMap.get(switch2Room).getRoomType()){
                 class1.setTimeslot(switch1);
                 class1.setRoom(switch1Room);
                 class2.setTimeslot(switch2); // switch back and do it again

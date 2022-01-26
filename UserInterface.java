@@ -413,7 +413,6 @@ public class UserInterface {
                 rowSorter.setRowFilter(null);
             } else if(table.getSelectedColumn() != -1){
                 rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, table.getSelectedColumn()));
-                System.out.println("test");
             } else {
                 rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
             }

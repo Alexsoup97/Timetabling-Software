@@ -1,3 +1,7 @@
+/**
+ * [Room.java]
+ * Stores information pertaining to a
+ */
 public class Room {
 
     private String roomNum;
@@ -12,27 +16,24 @@ public class Room {
         }
     }
 
-    /**
-     * @return int return the roomNum
-     */
     public String getRoomNum() {
         return roomNum;
     }
 
-    /**
-     * @return String return the roomType
-     */
     public String getRoomType() {
         return roomType;
     }
 
     public boolean isAvailable(int time){
         return availability[time];
-
     }
 
     public void setUnavailable(int time){
         availability[time] = false;
+    }
+
+    public boolean getAvailability(int time){
+        return availability[time];
     }
 
     public void setAvailability(int time, boolean status){

@@ -15,6 +15,15 @@ public class Student {
     private ArrayList<String> alternateChoices = new ArrayList<String>(3);
     private ClassInfo[] timetable = new ClassInfo[8]; // final timetable
 
+    /**
+     * 
+     * @param name
+     * @param gender
+     * @param studentNumber
+     * @param grade
+     * @param courseChoices
+     * @param alternateChoices
+     */
     public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;
         this.gender = gender;
