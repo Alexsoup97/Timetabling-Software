@@ -1,7 +1,10 @@
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
+/**
+ * [Student.java]
+ * Contains data representing a student
+ * @version 1.0
+ */
 public class Student {
 
     private String name;
@@ -49,6 +52,7 @@ public class Student {
         return Data.NUM_PERIODS - courseChoices.size();
     }
 
+
     public int[] emptyPeriods(){
         ArrayList<Integer> emptyPeriods = new ArrayList<Integer>();
         for(int i=0; i<timetable.length; i++){
@@ -63,8 +67,13 @@ public class Student {
         return output;
     }
 
+    /**
+     * 
+     * @author Alex, Suyu
+     * @return
+     */
     public ArrayList<String> getUnfulfilledCourseChoicesAlternates(){
-        ArrayList<String> leftOverCourses = courseChoices;
+        ArrayList<String> leftOverCourses = new ArrayList<String>(courseChoices);
         leftOverCourses.addAll(alternateChoices);
         for (ClassInfo course : timetable){
             if (courseChoices.contains(course.getCourse())) {

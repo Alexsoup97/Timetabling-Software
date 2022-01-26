@@ -2,14 +2,44 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.HashMap;
 import java.util.ArrayList;
-
+/**
+ * [DataReader.java]
+ * reads the data from all the files
+ * @author Alex, Samson
+ * @version 1.0
+ */
 public class DataReader {
     private int courseCounter = 0;
 
+    /**
+     * Gets the total number of courses chosen by students
+     * @return the total number of courses chosen by students
+     */
     public int getNumCourses(){
         return courseCounter;
     }
+    
+    /**
+     * gets special courses from file
+     * @author Samson
+     * @return hashmap of course code and which semster 
+     */
+    public HashMap<String, Integer> getSpecialCourses() throws Exception {
+        Scanner specialCourseData = new Scanner(new File("SpecialCourse.csv"));
+        HashMap<String, Integer> specialCourses = new HashMap<String, Integer>();
+        specialCourseData.nextLine();
+        while (specialCourseData.hasNext()) {
+            String[] currentLine = (specialCourseData.nextLine().split(","));
+            specialCourses.put(currentLine[0], Integer.valueOf(currentLine[1]));
+        }
+        return specialCourses;
+    }
 
+   /**
+     * gets room number and the room type from file
+     * @author Alex
+     * @return Hashmap of room number, and room class
+     */
     public HashMap<String, Room> getRooms() throws Exception {
         Scanner roomData = new Scanner(new File("RoomData.csv"));
         HashMap<String, Room> rooms = new HashMap<String, Room>();
@@ -21,7 +51,11 @@ public class DataReader {
         return rooms;
     }
 
-
+   /**
+     * get room type and all courses from file
+     * @author Alex
+     * @return Hashmap of roomtype, and arraylist of courses codes
+     */
     public HashMap<String, String[]> getRoomTypeCourses() throws Exception {
         Scanner roomData = new Scanner(new File("RoomType.csv"));
         HashMap<String, String[]> roomTypes = new HashMap<String, String[]>();
@@ -37,10 +71,13 @@ public class DataReader {
         }
         return roomTypes;
     }
-
+    /**
+     * creates a map relating room type to room numbers 
+     * @author Alex
+     * @return Hashmap of roomtype, and arraylist of room codes
+     */
     public HashMap<String, ArrayList<String>> getRoomTypes() {
         HashMap<String, ArrayList<String>> coursesToRooms = new HashMap<String, ArrayList<String>>();
-
         for (String type : Data.roomTypeCourses.keySet()) {
             ArrayList<String> rooms = new ArrayList<String>();
             for (Room r : Data.roomMap.values()) {
@@ -52,7 +89,11 @@ public class DataReader {
         }
         return coursesToRooms;
     }
-
+    /**
+     * get course data from file
+     * @author Alex
+     * @return Hashmap of course Code, and course class
+     */
     public HashMap<String, Course> getCourses() throws Exception {
         Scanner courseData = new Scanner(new File("CourseData.csv"));
         HashMap<String, Course> courses = new HashMap<String, Course>();
@@ -69,7 +110,11 @@ public class DataReader {
         }
         return courses;
     }
-
+    /**
+     * get student data from file
+     * @author Samson
+     * @return Hashmap of student Number, and student class
+     */
     public HashMap<Integer, Student> getStudents() throws Exception {
         Scanner studentData = new Scanner(new File("StudentDataObfuscated.csv"));
         HashMap<Integer, Student> students = new HashMap<Integer, Student>();
@@ -89,6 +134,12 @@ public class DataReader {
         return students;
     }
 
+    /**
+     * get the course inputs of each students
+     * @author Samson
+     * @param currentLine input from file
+     * @return arraylist of all the courses
+     */
     public ArrayList<String> courseInputs(String[] currentLine){
         ArrayList<String> courseChoices= new ArrayList<String>();      
         int courseIndex; 
@@ -105,7 +156,6 @@ public class DataReader {
                     courseChoices.add(currentLine[courseIndex]);
                     courseCounter++;
                 }
-                
             } 
         }
         // TODO basically having >8 courses crashes the student assignment method, so this is a temp fix
@@ -115,6 +165,12 @@ public class DataReader {
         return courseChoices;
     }
 
+    /**
+     * get the alternate course inputs of each students
+     * @author Samson
+     * @param currentLine input from file
+     * @return arraylist of all the alternate courses
+     */
     public ArrayList<String> alternateInputs(String[] currentLine) {
         ArrayList<String> alternateChoices = new ArrayList<String>();
         int courseIndex; 
@@ -127,6 +183,12 @@ public class DataReader {
         return alternateChoices;
     }
 
+    /**
+     * removes all the commas from the string and replace them with a different character 
+     * @author Alex
+     * @param  the line to remove commas from
+     * @return line with all commas replaced
+     */
     public String removeCommas(String line) {
         boolean remove = false;
         for (int i = 0; i < line.length(); i++) {
@@ -135,7 +197,6 @@ public class DataReader {
             } else if (line.charAt(i) == '"' && !remove) {
                 remove = true;
             }
-
             if (line.charAt(i) == ',' && !remove) {
                 line = line.substring(0, i) + "`" + line.substring(i + 1);
             }

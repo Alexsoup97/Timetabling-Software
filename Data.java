@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.ArrayList;
 
+/** TODO */
 public class Data {
 
     public static HashMap<String, Course> courseMap; // course code, course object
@@ -8,11 +9,13 @@ public class Data {
     public static HashMap<String, Room> roomMap; // room number (as string), Room object
     public static HashMap<String, ArrayList<String>> roomTypeMap; // room type, room numbers
     public static HashMap<String, String[]> roomTypeCourses; // room type, courses
+    public static HashMap<String,Integer> specialCourses; //special course code, semester
     public static final int NUM_PERIODS = 8;
     public static int courseCount;
     public static HashMap<String, ArrayList<Integer>> userSpecialCourses = new HashMap<String, ArrayList<Integer>>();
     public static HashMap<String, ArrayList<ClassInfo>> coursesToClassInfo = new HashMap<String, ArrayList<ClassInfo>>(); // map of all course codes to the ClassInfos of each class of that course
     public static int[] results;
+    
 
     public static void loadData(DataReader dataReader) {
 
@@ -23,6 +26,7 @@ public class Data {
             courseMap = dataReader.getCourses();
             studentMap = dataReader.getStudents();
             courseCount = dataReader.getNumCourses();
+            specialCourses=dataReader.getSpecialCourses();
            
            
         } catch (Exception e) {
