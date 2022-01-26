@@ -14,8 +14,7 @@ public class SpecialCourseScheduler {
     private final int SEMESTER2 = 4;
     private int semester = 0;
     private ArrayList<ClassInfo> specialCourses = new ArrayList<ClassInfo>();
-    SpecialCourseScheduler() {
-    }
+
     /**
      * puts special courses in speicifed semster
      * @author Samson
@@ -53,22 +52,9 @@ public class SpecialCourseScheduler {
                     specialCourses.add(new ClassInfo(room, timeslot, s, FIXED));
                 }
             }
-            // for(String course: Data.userSpecialCourses.keySet()){
-            //     if(course.equals(s)){
-            //         addRooms(course, numberOfClasses, Data.userSpecialCourses.get(course),"PlaceHolder");
-            //     }
-            // }
         }
         return specialCourses;
     }
-
-    // public void addRooms(String s, HashMap<String, Integer> numberOfClasses, ArrayList<Integer> timeSlot, String roomType){
-    //     for(int i = 0; i < numberOfClasses.get(s); i++){
-    //         String room = Data.roomTypeMap.get(roomType).get(i/timeSlot.size());
-    //         specialCourses.add(new ClassInfo(room, timeSlot.get(i),s,FIXED));
-    //         Data.roomMap.get(room).setUnavailable(timeSlot.get(i));
-    //     }
-    // }
 
     /**
      * gives the course a room

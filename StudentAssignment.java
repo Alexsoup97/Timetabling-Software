@@ -207,7 +207,7 @@ public class StudentAssignment {
 
         // repeats through courseChoices list, which first lists top choices, then the correct # of "spare" courses, then alternates
         for(String course:courseChoices){
-            // if it's a spare, that means all of the top choices have already been added or could not be found, so add a spare TODO maybe move down which would prioritize alternates over spares
+            // if it's a spare, that means all of the top choices have already been added or could not be found, so add a spare
             if(course.equals(SPARE)){
                 toAdd = spareClasses[period];
                 courseChoices.remove(course);
@@ -229,7 +229,7 @@ public class StudentAssignment {
                 }
             }                      
         }
-        st[period] = emptyClasses[period]; //TODO maybe random course that is available
+        st[period] = emptyClasses[period]; 
         recurse = backtrackFillStudentTimetables(st, s, courseChoices, periodOrder, orderIndex+1);
         if(recurse!= null){
             return recurse;

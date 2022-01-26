@@ -16,13 +16,13 @@ public class Student {
     private ClassInfo[] timetable = new ClassInfo[8]; // final timetable
 
     /**
-     * 
-     * @param name
-     * @param gender
-     * @param studentNumber
-     * @param grade
-     * @param courseChoices
-     * @param alternateChoices
+     * Creates a new Student object
+     * @param name the student's first and last name
+     * @param gender the student's gender as a character
+     * @param studentNumber the student's student number
+     * @param grade the student's grade
+     * @param courseChoices ArrayList<String> of the student's course choices as course codes
+     * @param alternateChoices ArrayList<String> of the student's alternate course choices as course codes
      */
     public Student(String name, char gender, int studentNumber, int grade, ArrayList<String> courseChoices, ArrayList<String> alternateChoices) {
         this.name = name;
@@ -53,6 +53,10 @@ public class Student {
         return this.courseChoices;
     }
 
+    public ArrayList<String> getAlternateChoices() {
+        return this.alternateChoices;
+    }
+
     public int getNumCourseChoices(){
         return courseChoices.size();
     }
@@ -61,7 +65,16 @@ public class Student {
         return Data.NUM_PERIODS - courseChoices.size();
     }
 
+    public ClassInfo [] getTimetable() {
+        return this.timetable;
+    }
 
+
+    /**
+     * Returns the periods in which this student has an empty timetable
+     * @author Suyu
+     * @return int array of all periods in which this student has an empty timetable
+     */
     public int[] emptyPeriods(){
         ArrayList<Integer> emptyPeriods = new ArrayList<Integer>();
         for(int i=0; i<timetable.length; i++){
@@ -77,9 +90,12 @@ public class Student {
     }
 
     /**
+     * Gets an ArrayList<String> of all of this student's course choices and
+     * alternates that are not in this student's timetable
      * 
      * @author Alex, Suyu
-     * @return
+     * @return an ArrayList<String> of all of this student's course choices and
+     *         alternates that are not in this student's timetable
      */
     public ArrayList<String> getUnfulfilledCourseChoicesAlternates(){
         ArrayList<String> leftOverCourses = new ArrayList<String>(courseChoices);
@@ -116,6 +132,10 @@ public class Student {
         return choicesReceived;
     }
 
+    /**
+     * Returns whether the student has full timetable
+     * @return boolean if timetable full or not
+     */
     public boolean hasFullTimetable(){
         for(ClassInfo c:timetable){
             if(c.getCourse().equals("EMPTY"))
@@ -124,29 +144,37 @@ public class Student {
         return true;
     }
 
+    /**
+     * Checks if a period is avalabile
+     * @param timeslot
+     * @return true if the period is available, false otherwise
+     */
     public boolean isTimeslotAvailable(int timeslot) {
         if (timetable[timeslot] == null)
             return true;
         return false;
     }
 
+    /**
+     * Clears this student's timetable
+     */
     public void clearTimetable(){
         for(ClassInfo c:timetable){
             c = null;
         }
     }
 
-    public ArrayList<String> getAlternateChoices() {
-        return this.alternateChoices;
-    }
-
+    /**
+     * swaps the courses timeslot around 
+     * @author Samson
+     * @param c1 course 1
+     * @param index1 course 1 new time
+     * @param c2 course 2
+     * @param index2 course 2 new time
+     */
     public void swapTimeTable(ClassInfo c1,int index1, ClassInfo c2, int index2){
         timetable[index1]=c1;
         timetable[index2]=c2;
-    }
-
-    public ClassInfo [] getTimetable() {
-        return this.timetable;
     }
 
     public void setTimetable(ClassInfo timetable[]) {

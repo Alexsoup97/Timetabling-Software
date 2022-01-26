@@ -47,7 +47,7 @@ public class CourseScheduler {
                 return coursesRunning.get(c1.getCourse()) - coursesRunning.get(c2.getCourse());
             }
         });
-        coursesToClassInfo = getCoursesToClassInfos(timetable); // TODO fix get course to ClassInfo
+        coursesToClassInfo = getCoursesToClassInfos(timetable);
         Data.coursesToClassInfo = coursesToClassInfo;
         return timetable;
     }
