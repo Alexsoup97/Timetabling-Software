@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Collections;
 import java.util.Comparator;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Modifies the master timetable
@@ -49,7 +52,27 @@ public class CourseScheduler {
         });
         coursesToClassInfo = getCoursesToClassInfos(timetable);
         Data.coursesToClassInfo = coursesToClassInfo;
+        try{
+            outputCSV();
+        }catch(FileNotFoundException e){};
         return timetable;
+    }
+
+    /**
+     * Outputs the master timetable to a CSV file called "MasterTimetable.csv"
+     * @throws FileNotFoundException file errors
+     */
+    private void outputCSV() throws FileNotFoundException {
+        File studentFile = new File("MasterTimetable.csv");
+        PrintWriter output = new PrintWriter(studentFile);
+        output.println("Course, Room, Semester, Period");
+        for(ClassInfo c:timetable){
+            output.print(c.getCourse() + ", ");
+            output.print(c.getRoom() + ", ");
+            output.print((c.getTimeslot()/(Data.NUM_PERIODS/2)+1) + ", ");
+            output.println((c.getTimeslot()%(Data.NUM_PERIODS/2)+1) + ", ");
+        }
+        output.close();
     }
 
     /**
@@ -229,7 +252,7 @@ public class CourseScheduler {
      * @return unfixedSemesterTimetable pass from the method above
      */
     private void improveSemester(ArrayList<ClassInfo> unfixedSemesterTimetable){
-        final int NUM_ITERATIONS = 200; 
+        final int NUM_ITERATIONS = 100; 
 
         for(int i=0; i<NUM_ITERATIONS; i++){// note: the two courses are in the same semester
             int class1Index = random.nextInt(unfixedSemesterTimetable.size()); // index to switch

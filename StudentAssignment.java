@@ -88,15 +88,22 @@ public class StudentAssignment {
     private void outputCSV() throws FileNotFoundException {
         File studentFile = new File("StudentTimetables.csv");
         PrintWriter output = new PrintWriter(studentFile);
-
+        output.print("Student Name, Student Number,");
+        for(int i = 0; i < Data.NUM_PERIODS; i++){
+            output.print("Semester:"+ (i/(Data.NUM_PERIODS/2) +1) + " Period:" + (i %(Data.NUM_PERIODS/2) + 1) +  ", Room,");
+        }
+        output.println();
         for (Student s : Data.studentMap.values()) {
             output.print(s.getName() + ",");
+            output.print(s.getStudentNumber() + ",");
             ClassInfo[] currentTimetable = s.getTimetable();
             for (int i = 0; i < currentTimetable.length; i++) {
                 if (currentTimetable[i].getCourse() == null) {
                     output.print(",");
+                  
                 }
                 output.print(currentTimetable[i].getCourse() + ",");
+                output.print(currentTimetable[i].getRoom()+ ",");
             }
             output.println();
         }
