@@ -65,7 +65,7 @@ public class CourseScheduler {
     private void outputCSV() throws FileNotFoundException {
         File studentFile = new File("MasterTimetable.csv");
         PrintWriter output = new PrintWriter(studentFile);
-        output.println("Course, Room, Semester, Period");
+        output.println("Course, Room, Semester, Period,");
         for(ClassInfo c:timetable){
             output.print(c.getCourse() + ", ");
             output.print(c.getRoom() + ", ");
